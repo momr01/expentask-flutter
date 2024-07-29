@@ -35,9 +35,18 @@ class _AlertsScreenState extends State<AlertsScreen> {
   @override
   void dispose() {
     super.dispose();
+    LocalNotificationsServices.streamController.close();
   }
 
   void listenToNotificationStream() {
+    // debugPrint(
+    //  LocalNotificationsServices.streamController.stream.toString());
+    //   LocalNotificationsServices.streamController.stream
+    //    .listen((notification) {});
+
+    // debugPrint(
+    //    LocalNotificationsServices.streamController.hasListener.toString());
+
     LocalNotificationsServices.streamController.stream
         .listen((notificationResponse) {
       debugPrint(notificationResponse.id!.toString());

@@ -11,13 +11,16 @@ class LocalNotificationsServices {
       FlutterLocalNotificationsPlugin();
 
   static StreamController<NotificationResponse> streamController =
-      StreamController();
+      StreamController.broadcast();
 
   static onTap(NotificationResponse notificationResponse) {
     // debugPrint(notificationResponse.id!.toString());
     // debugPrint(notificationResponse.payload!.toString());
 
+    // debugPrint(streamController.hasListener.toString());
+
     streamController.add(notificationResponse);
+    debugPrint('hola');
   }
 
   static Future init() async {
@@ -136,15 +139,17 @@ class LocalNotificationsServices {
         currentTime.month, //month
         currentTime.day, //day,
         //9
-        currentTime.hour + 10
+        //currentTime.hour + 1
+        17,
+        24
         //currentTime.hour, //hour
-        //57, //minute
+        //57, //minutes
         //second
         //milisecond
         );
 
     if (scheduleTime.isBefore(currentTime)) {
-      scheduleTime.add(const Duration(minutes: 24));
+      scheduleTime = scheduleTime.add(const Duration(days: 1));
     }
 
     await flutterLocalNotificationsPlugin.zonedSchedule(

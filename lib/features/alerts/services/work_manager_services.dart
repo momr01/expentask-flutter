@@ -44,8 +44,10 @@ class WorkManagerServices {
   }
 
   void registerDailyPeriodicTask() async {
-    await Workmanager().registerPeriodicTask('id1', 'show simple notification',
-        frequency: const Duration(minutes: 15));
+    await Workmanager().registerPeriodicTask(
+      'id1', 'WARNING!',
+      // frequency: const Duration(minutes: 15)
+    );
   }
 
 //init work manager service

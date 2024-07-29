@@ -8,6 +8,7 @@ import 'package:payments_management/features/alerts/services/local_notifications
 import 'package:payments_management/features/alerts/services/work_manager_services.dart';
 import 'package:payments_management/features/auth/screens/login_screen.dart';
 import 'package:payments_management/features/auth/services/auth_services.dart';
+import 'package:payments_management/features/default/screens/default_screen.dart';
 import 'package:payments_management/providers/user_provider.dart';
 import 'package:payments_management/router.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,7 @@ void main() async {
       [LocalNotificationsServices.init(), WorkManagerServices().init()]);
   //Workmanager().initialize(actionTask, isInDebugMode: true);
   //Workmanager().registerOneOffTask("task-identifier", "simpleTask");
+  LocalNotificationsServices.showDailyScheduledNotification();
 
   runApp(MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => UserProvider())],
@@ -108,7 +110,9 @@ class _MyAppState extends State<MyApp> {
                         )
                       : const LoginScreen();
                 }
-                return const Center(child: CircularProgressIndicator());
+
+                // return const Center(child: CircularProgressIndicator());
+                return const DefaultScreen();
               });
         }));
   }

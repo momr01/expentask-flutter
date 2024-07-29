@@ -5,7 +5,7 @@ import 'package:payments_management/common/widgets/drawer/custom_drawer.dart';
 import 'package:payments_management/common/widgets/loader.dart';
 import 'package:payments_management/common/widgets/main_title.dart';
 import 'package:payments_management/constants/global_variables.dart';
-import 'package:payments_management/features/form_edit_payment/services/form_edit_payment_services.dart';
+import 'package:payments_management/features/tasks/services/tasks_services.dart';
 import 'package:payments_management/features/tasks/widgets/add_task_form.dart';
 import 'package:payments_management/features/tasks/widgets/task_card_individual.dart';
 import 'package:payments_management/models/task_code/task_code.dart';
@@ -22,7 +22,7 @@ class _TasksScreenState extends State<TasksScreen> {
   List<TaskCode>? taskCodes = [];
   List<TaskCode> _foundTaskCodes = [];
   final TextEditingController _searchController = TextEditingController();
-  FormEditPaymentServices formEditPaymentServices = FormEditPaymentServices();
+  TasksServices tasksServices = TasksServices();
   bool _isLoading = false;
 
   @override
@@ -35,7 +35,7 @@ class _TasksScreenState extends State<TasksScreen> {
     setState(() {
       _isLoading = true;
     });
-    taskCodes = await formEditPaymentServices.fetchTaskCodes();
+    taskCodes = await tasksServices.fetchTaskCodes();
     setState(() {
       _foundTaskCodes = taskCodes!;
       _isLoading = false;
