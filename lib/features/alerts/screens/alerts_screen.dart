@@ -9,6 +9,8 @@ import 'package:payments_management/features/alerts/services/local_notifications
 import 'package:payments_management/features/alerts/widgets/card_alert.dart';
 import 'package:payments_management/features/alerts/widgets/notification_details_screen.dart';
 import 'package:payments_management/models/alert.dart';
+import 'package:workmanager/workmanager.dart';
+import 'package:payments_management/features/alerts/services/work_manager_services.dart';
 
 class AlertsScreen extends StatefulWidget {
   static const String routeName = '/alerts';
@@ -85,9 +87,15 @@ class _AlertsScreenState extends State<AlertsScreen> {
               child: MainTitle(title: 'Alertas'),
             ),
             ElevatedButton.icon(
-                onPressed: () {
+                onPressed: () async {
                   //LocalNotificationsServices.showScheduledNotification();
-                  LocalNotificationsServices.showBasicNotification();
+                  //   LocalNotificationsServices.showBasicNotification();
+
+                  // await Future.wait([
+                  //   LocalNotificationsServices.init(),
+                  //   WorkManagerServices().init()
+                  // ]);
+                  //await startIsolateAndScheduleRecurringNotification();
                 },
                 icon: Icon(Icons.abc_rounded),
                 label: Text('gfff')),

@@ -14,33 +14,6 @@ import 'package:payments_management/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class FormEditPaymentServices {
-  Future<List<PaymentName>> fetchPaymentNames() async {
-    final userProvider = Provider.of<UserProvider>(
-        NavigatorKeys.navKey.currentContext!,
-        listen: false);
-    List<PaymentName> namesList = [];
-
-    try {
-      http.Response res =
-          await http.get(Uri.parse('$uri/api/names/getAll'), headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'x-auth-token': userProvider.user.token
-      });
-
-      httpErrorHandle(
-          response: res,
-          context: NavigatorKeys.navKey.currentContext!,
-          onSuccess: () {
-            for (int i = 0; i < jsonDecode(res.body).length; i++) {
-              namesList.add(PaymentName.fromJson(jsonDecode(res.body)[i]));
-            }
-          });
-    } catch (e) {
-      showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());
-    }
-    return namesList;
-  }
-
   void editPayment({required PaymentEdit payment}) async {
     final userProvider = Provider.of<UserProvider>(
         NavigatorKeys.navKey.currentContext!,
@@ -81,33 +54,5 @@ class FormEditPaymentServices {
     } catch (e) {
       showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());
     }
-  }
-
-  Future<List<TaskCode>> fetchTaskCodes() async {
-    final userProvider = Provider.of<UserProvider>(
-        NavigatorKeys.navKey.currentContext!,
-        listen: false);
-    List<TaskCode> codesList = [];
-
-    try {
-      http.Response res = await http.get(
-          Uri.parse('$uri/api/task-codes/getAll?user=${userProvider.user.id}'),
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-            'x-auth-token': userProvider.user.token
-          });
-
-      httpErrorHandle(
-          response: res,
-          context: NavigatorKeys.navKey.currentContext!,
-          onSuccess: () {
-            for (int i = 0; i < jsonDecode(res.body).length; i++) {
-              codesList.add(TaskCode.fromJson(jsonDecode(res.body)[i]));
-            }
-          });
-    } catch (e) {
-      showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());
-    }
-    return codesList;
   }
 }

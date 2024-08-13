@@ -9,9 +9,11 @@ import 'package:payments_management/constants/error_modal.dart';
 import 'package:payments_management/constants/navigator_keys.dart';
 import 'package:payments_management/features/form_edit_payment/screens/form_edit_payment_screen.dart';
 import 'package:payments_management/features/form_edit_payment/services/form_edit_payment_services.dart';
+import 'package:payments_management/features/names/services/names_services.dart';
 import 'package:payments_management/features/payment_details/services/payment_details_services.dart';
 import 'package:payments_management/features/payment_details/widgets/header_payment.dart';
 import 'package:payments_management/features/payment_details/widgets/task_card.dart';
+import 'package:payments_management/features/tasks/services/tasks_services.dart';
 import 'package:payments_management/models/form_edit_payment_arguments.dart';
 import 'package:payments_management/models/name/payment_name.dart';
 import 'package:payments_management/models/payment/payment.dart';
@@ -32,8 +34,10 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
   final PaymentDetailsServices paymentDetailsServices =
       PaymentDetailsServices();
 
-  final FormEditPaymentServices formEditPaymentServices =
-      FormEditPaymentServices();
+  /*final FormEditPaymentServices formEditPaymentServices =
+      FormEditPaymentServices();*/
+  final NamesServices namesServices = NamesServices();
+  final TasksServices tasksServices = TasksServices();
 
   @override
   void initState() {
@@ -95,7 +99,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
     List<PaymentName> names = [];
     List<TaskCode> taskCodes = [];
 
-    names = await formEditPaymentServices.fetchPaymentNames();
+    names = await namesServices.fetchPaymentNames();
 
     if (names.isEmpty) {
       errorModal(
@@ -107,7 +111,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
         },
       );
     } else {
-      taskCodes = await formEditPaymentServices.fetchTaskCodes();
+      taskCodes = await tasksServices.fetchTaskCodes();
       if (taskCodes.isEmpty) {
         errorModal(
           context: NavigatorKeys.navKey.currentContext!,

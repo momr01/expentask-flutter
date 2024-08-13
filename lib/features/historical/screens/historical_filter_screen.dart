@@ -7,6 +7,7 @@ import 'package:payments_management/common/widgets/custom_app_bar.dart';
 import 'package:payments_management/common/widgets/main_title.dart';
 import 'package:payments_management/constants/date_format.dart';
 import 'package:payments_management/constants/global_variables.dart';
+import 'package:payments_management/features/categories/services/categories_services.dart';
 import 'package:payments_management/features/form_edit_payment/services/form_edit_payment_services.dart';
 import 'package:payments_management/features/historical/utils/navigation_historical.dart';
 import 'package:payments_management/features/historical/widgets/date_selection_filter_item.dart';
@@ -78,6 +79,7 @@ class _HistoricalFilterScreenState extends State<HistoricalFilterScreen> {
   final FormEditPaymentServices formEditPaymentServices =
       FormEditPaymentServices();
   final NamesServices namesServices = NamesServices();
+  final CategoriesServices categoriesServices = CategoriesServices();
 
   final TextEditingController _dateFrom = TextEditingController();
   final TextEditingController _dateTo = TextEditingController();
@@ -139,13 +141,14 @@ class _HistoricalFilterScreenState extends State<HistoricalFilterScreen> {
     setState(() {
       _isLoading = true;
     });
-    final resNames = await formEditPaymentServices.fetchPaymentNames();
+    final resNames = await namesServices.fetchPaymentNames();
 
     for (var name in resNames) {
       names.add(FilterOption(id: name.id!, name: name.name, checkState: false));
     }
 
-    final resCategories = await namesServices.fetchCategories(context: context);
+    final resCategories =
+        await categoriesServices.fetchCategories(context: context);
     for (var category in resCategories) {
       categories.add(FilterOption(
           id: category.id!, name: category.name, checkState: false));

@@ -7,6 +7,7 @@ import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/form_edit_payment/services/form_edit_payment_services.dart';
 import 'package:payments_management/features/generate/screens/generate_details_screen.dart';
 import 'package:payments_management/features/generate/widgets/main_card_type.dart';
+import 'package:payments_management/features/names/services/names_services.dart';
 import 'package:payments_management/models/generate_payment.dart';
 import 'package:payments_management/models/name/payment_name.dart';
 
@@ -22,8 +23,9 @@ class _GenerateMainScreenState extends State<GenerateMainScreen> {
   List<PaymentName>? names;
   List<GeneratePayment> _payments = [];
 
-  final FormEditPaymentServices formEditPaymentServices =
-      FormEditPaymentServices();
+  // final FormEditPaymentServices formEditPaymentServices =
+  //    FormEditPaymentServices();
+  final NamesServices namesServices = NamesServices();
 
   bool _isLoading = false;
 
@@ -36,7 +38,7 @@ class _GenerateMainScreenState extends State<GenerateMainScreen> {
     setState(() {
       _isLoading = true;
     });
-    names = await formEditPaymentServices.fetchPaymentNames();
+    names = await namesServices.fetchPaymentNames();
     setState(() {
       if (names != null) {
         _payments = [];
@@ -62,7 +64,7 @@ class _GenerateMainScreenState extends State<GenerateMainScreen> {
     setState(() {
       _isLoading = true;
     });
-    await formEditPaymentServices.fetchPaymentNames();
+    await namesServices.fetchPaymentNames();
     setState(() {
       _payments = [];
       // if (names != null) {

@@ -4,6 +4,7 @@ import 'package:payments_management/common/widgets/loader.dart';
 import 'package:payments_management/common/widgets/main_title.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/form_edit_payment/services/form_edit_payment_services.dart';
+import 'package:payments_management/features/names/services/names_services.dart';
 import 'package:payments_management/features/names/utils/names_utils.dart';
 import 'package:payments_management/features/names/widgets/name_card.dart';
 import 'package:payments_management/models/category/category.dart';
@@ -22,8 +23,9 @@ class _NamesScreenState extends State<NamesScreen> {
   List<PaymentName> _foundNames = [];
 
   final TextEditingController _searchController = TextEditingController();
-  final FormEditPaymentServices formEditPaymentServices =
-      FormEditPaymentServices();
+//  final FormEditPaymentServices formEditPaymentServices =
+  //   FormEditPaymentServices();
+  final NamesServices namesServices = NamesServices();
 
   bool _isLoading = false;
 
@@ -43,7 +45,7 @@ class _NamesScreenState extends State<NamesScreen> {
     setState(() {
       _isLoading = true;
     });
-    names = await formEditPaymentServices.fetchPaymentNames();
+    names = await namesServices.fetchPaymentNames();
     setState(() {
       _foundNames = names!;
       _isLoading = false;

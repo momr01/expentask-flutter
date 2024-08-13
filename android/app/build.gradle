@@ -29,6 +29,9 @@ android {
     //local notifications
     compileSdkVersion 34
 
+    //background_fetch
+    //compileSdkVersion rootProject.ext.compileSdkVersion
+
     //compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -61,6 +64,9 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        //background_fetch
+        //targetSdkVersion rootProject.ext.targetSdkVersion
 
        
     }

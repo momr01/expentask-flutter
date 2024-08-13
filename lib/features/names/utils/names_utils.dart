@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/bottom_bar.dart';
 import 'package:payments_management/constants/error_modal.dart';
+import 'package:payments_management/features/categories/services/categories_services.dart';
 import 'package:payments_management/features/form_edit_payment/services/form_edit_payment_services.dart';
 import 'package:payments_management/features/form_manage_name/screens/form_manage_name_screen.dart';
 import 'package:payments_management/features/names/services/names_services.dart';
+import 'package:payments_management/features/tasks/services/tasks_services.dart';
 import 'package:payments_management/models/category/category.dart';
 import 'package:payments_management/models/form_manage_name_arguments.dart';
 import 'package:payments_management/models/name/payment_name.dart';
 import 'package:payments_management/models/task_code/task_code.dart';
 
-final FormEditPaymentServices formEditPaymentServices =
+/*final FormEditPaymentServices formEditPaymentServices =
     FormEditPaymentServices();
-final NamesServices namesServices = NamesServices();
+final NamesServices namesServices = NamesServices();*/
+final CategoriesServices categoriesServices = CategoriesServices();
+final TasksServices tasksServices = TasksServices();
 
 void getDataToForm(context, PaymentName name) async {
   List<Category> categories = [];
   List<TaskCode> taskCodes = [];
 
-  categories = await namesServices.fetchCategories(context: context);
+  categories = await categoriesServices.fetchCategories(context: context);
 
   if (categories.isEmpty) {
     errorModal(
@@ -30,7 +34,7 @@ void getDataToForm(context, PaymentName name) async {
       },
     );
   } else {
-    taskCodes = await formEditPaymentServices.fetchTaskCodes();
+    taskCodes = await tasksServices.fetchTaskCodes();
     if (taskCodes.isEmpty) {
       errorModal(
         context: context,

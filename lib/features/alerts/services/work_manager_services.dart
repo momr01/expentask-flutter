@@ -47,6 +47,13 @@ class WorkManagerServices {
     await Workmanager().registerPeriodicTask(
       'id1', 'WARNING!',
       // frequency: const Duration(minutes: 15)
+      inputData: <String, dynamic>{},
+      constraints: Constraints(
+        networkType: NetworkType.not_required, // Restricciones opcionales
+        requiresCharging: false,
+        requiresDeviceIdle: false,
+        requiresBatteryNotLow: false,
+      ),
     );
   }
 
