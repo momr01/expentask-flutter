@@ -24,6 +24,7 @@ void actionTask() {
   });
 }*/
 
+@pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     // Inicializa flutter_local_notifications dentro del task
@@ -87,7 +88,7 @@ void registerDailyPeriodicTask() async {
 
   await Workmanager().registerPeriodicTask(
       'id1', // ID único de la tarea
-      'WARNING!', // Nombre de la tarea
+      'WARNING! desde MAIN', // Nombre de la tarea
       tag: "jjjk"
       // frequency: Duration(hours: 24), // Frecuencia de la tarea
       // initialDelay: Duration(seconds: 10), // Retraso inicial opcional
@@ -110,8 +111,8 @@ void main() async {
   //await WorkManagerServices().init();
 
 //este si
-  // await Future.wait(
-  //     [LocalNotificationsServices.init(), WorkManagerServices().init()]);
+  await Future.wait(
+      [LocalNotificationsServices.init(), WorkManagerServices().init()]);
 
 //esto no
   //Workmanager().initialize(actionTask, isInDebugMode: true);
