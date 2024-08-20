@@ -3,14 +3,9 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:payments_management/common/widgets/loader.dart';
 import 'package:payments_management/common/widgets/main_title.dart';
 import 'package:payments_management/constants/global_variables.dart';
-import 'package:payments_management/constants/local_notifications.dart';
 import 'package:payments_management/features/alerts/services/alerts_services.dart';
-import 'package:payments_management/features/alerts/services/local_notifications_services.dart';
 import 'package:payments_management/features/alerts/widgets/card_alert.dart';
-import 'package:payments_management/features/alerts/widgets/notification_details_screen.dart';
 import 'package:payments_management/models/alert.dart';
-import 'package:workmanager/workmanager.dart';
-import 'package:payments_management/features/alerts/services/work_manager_services.dart';
 
 class AlertsScreen extends StatefulWidget {
   static const String routeName = '/alerts';
@@ -31,36 +26,36 @@ class _AlertsScreenState extends State<AlertsScreen> {
   void initState() {
     super.initState();
     fetchAlerts();
-    listenToNotificationStream();
+    // listenToNotificationStream();
   }
 
   @override
   void dispose() {
     super.dispose();
-    LocalNotificationsServices.streamController.close();
+    // LocalNotificationsServices.streamController.close();
   }
 
-  void listenToNotificationStream() {
-    // debugPrint(
-    //  LocalNotificationsServices.streamController.stream.toString());
-    //   LocalNotificationsServices.streamController.stream
-    //    .listen((notification) {});
+  // void listenToNotificationStream() {
+  //   // debugPrint(
+  //   //  LocalNotificationsServices.streamController.stream.toString());
+  //   //   LocalNotificationsServices.streamController.stream
+  //   //    .listen((notification) {});
 
-    // debugPrint(
-    //    LocalNotificationsServices.streamController.hasListener.toString());
+  //   // debugPrint(
+  //   //    LocalNotificationsServices.streamController.hasListener.toString());
 
-    LocalNotificationsServices.streamController.stream
-        .listen((notificationResponse) {
-      debugPrint(notificationResponse.id!.toString());
-      debugPrint(notificationResponse.payload!.toString());
+  //   LocalNotificationsServices.streamController.stream
+  //       .listen((notificationResponse) {
+  //     debugPrint(notificationResponse.id!.toString());
+  //     debugPrint(notificationResponse.payload!.toString());
 
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (_) =>
-                  NotificationDetailsScreen(response: notificationResponse)));
-    });
-  }
+  //     Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //             builder: (_) =>
+  //                 NotificationDetailsScreen(response: notificationResponse)));
+  //   });
+  // }
 
   fetchAlerts() async {
     setState(() {
@@ -86,19 +81,6 @@ class _AlertsScreenState extends State<AlertsScreen> {
               padding: EdgeInsets.only(top: 20, left: 15, right: 15),
               child: MainTitle(title: 'Alertas'),
             ),
-            ElevatedButton.icon(
-                onPressed: () async {
-                  //LocalNotificationsServices.showScheduledNotification();
-                  //   LocalNotificationsServices.showBasicNotification();
-
-                  // await Future.wait([
-                  //   LocalNotificationsServices.init(),
-                  //   WorkManagerServices().init()
-                  // ]);
-                  //await startIsolateAndScheduleRecurringNotification();
-                },
-                icon: Icon(Icons.abc_rounded),
-                label: Text('gfff')),
             const SizedBox(
               height: 20,
             ),

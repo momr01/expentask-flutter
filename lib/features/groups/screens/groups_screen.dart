@@ -5,7 +5,6 @@ import 'package:payments_management/common/widgets/drawer/custom_drawer.dart';
 import 'package:payments_management/common/widgets/main_title.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/groups/utils/navigation_groups.dart';
-import 'package:payments_management/features/groups/widgets/group_logo.dart';
 import 'package:payments_management/features/groups/widgets/group_main_card.dart';
 import 'package:payments_management/models/category/category.dart';
 import 'package:payments_management/models/group/group.dart';

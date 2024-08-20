@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:payments_management/common/widgets/bottom_bar.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/constants/navigator_keys.dart';
@@ -12,8 +11,6 @@ import 'package:payments_management/features/default/screens/default_screen.dart
 import 'package:payments_management/providers/user_provider.dart';
 import 'package:payments_management/router.dart';
 import 'package:provider/provider.dart';
-import 'package:workmanager/workmanager.dart';
-import 'package:background_fetch/background_fetch.dart';
 
 // @pragma('vm:entry-point')
 // void callbackDispatcher() {
