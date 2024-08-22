@@ -10,6 +10,7 @@ import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/auth/screens/login_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:payments_management/providers/user_provider.dart';
+import 'package:payments_management/providers/user_service.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -97,6 +98,8 @@ class AuthServices {
             //   arguments: 0,
             //   (route) => false,
             // );
+
+            //  UserService.instance.setToken(jsonDecode(res.body)['token']);
 
             NavigatorKeys.navKey.currentState?.pushNamedAndRemoveUntil(
                 BottomBar.routeName, arguments: 0, (route) => false);

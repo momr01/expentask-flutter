@@ -44,6 +44,23 @@ class LocalNotificationsServices {
         payload: 'payload data');
   }
 
+  static void showNumberOfPendingPayments(int number) async {
+    NotificationDetails details = NotificationDetails(
+        android: AndroidNotificationDetails('id 1', 'basic notification',
+            importance: Importance.max,
+            priority: Priority.high,
+            sound: RawResourceAndroidNotificationSound('bell.wav'
+                .split('.')
+                .first))); //aca se modifican cosas como sonido vibracion etc
+
+    await flutterLocalNotificationsPlugin.show(
+        0,
+        'ALERTA DE PAGOS PENDIENTES',
+        'Tienes $number pagos pendientes que requieren de tu atención!',
+        details,
+        payload: 'payload data');
+  }
+
   //repeated notification
   static void showRepeatedNotification() async {
     NotificationDetails details = const NotificationDetails(

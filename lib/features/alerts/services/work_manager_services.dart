@@ -1,15 +1,125 @@
 import 'package:flutter/material.dart';
+import 'package:payments_management/constants/global_variables.dart';
+import 'package:payments_management/constants/navigator_keys.dart';
 import 'package:payments_management/features/alerts/services/local_notifications_services.dart';
+import 'package:payments_management/providers/user_service.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:payments_management/features/alerts/services/alerts_services.dart';
+import 'package:payments_management/providers/user_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+
+Future<int> numberOfAlerts() async {
+  final userProvider = Provider.of<UserProvider>(
+      NavigatorKeys.navKey.currentContext!,
+      listen: false);
+
+  int total = 0;
+
+  try {
+    http.Response res =
+        await http.get(Uri.parse('$uri/api/payments/totalAlerts'), headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'x-auth-token': userProvider.user.token
+    });
+
+    total = jsonDecode(res.body)['alerts'];
+
+    // httpErrorHandle(
+    //     response: res,
+    //     context: context,
+    //     onSuccess: () {
+    //       total = jsonDecode(res.body)['alerts'];
+    //     });
+  } catch (e) {
+    // showSnackBar(context, e.toString());
+  }
+  return total;
+}
 
 @pragma(
     'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
-    debugPrint(
-        "Native called background task: $task"); //simpleTask will be emitted here.
-    LocalNotificationsServices.showBasicNotification();
+    debugPrint("Native called background task: $task");
+
+    // Accede al token desde un servicio o singleton
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('x-auth-token') ?? '';
+    //final String token = UserService.instance.token;
+
+    if (token.isEmpty) {
+      debugPrint("Token no disponible");
+      return Future.value(false);
+    }
+
+    int total = 0;
+
+    try {
+      http.Response res = await http.get(
+        Uri.parse('$uri/api/payments/totalAlerts'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': token,
+        },
+      );
+
+      if (res.statusCode == 200) {
+        total = jsonDecode(res.body)['alerts'];
+      } else {
+        debugPrint('Failed to load alerts: ${res.statusCode}');
+        return Future.value(false);
+      }
+    } catch (e, stackTrace) {
+      debugPrint('Error occurred: $e\n$stackTrace');
+      return Future.value(false);
+    }
+
+    if (total > 0) {
+      LocalNotificationsServices.showNumberOfPendingPayments(total);
+    } else {
+      debugPrint("Sin alertas, nada para notificar");
+    }
+
     return Future.value(true);
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // debugPrint(
+    //     "Native called background task: $task"); //simpleTask will be emitted here.
+    // final userProvider = Provider.of<UserProvider>(
+    //     NavigatorKeys.navKey.currentContext!,
+    //     listen: false);
+
+    // int total = 0;
+
+    // try {
+    //   http.Response res =
+    //       await http.get(Uri.parse('$uri/api/payments/totalAlerts'), headers: {
+    //     'Content-Type': 'application/json; charset=UTF-8',
+    //     'x-auth-token': userProvider.user.token
+    //   });
+
+    //   total = jsonDecode(res.body)['alerts'];
+
+    //   // httpErrorHandle(
+    //   //     response: res,
+    //   //     context: context,
+    //   //     onSuccess: () {
+    //   //       total = jsonDecode(res.body)['alerts'];
+    //   //     });
+    // } catch (e) {
+    //   // showSnackBar(context, e.toString());
+    // }
+
+    // if (total > 0) {
+    //   LocalNotificationsServices.showBasicNotification();
+    // } else {
+    //   debugPrint("sin alertas, nada para notificar");
+    // }
+
+    // return Future.value(true);
   });
 }
 
@@ -47,7 +157,7 @@ class WorkManagerServices {
   Future<void> init() async {
     await Workmanager().initialize(callbackDispatcher,
         isInDebugMode:
-            false // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+            true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
         );
     registerDailyPeriodicTask();
   }
