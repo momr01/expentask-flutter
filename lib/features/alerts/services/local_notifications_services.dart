@@ -45,6 +45,7 @@ class LocalNotificationsServices {
   }
 
   static void showNumberOfPendingPayments(int number) async {
+    String finalMsg = "";
     NotificationDetails details = NotificationDetails(
         android: AndroidNotificationDetails('id 1', 'basic notification',
             importance: Importance.max,
@@ -53,11 +54,14 @@ class LocalNotificationsServices {
                 .split('.')
                 .first))); //aca se modifican cosas como sonido vibracion etc
 
+    if (number == 1) {
+      finalMsg = 'Tienes $number pago pendiente que requiere de tu atención!';
+    } else {
+      finalMsg =
+          'Tienes $number pagos pendientes que requieren de tu atención!';
+    }
     await flutterLocalNotificationsPlugin.show(
-        0,
-        'ALERTA DE PAGOS PENDIENTES',
-        'Tienes $number pagos pendientes que requieren de tu atención!',
-        details,
+        0, 'ALERTA DE PAGOS PENDIENTES', finalMsg, details,
         payload: 'payload data');
   }
 
