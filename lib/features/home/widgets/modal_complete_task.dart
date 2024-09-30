@@ -11,8 +11,12 @@ import 'package:payments_management/models/task/task.dart';
 class ModalCompleteTask extends StatefulWidget {
   final Task task;
   final String idPayment;
+  final double amount;
   const ModalCompleteTask(
-      {Key? key, required this.task, required this.idPayment})
+      {Key? key,
+      required this.task,
+      required this.idPayment,
+      required this.amount})
       : super(key: key);
 
   @override
@@ -23,6 +27,7 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
   final _completeTaskFormKey = GlobalKey<FormState>();
 
   final TextEditingController _placeController = TextEditingController();
+  final TextEditingController _amountPaidController = TextEditingController();
   final TextEditingController _dateCompletedController =
       TextEditingController();
   final HomeServices homeServices = HomeServices();
@@ -31,6 +36,7 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
   void initState() {
     super.initState();
     _placeController.text = "Macro Maxi";
+    _amountPaidController.text = widget.amount.toString();
     _dateCompletedController.text =
         '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
   }
@@ -64,12 +70,12 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
     String completedDate = '${dateParts[2]}-${dateParts[1]}-${dateParts[0]}';
 
     homeServices.completeTask(
-      context: context,
-      paymentId: widget.idPayment,
-      taskId: widget.task.id!,
-      dateCompleted: completedDate,
-      place: widget.task.code.number == 1 ? _placeController.text : "",
-    );
+        context: context,
+        paymentId: widget.idPayment,
+        taskId: widget.task.id!,
+        dateCompleted: completedDate,
+        place: widget.task.code.number == 1 ? _placeController.text : "",
+        amount: _amountPaidController.text);
   }
 
   void openModalConfirmation() async {
@@ -78,7 +84,7 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
         context: context,
         builder: (context) => ModalConfirmation(
               onTap: completeTask,
-              confirmText: 'editar',
+              confirmText: 'completar',
               confirmColor: GlobalVariables.completeButtonColor!,
               middleText: 'marcar como completa',
               endText: 'la tarea seleccionada',
@@ -120,6 +126,22 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
                       CustomTextField(
                         controller: _placeController,
                         hintText: 'Ingrese el medio de pago',
+                        modal: true,
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      const Text(
+                        'Importe abonado:',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      CustomTextField(
+                        controller: _amountPaidController,
+                        hintText: 'Ingrese el importe cancelado',
                         modal: true,
                       ),
                     ],

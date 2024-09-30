@@ -305,6 +305,22 @@ class _HistoricalFilterScreenState extends State<HistoricalFilterScreen> {
         lastDate: DateTime(2101));
 
     if (pickedDate != null) {
+      // String day = "";
+      // String month = "";
+
+      // if (pickedDate.day >= 1 && pickedDate.day <= 9) {
+      //   day = "0${pickedDate.day}";
+      // } else {
+      //   day = pickedDate.day.toString();
+      // }
+
+      // if (pickedDate.month >= 1 && pickedDate.month <= 9) {
+      //   month = "0${pickedDate.month}";
+      // } else {
+      //   month = pickedDate.month.toString();
+      // }
+
+      // String formattedDate = '$day/$month/${pickedDate.year}';
       String formattedDate =
           '${pickedDate.day}/${pickedDate.month}/${pickedDate.year}';
 

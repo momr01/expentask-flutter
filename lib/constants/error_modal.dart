@@ -5,6 +5,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 void errorModal(
     {required BuildContext context,
     required String description,
+    int? closingTimes,
     VoidCallback? onTap}) {
   var alertStyle = AlertStyle(
     animationType: AnimationType.grow,
@@ -34,9 +35,22 @@ void errorModal(
       DialogButton(
         onPressed: onTap ??
             () {
-              Navigator.pop(context);
+              handleClose(context, closingTimes ?? 1);
             },
         color: GlobalVariables.cancelButtonColor,
+        /*  () {
+              //Navigator.pop(context);
+              //Navigator.popUntil(context, (route) => false);
+              //  Navigator.of(context).pop(2);
+              Navigator.pop(context);
+              Navigator.pop(context);
+              switch (closingTimes) {
+                case 1:
+                  break;
+                default:
+              }
+            },*/
+
         radius: BorderRadius.circular(50),
         child: const Text(
           "VOLVER",
@@ -46,4 +60,24 @@ void errorModal(
       ),
     ],
   ).show();
+}
+
+void handleClose(BuildContext context, int closingTimes) {
+  // Aquí manejas la lógica de cierre
+  for (int i = 0; i < closingTimes; i++) {
+    Navigator.pop(context);
+  }
+  // switch (closingTimes) {
+  //   case 1:
+  //     Navigator.pop(context);
+  //     break;
+  //   case 2:
+  //     {
+  //       Navigator.pop(context);
+  //       Navigator.pop(context);
+  //     }
+  //     break;
+  //   default:
+  //     Navigator.pop(context);
+  // }
 }

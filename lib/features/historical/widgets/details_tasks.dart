@@ -54,7 +54,12 @@ class DetailsTasks extends StatelessWidget {
                             attribute: "Medio de pago",
                             value: tasks[index].place! != ""
                                 ? tasks[index].place!
-                                : "-")
+                                : "-"),
+                        // TaskAttributeRow(
+                        //     attribute: "Importe abonado",
+                        //     value: tasks[index].place! != ""
+                        //         ? tasks[index].place!
+                        //         : "-")
                       ],
                     ),
                   )

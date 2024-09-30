@@ -6,6 +6,7 @@ void httpErrorHandle({
   required http.Response response,
   required BuildContext context,
   required VoidCallback onSuccess,
+  int? closingTimes,
 }) {
   switch (response.statusCode) {
     case 200:
@@ -30,7 +31,10 @@ void httpErrorHandle({
     // break;
     default:
       //showSnackBar(context, response.body);
-      errorModal(context: context, description: response.body);
+      errorModal(
+          context: context,
+          description: response.body,
+          closingTimes: closingTimes ?? 1);
       break;
   }
 }

@@ -46,7 +46,8 @@ class GenerateServices {
               onPressed: () => Navigator.pushNamedAndRemoveUntil(
                   context, BottomBar.routeName, arguments: 2, (route) => false),
             );
-          });
+          },
+          closingTimes: 2);
     } catch (e) {
       showSnackBar(context, e.toString());
       // errorModal(

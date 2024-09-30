@@ -111,7 +111,10 @@ class PaymentCard extends StatelessWidget {
                     child: Wrap(spacing: 20.0, runSpacing: 10.0, children: [
                   for (var task in payment.tasks)
                     if (task.isActive)
-                      ButtonCompleteTask(task: task, idPayment: payment.id!)
+                      ButtonCompleteTask(
+                          task: task,
+                          idPayment: payment.id!,
+                          amount: payment.amount)
                 ])),
                 const SizedBox(height: 20),
               ],

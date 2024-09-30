@@ -45,6 +45,7 @@ class HomeServices {
       required String paymentId,
       required String taskId,
       required String dateCompleted,
+      required String amount,
       String? place}) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
@@ -52,7 +53,8 @@ class HomeServices {
       Map body = {
         'method': place ?? "",
         'taskId': taskId,
-        'date': dateCompleted
+        'date': dateCompleted,
+        'amountPaid': amount
       };
 
       http.Response res =
@@ -64,19 +66,20 @@ class HomeServices {
               body: jsonEncode(body));
 
       httpErrorHandle(
-          response: res,
-          context: context,
-          onSuccess: () {
-            successModal(
-                context: context,
-                description: 'La tarea se marcó como COMPLETA.',
-                onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      BottomBar.routeName,
-                      arguments: 0,
-                      (route) => false,
-                    ));
-          });
+        response: res,
+        context: context,
+        onSuccess: () {
+          successModal(
+              context: context,
+              description: 'La tarea se marcó como COMPLETA.',
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    BottomBar.routeName,
+                    arguments: 0,
+                    (route) => false,
+                  ));
+        },
+      );
     } catch (e) {
       showSnackBar(context, e.toString());
     }

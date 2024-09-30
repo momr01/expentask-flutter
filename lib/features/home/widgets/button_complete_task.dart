@@ -8,11 +8,13 @@ import 'package:payments_management/models/task/task.dart';
 class ButtonCompleteTask extends StatefulWidget {
   final Task task;
   final String idPayment;
-  const ButtonCompleteTask({
-    Key? key,
-    required this.task,
-    required this.idPayment,
-  }) : super(key: key);
+  final double amount;
+  const ButtonCompleteTask(
+      {Key? key,
+      required this.task,
+      required this.idPayment,
+      required this.amount})
+      : super(key: key);
 
   @override
   State<ButtonCompleteTask> createState() => _ButtonCompleteTaskState();
@@ -52,9 +54,9 @@ class _ButtonCompleteTaskState extends State<ButtonCompleteTask> {
         barrierDismissible: false,
         context: context,
         builder: (context) => ModalCompleteTask(
-              task: widget.task,
-              idPayment: widget.idPayment,
-            ));
+            task: widget.task,
+            idPayment: widget.idPayment,
+            amount: widget.amount));
   }
 
   @override
