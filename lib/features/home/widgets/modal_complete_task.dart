@@ -97,101 +97,103 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
       // insetPadding: const EdgeInsets.symmetric(horizontal: 0),
       insetPadding: const EdgeInsets.all(0),
 
-      content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-        Text(
-          'Tarea "${capitalizeFirstLetter(widget.task.code.name)}"',
-          style: const TextStyle(fontSize: 30),
-          overflow: TextOverflow.ellipsis,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 20),
-        Form(
-            key: _completeTaskFormKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (widget.task.code.number == 1)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Medio de pago:',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      CustomTextField(
-                        controller: _placeController,
-                        hintText: 'Ingrese el medio de pago',
-                        modal: true,
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      const Text(
-                        'Importe abonado:',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      CustomTextField(
-                        controller: _amountPaidController,
-                        hintText: 'Ingrese el importe cancelado',
-                        modal: true,
-                      ),
-                    ],
-                  ),
-                const SizedBox(
-                  height: 30,
-                ),
-                const Text(
-                  'Fecha:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                CustomTextField(
-                  controller: _dateCompletedController,
-                  hintText: 'Ingrese la fecha',
-                  modal: true,
-                  onTap: selectDate,
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                Row(
-                  children: [
-                    CustomButtonOptions(
-                        text: 'COMPLETAR',
-                        color: GlobalVariables.completeButtonColor,
-                        onTap: () {
-                          if (_completeTaskFormKey.currentState!.validate()) {
-                            //openConfirmationCompleteTask();
-                            //debugPrint('open confirmation modal');
-                            openModalConfirmation();
-                          }
-                        }),
-                    const SizedBox(
-                      width: 20,
+      content: SingleChildScrollView(
+        child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+          Text(
+            'Tarea "${capitalizeFirstLetter(widget.task.code.name)}"',
+            style: const TextStyle(fontSize: 30),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20),
+          Form(
+              key: _completeTaskFormKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (widget.task.code.number == 1)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Medio de pago:',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        CustomTextField(
+                          controller: _placeController,
+                          hintText: 'Ingrese el medio de pago',
+                          modal: true,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        const Text(
+                          'Importe abonado:',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        CustomTextField(
+                          controller: _amountPaidController,
+                          hintText: 'Ingrese el importe cancelado',
+                          modal: true,
+                        ),
+                      ],
                     ),
-                    CustomButtonOptions(
-                        text: 'CANCELAR',
-                        color: GlobalVariables.cancelButtonColor,
-                        onTap: () {
-                          Navigator.pop(context);
-                        }),
-                  ],
-                )
-              ],
-            )),
-        const SizedBox(height: 20),
-      ]),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  const Text(
+                    'Fecha:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CustomTextField(
+                    controller: _dateCompletedController,
+                    hintText: 'Ingrese la fecha',
+                    modal: true,
+                    onTap: selectDate,
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  Row(
+                    children: [
+                      CustomButtonOptions(
+                          text: 'COMPLETAR',
+                          color: GlobalVariables.completeButtonColor,
+                          onTap: () {
+                            if (_completeTaskFormKey.currentState!.validate()) {
+                              //openConfirmationCompleteTask();
+                              //debugPrint('open confirmation modal');
+                              openModalConfirmation();
+                            }
+                          }),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      CustomButtonOptions(
+                          text: 'CANCELAR',
+                          color: GlobalVariables.cancelButtonColor,
+                          onTap: () {
+                            Navigator.pop(context);
+                          }),
+                    ],
+                  )
+                ],
+              )),
+          const SizedBox(height: 20),
+        ]),
+      ),
     );
   }
 }
