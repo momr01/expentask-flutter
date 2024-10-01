@@ -39,7 +39,8 @@ class PaymentDetailsServices {
               code: TaskCode(name: "", number: 0, user: "", abbr: ""),
               deadline: DateTime.now(),
               isActive: false,
-              isCompleted: false)
+              isCompleted: false,
+              amountPaid: -1)
         ],
         isActive: false,
         isCompleted: false,

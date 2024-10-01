@@ -94,9 +94,7 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      // insetPadding: const EdgeInsets.symmetric(horizontal: 0),
       insetPadding: const EdgeInsets.all(0),
-
       content: SingleChildScrollView(
         child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
           Text(

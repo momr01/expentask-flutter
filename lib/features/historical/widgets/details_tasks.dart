@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:payments_management/constants/date_format.dart';
+import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/historical/utils/historical_utils.dart';
 import 'package:payments_management/features/historical/widgets/task_attribute_row.dart';
 import 'package:payments_management/models/task/task.dart';
@@ -44,22 +45,25 @@ class DetailsTasks extends StatelessWidget {
                             attribute: "Fecha de vto",
                             value: datetimeToStringWithDash(
                                 tasks[index].deadline)),
-                        TaskAttributeRow(
-                            attribute: "Fecha de resolución",
-                            value: tasks[index].dateCompleted != null
-                                ? datetimeToStringWithDash(
-                                    tasks[index].dateCompleted!)
-                                : "-"),
-                        TaskAttributeRow(
-                            attribute: "Medio de pago",
-                            value: tasks[index].place! != ""
-                                ? tasks[index].place!
-                                : "-"),
-                        // TaskAttributeRow(
-                        //     attribute: "Importe abonado",
-                        //     value: tasks[index].place! != ""
-                        //         ? tasks[index].place!
-                        //         : "-")
+                        tasks[index].dateCompleted != null
+                            ? TaskAttributeRow(
+                                attribute: "Fecha de resolución",
+                                value: datetimeToStringWithDash(
+                                    tasks[index].dateCompleted!))
+                            : const SizedBox(),
+                        tasks[index].place! == ""
+                            ? const SizedBox()
+                            : TaskAttributeRow(
+                                attribute: "Medio de pago",
+                                value: tasks[index].place!),
+                        tasks[index].amountPaid == 0
+                            ? const SizedBox()
+                            : TaskAttributeRow(
+                                attribute: "Importe abonado",
+                                //   value: tasks[index].amountPaid.toString()
+                                value:
+                                    '\$ ${formatMoney(tasks[index].amountPaid)}',
+                              )
                       ],
                     ),
                   )
