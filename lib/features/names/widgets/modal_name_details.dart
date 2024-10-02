@@ -1,17 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:payments_management/common/widgets/bottom_bar.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button_green_disabled.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button_icons.dart';
 import 'package:payments_management/common/widgets/color_rounded_item.dart';
 import 'package:payments_management/common/widgets/modal_confirmation.dart';
-import 'package:payments_management/constants/error_modal.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/names/services/names_services.dart';
 import 'package:payments_management/features/names/utils/names_utils.dart';
-import 'package:payments_management/models/category/category.dart';
 import 'package:payments_management/models/name/payment_name.dart';
-import 'package:payments_management/models/task_code/task_code.dart';
 
 class ModalNameDetails extends StatefulWidget {
   final PaymentName name;
@@ -27,11 +23,6 @@ class ModalNameDetails extends StatefulWidget {
 class _ModalNameDetailsState extends State<ModalNameDetails> {
   final NamesServices namesServices = NamesServices();
   bool isLoading = false;
-
-  // void navigateToFormNameScreen(BuildContext context, PaymentName name) {
-  //   Navigator.pushNamed(context, FormManageNameScreen.routeName,
-  //       arguments: name);
-  // }
 
   void disableName() async {
     namesServices.disableName(context: context, nameId: widget.name.id!);
@@ -54,40 +45,8 @@ class _ModalNameDetailsState extends State<ModalNameDetails> {
     setState(() {
       isLoading = true;
     });
-    // getDataToForm(context, widget.name);
-    List<Category> categories = [];
-    List<TaskCode> taskCodes = [];
+    await getDataToForm(context, widget.name);
 
-    categories = await categoriesServices.fetchCategories(context: context);
-
-    if (categories.isEmpty) {
-      errorModal(
-        context: context,
-        description:
-            "Debe crear al menos una categoría, antes de agregar un nombre.",
-        onTap: () {
-          Navigator.pushNamedAndRemoveUntil(
-              context, BottomBar.routeName, arguments: 1, (route) => true);
-        },
-      );
-    } else {
-      taskCodes = await tasksServices.fetchTaskCodes();
-      if (taskCodes.isEmpty) {
-        errorModal(
-          context: context,
-          description:
-              "Debe crear al menos un código, antes de agregar un nombre.",
-          onTap: () {
-            Navigator.pushNamedAndRemoveUntil(
-                context, BottomBar.routeName, arguments: 1, (route) => true);
-          },
-        );
-      } else {
-        //navigateToFormEditPayment(context, payment!, names, taskCodes);
-        navigateToFormNameScreen(context, widget.name, categories, taskCodes);
-      }
-    }
-    // navigateToFormEditPayment(context, payment!);
     setState(() {
       isLoading = false;
     });
@@ -141,9 +100,7 @@ class _ModalNameDetailsState extends State<ModalNameDetails> {
               isLoading
                   ? const CustomButtonGreenDisabled()
                   : CustomButtonIcons(
-                      // onTap: () => navigateToFormNameScreen(context, widget.name),
-                      onTap: _prepareDataToSendToForm,
-                      delete: false),
+                      onTap: _prepareDataToSendToForm, delete: false),
               const SizedBox(
                 width: 20,
               ),

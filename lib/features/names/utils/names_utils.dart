@@ -2,22 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/bottom_bar.dart';
 import 'package:payments_management/constants/error_modal.dart';
 import 'package:payments_management/features/categories/services/categories_services.dart';
-import 'package:payments_management/features/form_edit_payment/services/form_edit_payment_services.dart';
 import 'package:payments_management/features/form_manage_name/screens/form_manage_name_screen.dart';
-import 'package:payments_management/features/names/services/names_services.dart';
 import 'package:payments_management/features/tasks/services/tasks_services.dart';
 import 'package:payments_management/models/category/category.dart';
 import 'package:payments_management/models/form_manage_name_arguments.dart';
 import 'package:payments_management/models/name/payment_name.dart';
 import 'package:payments_management/models/task_code/task_code.dart';
 
-/*final FormEditPaymentServices formEditPaymentServices =
-    FormEditPaymentServices();
-final NamesServices namesServices = NamesServices();*/
 final CategoriesServices categoriesServices = CategoriesServices();
 final TasksServices tasksServices = TasksServices();
 
-void getDataToForm(context, PaymentName name) async {
+Future<void> getDataToForm(context, PaymentName name) async {
   List<Category> categories = [];
   List<TaskCode> taskCodes = [];
 
@@ -46,36 +41,13 @@ void getDataToForm(context, PaymentName name) async {
         },
       );
     } else {
-      //navigateToFormEditPayment(context, payment!, names, taskCodes);
       navigateToFormNameScreen(context, name, categories, taskCodes);
     }
   }
-  // navigateToFormEditPayment(context, payment!);
 }
 
 void navigateToFormNameScreen(BuildContext context, PaymentName name,
     List<Category> categories, List<TaskCode> taskCodes) {
   Navigator.pushNamed(context, FormManageNameScreen.routeName,
-      // arguments: PaymentName(
-      //     name: "name",
-      //     isActive: false,
-      //     category: Category(name: "", isActive: false))
       arguments: FormManageNameArguments(name, categories, taskCodes));
 }
-
-
-  // void navigateToFormNameScreen(BuildContext context, List<Category> categories,
-  //     List<TaskCode> taskCodes) {
-  //   Navigator.pushNamed(context, FormManageNameScreen.routeName,
-  //       // arguments: PaymentName(
-  //       //     name: "name",
-  //       //     isActive: false,
-  //       //     category: Category(name: "", isActive: false))
-  //       arguments: FormManageNameArguments(
-  //           PaymentName(
-  //               name: "name",
-  //               isActive: false,
-  //               category: Category(name: "", isActive: false)),
-  //           categories,
-  //           taskCodes));
-  // }
