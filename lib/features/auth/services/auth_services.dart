@@ -69,7 +69,7 @@ class AuthServices {
   }
 
   //sign in user
-  void signInUser(
+  Future<void> signInUser(
       {required BuildContext context,
       required String email,
       required String password}) async {

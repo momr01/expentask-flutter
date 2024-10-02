@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 class CustomButtonIcons extends StatelessWidget {
   final VoidCallback onTap;
   final bool delete;
-  const CustomButtonIcons({Key? key, required this.onTap, required this.delete})
-      : super(key: key);
+  const CustomButtonIcons({
+    Key? key,
+    required this.onTap,
+    required this.delete,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -23,6 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final AuthServices authServices = AuthServices();
 
+  bool isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -35,24 +37,18 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
   }
 
-  void signInUser() {
-    authServices.signInUser(
+  void signInUser() async {
+    setState(() {
+      isLoading = true;
+    });
+    await authServices.signInUser(
       context: context,
       email: _emailController.text,
       password: _passwordController.text,
     );
-
-    // Navigator.of(context).pushNamedAndRemoveUntil(
-    //  context,
-    //   BottomBar.routeName,
-    //   arguments: 0,
-    //   (route) => false,
-    //  );
-
-    // if (ready) {
-    //   navigatorKey.currentState?.pushNamedAndRemoveUntil(
-    //       BottomBar.routeName, arguments: 0, (route) => false);
-    // }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void validateForm() {
@@ -68,7 +64,6 @@ class _LoginScreenState extends State<LoginScreen> {
         body: SingleChildScrollView(
           child: SafeArea(
               child: Padding(
-            // padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
             padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -134,13 +129,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 40,
                         ),
                         CustomButton(
-                            text: 'INGRESAR',
-                            color: GlobalVariables.secondaryColor,
-                            onTap: () {
-                              if (_signInFormKey.currentState!.validate()) {
-                                signInUser();
-                              }
-                            }),
+                          text: isLoading ? "INICIANDO SESIÓN..." : 'INGRESAR',
+                          color: GlobalVariables.secondaryColor,
+                          onTap: () {
+                            if (_signInFormKey.currentState!.validate()) {
+                              signInUser();
+                            }
+                          },
+                          isDisabled: isLoading ? true : false,
+                        ),
                       ],
                     )),
                 const SizedBox(

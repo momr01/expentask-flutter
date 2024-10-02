@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:payments_management/common/widgets/bottom_bar.dart';
 import 'package:payments_management/common/widgets/loader.dart';
 import 'package:payments_management/common/widgets/main_title.dart';
+import 'package:payments_management/constants/error_modal.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/form_edit_payment/services/form_edit_payment_services.dart';
 import 'package:payments_management/features/names/services/names_services.dart';
@@ -9,6 +11,7 @@ import 'package:payments_management/features/names/utils/names_utils.dart';
 import 'package:payments_management/features/names/widgets/name_card.dart';
 import 'package:payments_management/models/category/category.dart';
 import 'package:payments_management/models/name/payment_name.dart';
+import 'package:payments_management/models/task_code/task_code.dart';
 
 class NamesScreen extends StatefulWidget {
   static const String routeName = '/names';
@@ -28,6 +31,7 @@ class _NamesScreenState extends State<NamesScreen> {
   final NamesServices namesServices = NamesServices();
 
   bool _isLoading = false;
+  bool _newNameScreenLoading = false;
 
   @override
   void initState() {
@@ -128,13 +132,59 @@ class _NamesScreenState extends State<NamesScreen> {
   }
 */
 
-  void _prepareDataToSendToForm() {
-    getDataToForm(
-        context,
-        PaymentName(
-            name: "name",
-            isActive: false,
-            category: Category(name: "", isActive: false)));
+  void _prepareDataToSendToForm() async {
+    setState(() {
+      _newNameScreenLoading = true;
+    });
+    // getDataToForm(
+    //     context,
+    //     PaymentName(
+    //         name: "name",
+    //         isActive: false,
+    //         category: Category(name: "", isActive: false)));
+    List<Category> categories = [];
+    List<TaskCode> taskCodes = [];
+
+    categories = await categoriesServices.fetchCategories(context: context);
+
+    if (categories.isEmpty) {
+      errorModal(
+        context: context,
+        description:
+            "Debe crear al menos una categoría, antes de agregar un nombre.",
+        onTap: () {
+          Navigator.pushNamedAndRemoveUntil(
+              context, BottomBar.routeName, arguments: 1, (route) => true);
+        },
+      );
+    } else {
+      taskCodes = await tasksServices.fetchTaskCodes();
+      if (taskCodes.isEmpty) {
+        errorModal(
+          context: context,
+          description:
+              "Debe crear al menos un código, antes de agregar un nombre.",
+          onTap: () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, BottomBar.routeName, arguments: 1, (route) => true);
+          },
+        );
+      } else {
+        //navigateToFormEditPayment(context, payment!, names, taskCodes);
+        navigateToFormNameScreen(
+            context,
+            PaymentName(
+                name: "name",
+                isActive: false,
+                category: Category(name: "", isActive: false)),
+            categories,
+            taskCodes);
+      }
+    }
+    // navigateToFormEditPayment(context, payment!);
+    setState(() {
+      _newNameScreenLoading = false;
+    });
   }
 
   @override
@@ -155,11 +205,15 @@ class _NamesScreenState extends State<NamesScreen> {
           //         name: "name",
           //         isActive: false,
           //         category: Category(name: "", isActive: false))),
-          onPressed: _prepareDataToSendToForm,
-          child: const Icon(
-            Icons.add,
-            size: 40,
-          ),
+          onPressed: _newNameScreenLoading ? null : _prepareDataToSendToForm,
+          child: _newNameScreenLoading
+              ? const CircularProgressIndicator(
+                  color: Colors.white,
+                )
+              : const Icon(
+                  Icons.add,
+                  size: 40,
+                ),
         ),
       ),
       body: ModalProgressHUD(

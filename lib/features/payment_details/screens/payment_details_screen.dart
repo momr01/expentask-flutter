@@ -1,6 +1,7 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/bottom_bar.dart';
+import 'package:payments_management/common/widgets/buttons/custom_button_green_disabled.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button_icons.dart';
 import 'package:payments_management/common/widgets/custom_app_bar.dart';
 import 'package:payments_management/common/widgets/loader.dart';
@@ -38,6 +39,8 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
       FormEditPaymentServices();*/
   final NamesServices namesServices = NamesServices();
   final TasksServices tasksServices = TasksServices();
+
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -96,6 +99,9 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
   }
 
   void _editPaymentForm() async {
+    setState(() {
+      isLoading = true;
+    });
     List<PaymentName> names = [];
     List<TaskCode> taskCodes = [];
 
@@ -128,6 +134,9 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
       }
     }
     // navigateToFormEditPayment(context, payment!);
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -185,8 +194,10 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CustomButtonIcons(
-                                delete: false, onTap: _editPaymentForm),
+                            isLoading
+                                ? const CustomButtonGreenDisabled()
+                                : CustomButtonIcons(
+                                    delete: false, onTap: _editPaymentForm),
                             CustomButtonIcons(
                               delete: true,
                               onTap: () => openDeleteConfirmation(context),
