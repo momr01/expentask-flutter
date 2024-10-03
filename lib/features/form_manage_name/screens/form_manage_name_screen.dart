@@ -5,7 +5,7 @@ import 'package:payments_management/common/widgets/bottom_bar.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button.dart';
 import 'package:payments_management/common/widgets/custom_app_bar.dart';
 import 'package:payments_management/common/widgets/main_title.dart';
-import 'package:payments_management/common/widgets/modal_confirmation.dart';
+import 'package:payments_management/common/widgets/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/error_modal.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/form_manage_name/services/form_manage_name_services.dart';
@@ -190,14 +190,14 @@ class _FormManageNameScreenState extends State<FormManageNameScreen> {
     });
   }
 
-  void editName() {
+  Future<void> editName() async {
     List<String> ids = [];
 
     for (var item in selectedTasks) {
       ids.add(item.id!);
     }
 
-    formManageNameServices.editName(
+    await formManageNameServices.editName(
         context: context,
         id: widget.name.id!,
         name: _nameController.text,
@@ -205,14 +205,14 @@ class _FormManageNameScreenState extends State<FormManageNameScreen> {
         defaultTasks: ids);
   }
 
-  void addName() {
+  Future<void> addName() async {
     List<String> ids = [];
 
     for (var item in selectedTasks) {
       ids.add(item.id!);
     }
 
-    formManageNameServices.addName(
+    await formManageNameServices.addName(
         context: context,
         name: _nameController.text,
         categoryId: _categoryValue,

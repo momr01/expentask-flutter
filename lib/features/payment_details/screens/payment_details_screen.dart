@@ -5,7 +5,7 @@ import 'package:payments_management/common/widgets/buttons/custom_button_green_d
 import 'package:payments_management/common/widgets/buttons/custom_button_icons.dart';
 import 'package:payments_management/common/widgets/custom_app_bar.dart';
 import 'package:payments_management/common/widgets/loader.dart';
-import 'package:payments_management/common/widgets/modal_confirmation.dart';
+import 'package:payments_management/common/widgets/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/error_modal.dart';
 import 'package:payments_management/constants/navigator_keys.dart';
 import 'package:payments_management/features/form_edit_payment/screens/form_edit_payment_screen.dart';
@@ -70,8 +70,8 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
     });
   }
 
-  void disablePayment() async {
-    paymentDetailsServices.disablePayment(paymentId: widget.paymentId);
+  Future<void> disablePayment() async {
+    await paymentDetailsServices.disablePayment(paymentId: widget.paymentId);
   }
 
   void openDeleteConfirmation(BuildContext context) async {

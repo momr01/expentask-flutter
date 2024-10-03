@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class FormManageNameServices {
-  void editName(
+  Future<void> editName(
       {required BuildContext context,
       required String id,
       required String name,
@@ -51,7 +51,7 @@ class FormManageNameServices {
     }
   }
 
-  void addName(
+  Future<void> addName(
       {required BuildContext context,
       required String name,
       required String categoryId,

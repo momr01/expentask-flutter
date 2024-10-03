@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button_options.dart';
-import 'package:payments_management/common/widgets/modal_confirmation.dart';
+import 'package:payments_management/common/widgets/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/generate/services/generate_services.dart';
 import 'package:payments_management/features/generate/widgets/select_section.dart';
@@ -54,7 +54,7 @@ class _ModalGenerateState extends State<ModalGenerate> {
     return years;
   }
 
-  void generatePayments() async {
+  Future<void> generatePayments() async {
     List<String> names = [];
     for (var payment in widget.payments) {
       if (payment.state) {
@@ -62,7 +62,7 @@ class _ModalGenerateState extends State<ModalGenerate> {
       }
     }
 
-    generateServices.generatePayments(
+    await generateServices.generatePayments(
         context: context, names: names, month: currentMonth, year: currentYear);
   }
 

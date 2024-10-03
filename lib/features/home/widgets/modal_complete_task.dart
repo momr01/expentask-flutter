@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button_options.dart';
 import 'package:payments_management/common/widgets/custom_textfield.dart';
-import 'package:payments_management/common/widgets/modal_confirmation.dart';
+import 'package:payments_management/common/widgets/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/home/services/home_services.dart';
@@ -65,11 +65,11 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
     }
   }
 
-  void completeTask() async {
+  Future<void> completeTask() async {
     List<String> dateParts = _dateCompletedController.text.split('/');
     String completedDate = '${dateParts[2]}-${dateParts[1]}-${dateParts[0]}';
 
-    homeServices.completeTask(
+    await homeServices.completeTask(
         context: context,
         paymentId: widget.idPayment,
         taskId: widget.task.id!,

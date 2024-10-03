@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class GenerateServices {
-  void generatePayments(
+  Future<void> generatePayments(
       {required BuildContext context,
       required List<String> names,
       required int month,

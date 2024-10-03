@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button_green_disabled.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button_icons.dart';
 import 'package:payments_management/common/widgets/color_rounded_item.dart';
-import 'package:payments_management/common/widgets/modal_confirmation.dart';
+import 'package:payments_management/common/widgets/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/names/services/names_services.dart';
 import 'package:payments_management/features/names/utils/names_utils.dart';
@@ -24,8 +24,8 @@ class _ModalNameDetailsState extends State<ModalNameDetails> {
   final NamesServices namesServices = NamesServices();
   bool isLoading = false;
 
-  void disableName() async {
-    namesServices.disableName(context: context, nameId: widget.name.id!);
+  Future<void> disableName() async {
+    await namesServices.disableName(context: context, nameId: widget.name.id!);
   }
 
   void openDeleteConfirmation(BuildContext context) async {

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button_options.dart';
 import 'package:payments_management/common/widgets/custom_textfield.dart';
-import 'package:payments_management/common/widgets/modal_confirmation.dart';
+import 'package:payments_management/common/widgets/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/models/task_code/task_code.dart';
 
@@ -39,7 +39,7 @@ class _ModalEditTaskState extends State<ModalEditTask> {
   final TextEditingController _abbrController = TextEditingController();
   final TextEditingController _numberController = TextEditingController();
 
-  void editTask() {
+  Future<void> editTask() async {
     debugPrint(_nameController.text);
     debugPrint(_abbrController.text);
     debugPrint(_numberController.text);

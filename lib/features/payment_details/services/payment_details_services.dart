@@ -68,7 +68,7 @@ class PaymentDetailsServices {
     return payment;
   }
 
-  void disablePayment(
+  Future<void> disablePayment(
       {
       //required BuildContext context,
       required String paymentId}) async {

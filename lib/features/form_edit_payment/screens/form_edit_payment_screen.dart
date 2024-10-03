@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button.dart';
 import 'package:payments_management/common/widgets/custom_app_bar.dart';
 import 'package:payments_management/common/widgets/main_title.dart';
-import 'package:payments_management/common/widgets/modal_confirmation.dart';
+import 'package:payments_management/common/widgets/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/date_format.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/form_edit_payment/services/form_edit_payment_services.dart';
@@ -151,7 +151,7 @@ class _FormEditPaymentState extends State<FormEditPayment> {
   }
 
 //edit function
-  void editPayment() {
+  Future<void> editPayment() async {
     List<TaskEdit> tasksModified = [];
 
     for (var item in taskItems) {
@@ -171,7 +171,7 @@ class _FormEditPaymentState extends State<FormEditPayment> {
             : double.parse(_amountController.text.replaceAll(',', '.')),
         tasks: tasksModified);
 
-    formEditPaymentServices.editPayment(payment: paymentModified);
+    await formEditPaymentServices.editPayment(payment: paymentModified);
   }
 
   @override

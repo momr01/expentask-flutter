@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button.dart';
 import 'package:payments_management/common/widgets/custom_textfield.dart';
-import 'package:payments_management/common/widgets/modal_confirmation.dart';
+import 'package:payments_management/common/widgets/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/tasks/services/tasks_services.dart';
 
@@ -40,18 +40,9 @@ class _AddTaskFormState extends State<AddTaskForm> {
             ));
   }
 
-  void addTask() {
-    debugPrint(_nameController.text);
-    debugPrint(_abbrController.text);
-
-    tasksServices.addTaskCode(
+  Future<void> addTask() async {
+    await tasksServices.addTaskCode(
         name: _nameController.text, abbr: _abbrController.text);
-
-    // setState(() {
-    //   _nameController.clear();
-    //   _abbrController.clear();
-    //   _showForm = false;
-    // });
   }
 
   @override

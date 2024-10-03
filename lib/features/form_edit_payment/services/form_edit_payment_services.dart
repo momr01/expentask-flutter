@@ -12,7 +12,7 @@ import 'package:payments_management/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class FormEditPaymentServices {
-  void editPayment({required PaymentEdit payment}) async {
+  Future<void> editPayment({required PaymentEdit payment}) async {
     final userProvider = Provider.of<UserProvider>(
         NavigatorKeys.navKey.currentContext!,
         listen: false);

@@ -40,7 +40,7 @@ class HomeServices {
     return paymentList;
   }
 
-  void completeTask(
+  Future<void> completeTask(
       {required context,
       required String paymentId,
       required String taskId,

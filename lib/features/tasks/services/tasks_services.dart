@@ -41,7 +41,7 @@ class TasksServices {
     return codesList;
   }
 
-  void addTaskCode({required String name, required String abbr}) async {
+  Future<void> addTaskCode({required String name, required String abbr}) async {
     final userProvider = Provider.of<UserProvider>(
         NavigatorKeys.navKey.currentContext!,
         listen: false);
@@ -76,7 +76,7 @@ class TasksServices {
     }
   }
 
-  void editTaskCode({required TaskCode task}) async {
+  Future<void> editTaskCode({required TaskCode task}) async {
     final userProvider = Provider.of<UserProvider>(
         NavigatorKeys.navKey.currentContext!,
         listen: false);

@@ -40,7 +40,7 @@ class NamesServices {
     return namesList;
   }
 
-  void disableName(
+  Future<void> disableName(
       {required BuildContext context, required String nameId}) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
