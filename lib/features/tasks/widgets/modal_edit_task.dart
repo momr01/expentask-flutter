@@ -4,6 +4,7 @@ import 'package:payments_management/common/widgets/buttons/custom_button_options
 import 'package:payments_management/common/widgets/custom_textfield.dart';
 import 'package:payments_management/common/widgets/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/global_variables.dart';
+import 'package:payments_management/features/tasks/services/tasks_services.dart';
 import 'package:payments_management/models/task_code/task_code.dart';
 
 class ModalEditTask extends StatefulWidget {
@@ -38,11 +39,19 @@ class _ModalEditTaskState extends State<ModalEditTask> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _abbrController = TextEditingController();
   final TextEditingController _numberController = TextEditingController();
+  final TasksServices tasksServices = TasksServices();
 
   Future<void> editTask() async {
-    debugPrint(_nameController.text);
-    debugPrint(_abbrController.text);
-    debugPrint(_numberController.text);
+    //debugPrint(_nameController.text);
+    //debugPrint(_abbrController.text);
+    //debugPrint(_numberController.text);
+    TaskCode editTaskCode = TaskCode(
+        id: widget.code.id,
+        name: _nameController.text,
+        user: widget.code.user,
+        number: int.parse(_numberController.text),
+        abbr: _abbrController.text);
+    await tasksServices.editTaskCode(task: editTaskCode);
   }
 
   void openModalConfirmation() async {
@@ -130,8 +139,6 @@ class _ModalEditTaskState extends State<ModalEditTask> {
                           color: GlobalVariables.completeButtonColor,
                           onTap: () {
                             if (_editTaskFormKey.currentState!.validate()) {
-                              //openConfirmationCompleteTask();
-                              //debugPrint('open confirmation modal');
                               openModalConfirmation();
                             }
                           }),

@@ -28,7 +28,7 @@ class LocalNotificationsServices {
       onDidReceiveNotificationResponse: onTap,
     );
   }
-
+/*
   //basic notification
   static void showBasicNotification() async {
     NotificationDetails details = NotificationDetails(
@@ -42,7 +42,7 @@ class LocalNotificationsServices {
     await flutterLocalNotificationsPlugin.show(
         0, 'Basic Notification', 'body', details,
         payload: 'payload data');
-  }
+  }*/
 
   static void showNumberOfPendingPayments(int number) async {
     String finalMsg = "";
@@ -66,7 +66,7 @@ class LocalNotificationsServices {
   }
 
   //repeated notification
-  static void showRepeatedNotification() async {
+  /*static void showRepeatedNotification() async {
     NotificationDetails details = const NotificationDetails(
         android: AndroidNotificationDetails('id 2', 'repeated notification',
             importance: Importance.max,
@@ -165,7 +165,7 @@ class LocalNotificationsServices {
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
   }
-
+*/
   static void cancelAll() async {
     await flutterLocalNotificationsPlugin.cancelAll();
   }

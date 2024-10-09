@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button_options.dart';
 import 'package:payments_management/common/widgets/custom_textfield.dart';
 import 'package:payments_management/common/widgets/modal_confirmation/modal_confirmation.dart';
+import 'package:payments_management/constants/error_modal.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/constants/utils.dart';
+import 'package:payments_management/features/form_edit_payment/utils/form_edit_payment_utils.dart';
 import 'package:payments_management/features/home/services/home_services.dart';
 import 'package:payments_management/models/task/task.dart';
 
@@ -75,7 +77,18 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
         taskId: widget.task.id!,
         dateCompleted: completedDate,
         place: widget.task.code.number == 1 ? _placeController.text : "",
-        amount: _amountPaidController.text);
+        amount: correctAmount(_amountPaidController.text).toString());
+  }
+
+  void validateFormData() {
+    if (validateAmount(_amountPaidController.text)) {
+      openModalConfirmation();
+    } else {
+      errorModal(
+          context: context,
+          description:
+              "El importe abonado no es correcto. Verifique e intente nuevamente.");
+    }
   }
 
   void openModalConfirmation() async {
@@ -142,6 +155,7 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
                           controller: _amountPaidController,
                           hintText: 'Ingrese el importe cancelado',
                           modal: true,
+                          isAmount: true,
                         ),
                       ],
                     ),
@@ -173,7 +187,8 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
                             if (_completeTaskFormKey.currentState!.validate()) {
                               //openConfirmationCompleteTask();
                               //debugPrint('open confirmation modal');
-                              openModalConfirmation();
+                              //  openModalConfirmation();
+                              validateFormData();
                             }
                           }),
                       const SizedBox(

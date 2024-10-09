@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:payments_management/common/widgets/bottom_bar.dart';
 import 'package:payments_management/constants/error_handling.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/constants/navigator_keys.dart';
@@ -63,16 +64,12 @@ class TasksServices {
             successModal(
                 context: NavigatorKeys.navKey.currentContext!,
                 description: 'La tarea se creó correctamente.',
-                onPressed: () => fromSuccessAddToTasks(
-                    NavigatorKeys.navKey.currentContext!));
+                onPressed: () =>
+                    fromSuccessToTasks(NavigatorKeys.navKey.currentContext!));
           },
           closingTimes: 2);
     } catch (e) {
       showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());
-      // errorModal(
-      //     context: context,
-      //     description:
-      //         'No fue posible generar los pagos. Por favor, intente nuevamente más tarde.');
     }
   }
 
@@ -81,22 +78,12 @@ class TasksServices {
         NavigatorKeys.navKey.currentContext!,
         listen: false);
 
-    /*   List tasksMap = [];
-    for (var task in payment.tasks) {
-      tasksMap.add({'code': task.code, 'deadline': task.deadline});
-    }
-
-    Map body = {
-      'name': payment.name,
-      'deadline': payment.deadline,
-      'amount': '${payment.amount}',
-      'tasks': tasksMap
-    };
+    Map body = {'name': task.name, 'abbr': task.abbr, "number": task.number};
 
     try {
       http.Response res = await http.put(
           Uri.parse(
-              '$uri/api/payments/editPayment/${payment.id}?user=${userProvider.user.id}'),
+              '$uri/api/task-codes/editTaskCode/${task.id}?user=${userProvider.user.id}'),
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
             'x-auth-token': userProvider.user.token
@@ -109,12 +96,48 @@ class TasksServices {
           onSuccess: () {
             successModal(
                 context: NavigatorKeys.navKey.currentContext!,
-                description: 'El pago se modificó correctamente.',
-                onPressed: () => fromSuccessUpdateToPaymentDetails(
-                    NavigatorKeys.navKey.currentContext!, payment.id));
+                description: 'La tarea se modificó correctamente.',
+                // onPressed: () => fromSuccessUpdateToPaymentDetails(
+                //     NavigatorKeys.navKey.currentContext!, payment.id));
+                // onPressed: () => null
+                onPressed: () =>
+                    fromSuccessToTasks(NavigatorKeys.navKey.currentContext!));
           });
     } catch (e) {
       showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());
-    }*/
+    }
+  }
+
+  Future<void> disableTaskCode(
+      {
+      //required BuildContext context,
+      required String taskId}) async {
+    final userProvider = Provider.of<UserProvider>(
+        NavigatorKeys.navKey.currentContext!,
+        listen: false);
+
+    try {
+      http.Response res = await http
+          .put(Uri.parse('$uri/api/payments/disablePayment/$taskId'), headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'x-auth-token': userProvider.user.token
+      });
+
+      httpErrorHandle(
+          response: res,
+          //context: context,
+          context: NavigatorKeys.navKey.currentContext!,
+          onSuccess: () {
+            successModal(
+                // context: context,
+                context: NavigatorKeys.navKey.currentContext!,
+                description: 'El pago se eliminó correctamente.',
+                onPressed: () => Navigator.pushNamed(
+                    NavigatorKeys.navKey.currentContext!, BottomBar.routeName));
+          });
+    } catch (e) {
+      // showSnackBar(context, e.toString());
+      showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());
+    }
   }
 }

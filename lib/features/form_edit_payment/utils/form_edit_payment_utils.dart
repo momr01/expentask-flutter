@@ -36,6 +36,13 @@ bool validateAmount(String controller) {
   return false;
 }
 
+//return correct form of double amount
+double correctAmount(String controllerValue) {
+  return double.tryParse(controllerValue) != null
+      ? double.parse(controllerValue)
+      : double.parse(controllerValue.replaceAll(',', '.'));
+}
+
 //create controllers and checkbox of every task
 defineControllersAndCheckbox(List<TaskCode> taskCodes, Payment payment,
     List<TextEditingController> controllers, List<EditTaskCheckbox> taskItems) {

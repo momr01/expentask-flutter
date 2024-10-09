@@ -26,36 +26,12 @@ class _AlertsScreenState extends State<AlertsScreen> {
   void initState() {
     super.initState();
     fetchAlerts();
-    // listenToNotificationStream();
   }
 
   @override
   void dispose() {
     super.dispose();
-    // LocalNotificationsServices.streamController.close();
   }
-
-  // void listenToNotificationStream() {
-  //   // debugPrint(
-  //   //  LocalNotificationsServices.streamController.stream.toString());
-  //   //   LocalNotificationsServices.streamController.stream
-  //   //    .listen((notification) {});
-
-  //   // debugPrint(
-  //   //    LocalNotificationsServices.streamController.hasListener.toString());
-
-  //   LocalNotificationsServices.streamController.stream
-  //       .listen((notificationResponse) {
-  //     debugPrint(notificationResponse.id!.toString());
-  //     debugPrint(notificationResponse.payload!.toString());
-
-  //     Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //             builder: (_) =>
-  //                 NotificationDetailsScreen(response: notificationResponse)));
-  //   });
-  // }
 
   fetchAlerts() async {
     setState(() {
