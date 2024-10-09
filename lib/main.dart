@@ -35,7 +35,9 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    authServices.getUserData(context: context);
+    authServices.getUserData(
+        //context: context
+        );
   }
 
   @override
@@ -57,7 +59,9 @@ class _MyAppState extends State<MyApp> {
         onGenerateRoute: (settings) => generateRoute(settings),
         home: Builder(builder: (context) {
           return FutureBuilder(
-              future: authServices.getUserData(context: context),
+              future: authServices.getUserData(
+                  //context: context
+                  ),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Provider.of<UserProvider>(context)

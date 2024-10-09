@@ -1,11 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:payments_management/common/widgets/buttons/custom_button.dart';
 import 'package:payments_management/common/widgets/custom_password_field.dart';
 import 'package:payments_management/common/widgets/custom_textfield.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/auth/screens/register_screen.dart';
 import 'package:payments_management/features/auth/services/auth_services.dart';
+import 'package:payments_management/features/auth/widgets/login_button.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = '/login-screen';
@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
       isLoading = true;
     });
     await authServices.signInUser(
-      context: context,
+      //  context: context,
       email: _emailController.text,
       password: _passwordController.text,
     );
@@ -117,27 +117,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        // CustomTextField(
-                        //   controller: _passwordController,
-                        //   hintText: 'Ingrese su contraseña',
-                        // ),
                         CustomPasswordField(
                             controller: _passwordController,
                             text: 'Ingrese su contraseña'),
-
                         const SizedBox(
                           height: 40,
                         ),
-                        CustomButton(
-                          text: isLoading ? "INICIANDO SESIÓN..." : 'INGRESAR',
-                          color: GlobalVariables.secondaryColor,
+                        LoginButton(
                           onTap: () {
                             if (_signInFormKey.currentState!.validate()) {
                               signInUser();
                             }
                           },
-                          isDisabled: isLoading ? true : false,
-                        ),
+                          isLoading: isLoading,
+                        )
                       ],
                     )),
                 const SizedBox(

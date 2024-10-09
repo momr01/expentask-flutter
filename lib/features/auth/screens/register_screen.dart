@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button.dart';
 import 'package:payments_management/common/widgets/custom_password_field.dart';
 import 'package:payments_management/common/widgets/custom_textfield.dart';
+import 'package:payments_management/common/widgets/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/auth/services/auth_services.dart';
 
@@ -24,9 +25,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
       TextEditingController();
   final AuthServices authServices = AuthServices();
 
-  void signUpUser() {
-    authServices.signUpUser(
+  void openModalConfirmation() async {
+    showDialog<String>(
+        barrierDismissible: false,
         context: context,
+        builder: (context) => ModalConfirmation(
+              onTap: signUpUser,
+              confirmText: 'REGISTRAR',
+              confirmColor: Colors.blue,
+              middleText: 'registrar',
+              endText: 'los datos ingresados',
+            ));
+  }
+
+  Future<void> signUpUser() async {
+    await authServices.signUpUser(
         email: _emailController.text,
         password: _passwordController.text,
         confirmPassword: _confirmPasswordController.text,
@@ -35,7 +48,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _nameController.dispose();
     _emailController.dispose();
@@ -50,7 +62,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: SingleChildScrollView(
         child: SafeArea(
             child: Padding(
-          //padding: const EdgeInsets.symmetric(horizontal: 20),
           padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -61,9 +72,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     'assets/images/expentask-logo.png',
                     width: 40,
                   ),
-                  // const SizedBox(
-                  //   height: 10,
-                  // ),
                   Image.asset(
                     'assets/images/expentask-official.png',
                   ),
@@ -72,9 +80,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(
                 height: 10,
               ),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Text(
                     'REGISTRO',
                     style: TextStyle(
@@ -139,10 +147,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       CustomPasswordField(
                           controller: _passwordController,
                           text: 'Ingrese su contraseña'),
-                      // CustomTextField(
-                      //   controller: _passwordController,
-                      //   hintText: 'Ingrese su contraseña',
-                      // ),
                       const SizedBox(
                         height: 20,
                       ),
@@ -159,10 +163,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       CustomPasswordField(
                           controller: _confirmPasswordController,
                           text: 'Vuelva a ingresar su contraseña'),
-                      // CustomTextField(
-                      //   controller: _confirmPasswordController,
-                      //   hintText: 'Vuelva a ingresar su contraseña',
-                      // ),
                       const SizedBox(
                         height: 40,
                       ),
@@ -171,7 +171,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           color: GlobalVariables.secondaryColor,
                           onTap: () {
                             if (_signUpFormKey.currentState!.validate()) {
-                              signUpUser();
+                              openModalConfirmation();
                             }
                           }),
                     ],

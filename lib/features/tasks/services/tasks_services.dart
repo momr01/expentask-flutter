@@ -22,7 +22,8 @@ class TasksServices {
 
     try {
       http.Response res = await http.get(
-          Uri.parse('$uri/api/task-codes/getAll?user=${userProvider.user.id}'),
+          Uri.parse(
+              '$uri/api/task-codes/getActive?user=${userProvider.user.id}'),
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
             'x-auth-token': userProvider.user.token
@@ -97,9 +98,6 @@ class TasksServices {
             successModal(
                 context: NavigatorKeys.navKey.currentContext!,
                 description: 'La tarea se modificó correctamente.',
-                // onPressed: () => fromSuccessUpdateToPaymentDetails(
-                //     NavigatorKeys.navKey.currentContext!, payment.id));
-                // onPressed: () => null
                 onPressed: () =>
                     fromSuccessToTasks(NavigatorKeys.navKey.currentContext!));
           });
@@ -108,35 +106,32 @@ class TasksServices {
     }
   }
 
-  Future<void> disableTaskCode(
-      {
-      //required BuildContext context,
-      required String taskId}) async {
+  Future<void> disableTaskCode({required String taskId}) async {
     final userProvider = Provider.of<UserProvider>(
         NavigatorKeys.navKey.currentContext!,
         listen: false);
 
     try {
-      http.Response res = await http
-          .put(Uri.parse('$uri/api/payments/disablePayment/$taskId'), headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'x-auth-token': userProvider.user.token
-      });
+      http.Response res = await http.put(
+          Uri.parse('$uri/api/task-codes/disableTaskCode/$taskId'),
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'x-auth-token': userProvider.user.token
+          });
 
       httpErrorHandle(
           response: res,
-          //context: context,
           context: NavigatorKeys.navKey.currentContext!,
           onSuccess: () {
             successModal(
-                // context: context,
                 context: NavigatorKeys.navKey.currentContext!,
-                description: 'El pago se eliminó correctamente.',
-                onPressed: () => Navigator.pushNamed(
-                    NavigatorKeys.navKey.currentContext!, BottomBar.routeName));
+                description: 'La tarea se eliminó correctamente.',
+                // onPressed: () => Navigator.pushNamed(
+                //     NavigatorKeys.navKey.currentContext!, BottomBar.routeName)
+                onPressed: () =>
+                    fromSuccessToTasks(NavigatorKeys.navKey.currentContext!));
           });
     } catch (e) {
-      // showSnackBar(context, e.toString());
       showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());
     }
   }

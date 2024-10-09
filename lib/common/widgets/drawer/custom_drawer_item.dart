@@ -41,7 +41,9 @@ class CustomDrawerItem extends StatelessWidget {
           onTap: () {
             if (ModalRoute.of(context)?.settings.name != route) {
               if (closeSession) {
-                authServices.logOut(context);
+                authServices.logOut(
+                    //context
+                    );
               } else {
                 navigateToScreen(context, route);
               }

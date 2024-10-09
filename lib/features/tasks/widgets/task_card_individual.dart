@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/constants/utils.dart';
+import 'package:payments_management/features/tasks/services/tasks_services.dart';
 import 'package:payments_management/features/tasks/widgets/modal_edit_task.dart';
 import 'package:payments_management/models/task_code/task_code.dart';
 
@@ -22,6 +23,8 @@ class TaskCardIndividual extends StatefulWidget {
 class _TaskCardIndividualState extends State<TaskCardIndividual> {
   SampleItem? selectedItem;
 
+  final TasksServices tasksServices = TasksServices();
+
   void openEditTaskModal() async {
     showDialog<String>(
         barrierDismissible: false,
@@ -32,7 +35,8 @@ class _TaskCardIndividualState extends State<TaskCardIndividual> {
   }
 
   Future<void> disableTask() async {
-    debugPrint(widget.code.id);
+    //debugPrint(widget.code.id);
+    await tasksServices.disableTaskCode(taskId: widget.code.id!);
   }
 
   void openDeleteConfirmation() async {
