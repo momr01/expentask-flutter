@@ -16,7 +16,7 @@ Future<void> getDataToForm(context, PaymentName name) async {
   List<Category> categories = [];
   List<TaskCode> taskCodes = [];
 
-  categories = await categoriesServices.fetchCategories(context: context);
+  categories = await categoriesServices.fetchCategories();
 
   if (categories.isEmpty) {
     errorModal(

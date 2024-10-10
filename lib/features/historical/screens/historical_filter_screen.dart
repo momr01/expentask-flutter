@@ -147,8 +147,7 @@ class _HistoricalFilterScreenState extends State<HistoricalFilterScreen> {
       names.add(FilterOption(id: name.id!, name: name.name, checkState: false));
     }
 
-    final resCategories =
-        await categoriesServices.fetchCategories(context: context);
+    final resCategories = await categoriesServices.fetchCategories();
     for (var category in resCategories) {
       categories.add(FilterOption(
           id: category.id!, name: category.name, checkState: false));

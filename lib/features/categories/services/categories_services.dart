@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:payments_management/constants/error_handling.dart';
 import 'package:payments_management/constants/global_variables.dart';
+import 'package:payments_management/constants/navigator_keys.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/models/category/category.dart';
 import 'package:payments_management/providers/user_provider.dart';
@@ -10,9 +10,10 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class CategoriesServices {
-  Future<List<Category>> fetchCategories(
-      {required BuildContext context}) async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+  Future<List<Category>> fetchCategories() async {
+    final userProvider = Provider.of<UserProvider>(
+        NavigatorKeys.navKey.currentContext!,
+        listen: false);
     List<Category> categoriesList = [];
 
     try {
@@ -27,7 +28,7 @@ class CategoriesServices {
 
       httpErrorHandle(
           response: res,
-          context: context,
+          context: NavigatorKeys.navKey.currentContext!,
           onSuccess: () {
             for (int i = 0; i < jsonDecode(res.body).length; i++) {
               //  categoriesList
@@ -39,7 +40,7 @@ class CategoriesServices {
             }
           });
     } catch (e) {
-      showSnackBar(context, e.toString());
+      showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());
     }
     return categoriesList;
   }
