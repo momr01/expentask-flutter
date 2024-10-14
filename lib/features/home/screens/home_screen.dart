@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:payments_management/common/layouts/title_search_layout.dart';
+import 'package:payments_management/common/utils/fetch_data.dart';
+import 'package:payments_management/common/utils/run_filter.dart';
+import 'package:payments_management/common/widgets/conditional_list_view/conditional_list_view.dart';
 import 'package:payments_management/common/widgets/loader.dart';
-import 'package:payments_management/common/widgets/main_title.dart';
-import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/home/services/home_services.dart';
 import 'package:payments_management/features/home/widgets/payment_card.dart';
-import 'package:payments_management/features/home/widgets/search_text_field.dart';
 import 'package:payments_management/models/payment/payment.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,13 +24,10 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  final GlobalKey<_HomeScreenState> homeScreenKey = GlobalKey();
   List<Payment>? payments;
   List<Payment> _foundPayments = [];
-
   final HomeServices homeServices = HomeServices();
   final TextEditingController _searchController = TextEditingController();
-
   bool _isLoading = false;
 
   @override
@@ -41,86 +38,51 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     _searchController.dispose();
+    super.dispose();
   }
 
-  fetchUndonePayments() async {
-    // final context = homeScreenKey.currentContext;
-
-    // if (context != null && context.mounted) {
-    setState(() {
-      _isLoading = true;
-    });
-    payments = await homeServices.fetchUndonePayments(context: context);
-    setState(() {
-      _foundPayments = payments!;
-      _isLoading = false;
-    });
-    // }
+  void fetchUndonePayments() {
+    fetchData<Payment>(
+      context: context,
+      fetchFunction: homeServices.fetchUndonePayments,
+      onStart: () => setState(() => _isLoading = true),
+      onSuccess: (items) => setState(() {
+        payments = items;
+        _foundPayments = items;
+      }),
+      onComplete: () => setState(() => _isLoading = false),
+    );
   }
 
-  void _runFilter(String enteredKeyword) {
-    List<Payment> results = [];
-    if (enteredKeyword.isEmpty) {
-      results = payments!;
-    } else {
-      results = payments!
-          .where((payment) => payment.name.name
-              .toLowerCase()
-              .contains(enteredKeyword.toLowerCase()))
-          .toList();
-    }
-
+  void _runFilter(String keyword) {
     setState(() {
-      _foundPayments = results;
+      _foundPayments = runFilter<Payment>(
+        keyword,
+        payments!,
+        (payment) =>
+            payment.name.name.toLowerCase().contains(keyword.toLowerCase()),
+      );
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: ModalProgressHUD(
-      color: GlobalVariables.greyBackgroundColor,
-      opacity: 0.8,
-      blur: 0.8,
-      inAsyncCall: _isLoading,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
-        child: Column(
-          children: [
-            const MainTitle(title: 'Pagos en tratamiento'),
-            const SizedBox(
-              height: 20,
-            ),
-            SearchTextField(
-                searchController: _searchController,
-                onChange: (value) => _runFilter(value)),
-            const SizedBox(
-              height: 20,
-            ),
-            payments == null
-                ? const Loader()
-                : payments!.isEmpty
-                    ? const Text('¡No existen pagos para mostrar!')
-                    : _foundPayments.isEmpty
-                        ? const Text(
-                            '¡No existen resultados a su búsqueda!',
-                            style: TextStyle(fontSize: 16),
-                          )
-                        : Expanded(
-                            child: ListView.separated(
-                                itemBuilder: (context, index) {
-                                  return PaymentCard(
-                                      payment: _foundPayments[index]);
-                                },
-                                separatorBuilder: (context, _) {
-                                  return const Divider();
-                                },
-                                itemCount: _foundPayments.length))
-          ],
-        ),
+    return TitleSearchLayout(
+      isMain: true,
+      isLoading: _isLoading,
+      title: 'Pagos en tratamiento',
+      searchController: _searchController,
+      onSearch: _runFilter,
+      searchPlaceholder: "Buscar pago...",
+      child: ConditionalListView(
+        items: payments,
+        foundItems: _foundPayments,
+        loader: const Loader(),
+        emptyMessage: "¡No existen pagos para mostrar!",
+        itemBuilder: (context, payment) => PaymentCard(payment: payment),
+        separatorBuilder: (context, _) => const Divider(),
       ),
-    ));
+    );
   }
 }

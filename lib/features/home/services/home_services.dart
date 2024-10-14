@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/bottom_bar.dart';
 import 'package:payments_management/constants/error_handling.dart';
 import 'package:payments_management/constants/global_variables.dart';
+import 'package:payments_management/constants/navigator_keys.dart';
 import 'package:payments_management/constants/success_modal.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/models/payment/payment.dart';
@@ -12,8 +13,10 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class HomeServices {
-  Future<List<Payment>> fetchUndonePayments({required context}) async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+  Future<List<Payment>> fetchUndonePayments() async {
+    final userProvider = Provider.of<UserProvider>(
+        NavigatorKeys.navKey.currentContext!,
+        listen: false);
     List<Payment> paymentList = [];
 
     try {
@@ -25,7 +28,7 @@ class HomeServices {
 
       httpErrorHandle(
           response: res,
-          context: context,
+          context: NavigatorKeys.navKey.currentContext!,
           onSuccess: () {
             for (int i = 0; i < jsonDecode(res.body).length; i++) {
               paymentList
@@ -35,7 +38,7 @@ class HomeServices {
             }
           });
     } catch (e) {
-      showSnackBar(context, e.toString());
+      showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());
     }
     return paymentList;
   }
