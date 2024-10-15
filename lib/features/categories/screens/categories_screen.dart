@@ -5,6 +5,7 @@ import 'package:payments_management/common/utils/run_filter.dart';
 import 'package:payments_management/common/widgets/conditional_list_view/conditional_list_view.dart';
 import 'package:payments_management/common/widgets/loader.dart';
 import 'package:payments_management/features/categories/services/categories_services.dart';
+import 'package:payments_management/features/categories/widgets/category_card.dart';
 import 'package:payments_management/models/category/category.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -70,8 +71,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         foundItems: _foundCategories,
         loader: const Loader(),
         emptyMessage: "¡No existen categorías para mostrar!",
-        itemBuilder: (context, category) => Text(category.name),
-        separatorBuilder: (context, _) => const Divider(),
+        itemBuilder: (context, category) => CategoryCard(category: category),
+        //separatorBuilder: (context, _) => const Divider(),
       ),
     );
   }

@@ -24,19 +24,13 @@ class CategoriesServices {
             'x-auth-token': userProvider.user.token
           });
 
-      //debugPrint(res.body);
-
       httpErrorHandle(
           response: res,
           context: NavigatorKeys.navKey.currentContext!,
           onSuccess: () {
             for (int i = 0; i < jsonDecode(res.body).length; i++) {
-              //  categoriesList
-              //      .add(Category.fromJson(jsonEncode(jsonDecode(res.body)[i])));
-              //from json accepts string, jsondecode is an object
               categoriesList.add(Category.fromJson(jsonDecode(res.body)[i]));
-
-              // namesList.add(PaymentName.fromJson(jsonDecode(res.body)[i]));
+              // debugPrint(jsonDecode(res.body)[i]);
             }
           });
     } catch (e) {

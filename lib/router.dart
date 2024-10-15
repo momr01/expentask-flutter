@@ -43,13 +43,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           builder: (_) => BottomBar(
                 page: page,
               ));
-    // case PaymentDetailsScreen.routeName:
-    //   var payment = routeSettings.arguments as Payment;
-    //   return MaterialPageRoute(
-    //       settings: routeSettings,
-    //       builder: (_) => PaymentDetailsScreen(
-    //             payment: payment,
-    //           ));
     case PaymentDetailsScreen.routeName:
       String paymentId = routeSettings.arguments as String;
       return MaterialPageRoute(
@@ -58,10 +51,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
                 paymentId: paymentId,
               ));
     case FormEditPayment.routeName:
-      // var payment = routeSettings.arguments as Payment;
-      //var args = routeSettings.arguments!;
-      //   Map<String, dynamic> args = routeSettings.arguments as Map<String, dynamic>;
-      //final args = routeSettings.arguments;
       FormEditPaymentArguments args =
           routeSettings.arguments as FormEditPaymentArguments;
       return MaterialPageRoute(
@@ -76,7 +65,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
           settings: routeSettings, builder: (_) => const NamesScreen());
     case FormManageNameScreen.routeName:
-      // var name = routeSettings.arguments as PaymentName;
       FormManageNameArguments args =
           routeSettings.arguments as FormManageNameArguments;
       return MaterialPageRoute(
@@ -90,14 +78,10 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
           settings: routeSettings, builder: (_) => const GenerateMainScreen());
     case GenerateDetailsScreen.routeName:
-      // var payments = routeSettings.arguments.payments as List<GeneratePayment>;
-      // var title = routeSettings.arguments!.title! as String;
       List<dynamic> args = routeSettings.arguments as List<dynamic>;
       return MaterialPageRoute(
           settings: routeSettings,
           builder: (_) => GenerateDetailsScreen(
-                //   payments: payments,
-                //title: title,
                 payments: args[0],
                 title: args[1],
               ));
@@ -152,11 +136,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     default:
       return MaterialPageRoute(
         settings: routeSettings,
-        // builder: (_) => const Scaffold(
-        //       body: Center(
-        //         child: Text('Screen does not exist!'),
-        //       ),
-        //     )
         builder: (_) => const NotFoundScreen(),
       );
   }

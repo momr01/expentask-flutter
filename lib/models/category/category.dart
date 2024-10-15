@@ -30,6 +30,7 @@ class Category {
 }*/
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:payments_management/models/name/payment_name.dart';
 
 part 'category.g.dart';
 
@@ -38,8 +39,10 @@ class Category {
   final String? id;
   final String name;
   final bool isActive;
+  final List<PaymentName>? listNames;
 
-  Category({this.id, required this.name, required this.isActive});
+  Category(
+      {this.id, required this.name, required this.isActive, this.listNames});
 
   factory Category.fromJson(Map<String, dynamic> json) =>
       _$CategoryFromJson(json);
