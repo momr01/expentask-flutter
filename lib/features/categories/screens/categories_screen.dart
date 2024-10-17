@@ -73,6 +73,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         emptyMessage: "¡No existen categorías para mostrar!",
         itemBuilder: (context, category) => CategoryCard(category: category),
         //separatorBuilder: (context, _) => const Divider(),
+        separatorBuilder: (context, _) => const SizedBox(
+          height: 10,
+        ),
       ),
     );
   }

@@ -12,17 +12,36 @@ class CategoryCard extends StatefulWidget {
 class _CategoryCardState extends State<CategoryCard> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 100,
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(),
+          borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(30),
+              bottomRight: Radius.circular(30))),
+      //height: 100,
       child: Column(
         children: [
-          Row(
-            children: [
-              Text(widget.category.name),
-              Text(widget.category.listNames == []
-                  ? "0"
-                  : widget.category.listNames!.length.toString())
-            ],
+          Container(
+            height: 60,
+            decoration: BoxDecoration(border: Border.all()),
+            child: Row(
+              children: [
+                Text(widget.category.name),
+                Text(widget.category.listNames == []
+                    ? "0"
+                    : widget.category.listNames!.length.toString())
+              ],
+            ),
+          ),
+          const Row(children: [Text("Editar"), Text("Eliminar")]),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: widget.category.listNames!
+                .map((e) => Row(children: [Text(e.name)]))
+                .toList(),
+          ),
+          const SizedBox(
+            height: 20,
           )
         ],
       ),
