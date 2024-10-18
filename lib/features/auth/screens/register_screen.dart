@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button.dart';
 import 'package:payments_management/common/widgets/custom_password_field.dart';
 import 'package:payments_management/common/widgets/custom_textfield.dart';
-import 'package:payments_management/common/widgets/modal_confirmation/modal_confirmation.dart';
+import 'package:payments_management/common/widgets/modals/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/auth/services/auth_services.dart';
 

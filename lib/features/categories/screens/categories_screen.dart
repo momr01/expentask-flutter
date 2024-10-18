@@ -71,11 +71,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         foundItems: _foundCategories,
         loader: const Loader(),
         emptyMessage: "¡No existen categorías para mostrar!",
-        itemBuilder: (context, category) => CategoryCard(category: category),
-        //separatorBuilder: (context, _) => const Divider(),
+        itemBuilder: (context, category) {
+          return CategoryCard(category: category);
+        },
         separatorBuilder: (context, _) => const SizedBox(
           height: 10,
         ),
+        paddingEnd: 30,
       ),
     );
   }

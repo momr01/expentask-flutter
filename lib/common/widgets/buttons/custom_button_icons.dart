@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class CustomButtonIcons extends StatelessWidget {
   final VoidCallback onTap;
   final bool delete;
+  final Color backColor;
   const CustomButtonIcons({
     Key? key,
     required this.onTap,
     required this.delete,
+    this.backColor = Colors.white,
   }) : super(key: key);
 
   @override
@@ -15,6 +17,7 @@ class CustomButtonIcons extends StatelessWidget {
       child: Center(
         child: Card(
             elevation: 0,
+            color: backColor,
             shape: RoundedRectangleBorder(
               side: BorderSide(
                 color: delete ? Colors.red : Colors.green,

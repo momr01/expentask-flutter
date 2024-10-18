@@ -8,6 +8,7 @@ class ConditionalListView<T> extends StatelessWidget {
   final String? noResultsMessage;
   final Widget Function(BuildContext, T) itemBuilder;
   final Widget Function(BuildContext, int)? separatorBuilder;
+  final double paddingEnd;
 
   const ConditionalListView({
     Key? key,
@@ -18,6 +19,7 @@ class ConditionalListView<T> extends StatelessWidget {
     this.noResultsMessage,
     required this.itemBuilder,
     this.separatorBuilder,
+    this.paddingEnd = 0,
   }) : super(key: key);
 
   @override
@@ -40,12 +42,14 @@ class ConditionalListView<T> extends StatelessWidget {
     return Expanded(
       child: separatorBuilder != null
           ? ListView.separated(
+              padding: EdgeInsets.only(bottom: paddingEnd),
               itemBuilder: (context, index) =>
                   itemBuilder(context, foundItems![index]),
               separatorBuilder: separatorBuilder!,
               itemCount: foundItems!.length,
             )
           : ListView.builder(
+              padding: EdgeInsets.only(bottom: paddingEnd),
               itemBuilder: (context, index) =>
                   itemBuilder(context, items![index]),
               itemCount: items!.length,

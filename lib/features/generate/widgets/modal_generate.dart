@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button_options.dart';
-import 'package:payments_management/common/widgets/modal_confirmation/modal_confirmation.dart';
+import 'package:payments_management/common/widgets/modals/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/generate/services/generate_services.dart';
 import 'package:payments_management/features/generate/widgets/select_section.dart';

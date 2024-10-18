@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button_green_disabled.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button_icons.dart';
 import 'package:payments_management/common/widgets/color_rounded_item.dart';
-import 'package:payments_management/common/widgets/modal_confirmation/modal_confirmation.dart';
+import 'package:payments_management/common/widgets/modals/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/names/services/names_services.dart';
 import 'package:payments_management/features/names/utils/names_utils.dart';

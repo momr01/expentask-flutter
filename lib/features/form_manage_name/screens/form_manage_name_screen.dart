@@ -5,7 +5,7 @@ import 'package:payments_management/common/widgets/bottom_bar.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button.dart';
 import 'package:payments_management/common/widgets/custom_app_bar.dart';
 import 'package:payments_management/common/widgets/main_title.dart';
-import 'package:payments_management/common/widgets/modal_confirmation/modal_confirmation.dart';
+import 'package:payments_management/common/widgets/modals/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/error_modal.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/form_manage_name/services/form_manage_name_services.dart';
