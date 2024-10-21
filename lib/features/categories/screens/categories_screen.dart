@@ -4,6 +4,8 @@ import 'package:payments_management/common/utils/fetch_data.dart';
 import 'package:payments_management/common/utils/run_filter.dart';
 import 'package:payments_management/common/widgets/conditional_list_view/conditional_list_view.dart';
 import 'package:payments_management/common/widgets/loader.dart';
+import 'package:payments_management/common/widgets/modals/modal_form/modal_form_dialog.dart';
+import 'package:payments_management/common/widgets/modals/modal_form/model.form_input.dart';
 import 'package:payments_management/features/categories/services/categories_services.dart';
 import 'package:payments_management/features/categories/widgets/category_card.dart';
 import 'package:payments_management/models/category/category.dart';
@@ -19,14 +21,23 @@ class CategoriesScreen extends StatefulWidget {
 class _CategoriesScreenState extends State<CategoriesScreen> {
   List<Category>? categories;
   List<Category> _foundCategories = [];
-  final TextEditingController _searchController = TextEditingController();
-  final CategoriesServices categoriesServices = CategoriesServices();
   bool _isLoading = false;
+
+  final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final List<FormInput> _addControllers = [];
+  final CategoriesServices categoriesServices = CategoriesServices();
+  final _addCategoryKey = GlobalKey<FormState>();
+
+  //FloatBtnClass floatBtn = FloatBtnClass(withFloatBtn: withFloatBtn, loadFloatBtn: loadFloatBtn);
 
   @override
   void initState() {
     super.initState();
     fetchAllCategories();
+    // floatBtn
+    _addControllers
+        .add(FormInput("Nombre:", _nameController, "Escriba un nombre"));
   }
 
   @override
@@ -58,6 +69,22 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     });
   }
 
+  void addNewCategory() async {
+    showDialog<String>(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => ModalFormDialog(
+              controllers: _addControllers,
+              title: "agregar categoría",
+              actionBtnText: "agregar",
+              modalFormKey: _addCategoryKey,
+              onComplete: () {
+                debugPrint("kkkkkkkk");
+                debugPrint(_nameController.text);
+              },
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return TitleSearchLayout(
@@ -66,6 +93,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       searchController: _searchController,
       onSearch: _runFilter,
       searchPlaceholder: "Buscar categoría...",
+      // withFloatBtn: ,
+      withFloatBtn: true,
+      onTapFloatBtn: addNewCategory,
       child: ConditionalListView(
         items: categories,
         foundItems: _foundCategories,
