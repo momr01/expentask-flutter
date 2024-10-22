@@ -4,6 +4,7 @@ import 'package:payments_management/common/widgets/modals/modal_confirmation/mod
 import 'package:payments_management/common/widgets/modals/modal_form/modal_form_dialog.dart';
 import 'package:payments_management/common/widgets/modals/modal_form/model.form_input.dart';
 import 'package:payments_management/constants/utils.dart';
+import 'package:payments_management/features/categories/services/categories_services.dart';
 import 'package:payments_management/models/category/category.dart';
 
 class CategoryCardButtons extends StatefulWidget {
@@ -15,6 +16,7 @@ class CategoryCardButtons extends StatefulWidget {
 }
 
 class _CategoryCardButtonsState extends State<CategoryCardButtons> {
+  final CategoriesServices categoriesServices = CategoriesServices();
   final TextEditingController _nameController = TextEditingController();
   final List<FormInput> _controllers = [];
   final _editCategoryKey = GlobalKey<FormState>();
@@ -44,10 +46,13 @@ class _CategoryCardButtonsState extends State<CategoryCardButtons> {
               title: "editar categoría",
               actionBtnText: "editar",
               modalFormKey: _editCategoryKey,
-              onComplete: () {
-                debugPrint("kkkkkkkk");
-                debugPrint(_nameController.text);
-              },
+              // onComplete: () {
+              //   debugPrint("kkkkkkkk");
+              //   debugPrint(_nameController.text);
+              // },
+              onComplete: () => categoriesServices.editCategory(
+                  categoryName: _nameController.text,
+                  categoryId: widget.category.id!),
             ));
   }
 
@@ -56,7 +61,9 @@ class _CategoryCardButtonsState extends State<CategoryCardButtons> {
         barrierDismissible: false,
         context: context,
         builder: (context) => ModalConfirmation(
-              onTap: () async {},
+              // onTap: () async {},
+              onTap: () => categoriesServices.disableCategory(
+                  categoryId: widget.category.id!),
               confirmText: 'eliminar',
               confirmColor: Colors.red,
               middleText: 'eliminar',
