@@ -7,6 +7,7 @@ import 'package:payments_management/constants/navigator_keys.dart';
 import 'package:payments_management/constants/success_modal.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/categories/screens/categories_screen.dart';
+import 'package:payments_management/features/categories/utils/category_utils.dart';
 import 'package:payments_management/models/category/category.dart';
 import 'package:payments_management/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -68,11 +69,13 @@ class CategoriesServices {
                 description: 'La categoría se creó correctamente.',
                 // onPressed: () => Navigator.pushNamedAndRemoveUntil(
                 //     context, BottomBar.routeName, arguments: 1, (route) => true),
-                onPressed: () => Navigator.popUntil(
-                    NavigatorKeys.navKey.currentContext!,
-                    ModalRoute.withName(
-                      CategoriesScreen.routeName,
-                    )));
+                // onPressed: () => Navigator.popUntil(
+                //     NavigatorKeys.navKey.currentContext!,
+                //     ModalRoute.withName(
+                //       CategoriesScreen.routeName,
+                //     )));
+                onPressed: () => fromSuccessToCategoryScreen(
+                    NavigatorKeys.navKey.currentContext!));
           });
     } catch (e) {
       showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());
@@ -108,11 +111,13 @@ class CategoriesServices {
                 description: 'La categoría se modificó correctamente.',
                 // onPressed: () => fromSuccessUpdateToPaymentDetails(
                 //     NavigatorKeys.navKey.currentContext!, payment.id)
-                onPressed: () => Navigator.popUntil(
-                    NavigatorKeys.navKey.currentContext!,
-                    ModalRoute.withName(
-                      CategoriesScreen.routeName,
-                    )));
+                // onPressed: () => Navigator.popUntil(
+                //     NavigatorKeys.navKey.currentContext!,
+                //     ModalRoute.withName(
+                //       CategoriesScreen.routeName,
+                //     ))
+                onPressed: () => fromSuccessToCategoryScreen(
+                    NavigatorKeys.navKey.currentContext!));
           });
     } catch (e) {
       showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());

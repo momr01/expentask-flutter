@@ -123,7 +123,9 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (widget.task.code.number == 1)
+                  // if (widget.task.code.number == 1)
+                  if (widget.task.code.name.toLowerCase().contains("pag") ||
+                      widget.task.code.name.toLowerCase().contains("pay"))
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

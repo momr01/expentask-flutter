@@ -4,8 +4,10 @@ import 'package:payments_management/common/utils/fetch_data.dart';
 import 'package:payments_management/common/utils/run_filter.dart';
 import 'package:payments_management/common/widgets/conditional_list_view/conditional_list_view.dart';
 import 'package:payments_management/common/widgets/loader.dart';
+import 'package:payments_management/common/widgets/modals/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/common/widgets/modals/modal_form/modal_form_dialog.dart';
 import 'package:payments_management/common/widgets/modals/modal_form/model.form_input.dart';
+import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/categories/services/categories_services.dart';
 import 'package:payments_management/features/categories/widgets/category_card.dart';
 import 'package:payments_management/models/category/category.dart';
@@ -78,11 +80,28 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               title: "agregar categoría",
               actionBtnText: "agregar",
               modalFormKey: _addCategoryKey,
-              onComplete: () {
-                debugPrint("kkkkkkkk");
-                debugPrint(_nameController.text);
-              },
-              //  onComplete: () => categoriesServices.,
+              // onComplete: () {
+              //   debugPrint("kkkkkkkk");
+              //   debugPrint(_nameController.text);
+              // },
+              // onComplete: () => categoriesServices.addCategory(
+              //     nameCategory: _nameController.text),
+              onComplete: confirmAddCategory,
+            ));
+  }
+
+  void confirmAddCategory() async {
+    showDialog<String>(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => ModalConfirmation(
+              // onTap: () async {},
+              onTap: () => categoriesServices.addCategory(
+                  nameCategory: _nameController.text),
+              confirmText: 'agregar',
+              confirmColor: GlobalVariables.blueActionColor,
+              middleText: 'agregar',
+              endText: 'la categoría',
             ));
   }
 

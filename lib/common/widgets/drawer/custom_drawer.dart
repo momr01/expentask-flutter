@@ -23,46 +23,46 @@ final List<DrawerItem> items = [
       CategoriesScreen.routeName,
       [],
       false),
-  DrawerItem(
-      'Grupos',
-      const Icon(
-        Icons.list,
-      ),
-      GroupsScreen.routeName,
-      [],
-      false),
-  DrawerItem(
-      'Mi Perfil',
-      const Icon(
-        Icons.person,
-      ),
-      ProfileScreen.routeName,
-      [],
-      false),
-  DrawerItem(
-      'Estadísticas',
-      const Icon(
-        Icons.dashboard_customize,
-      ),
-      ProfileScreen.routeName,
-      [],
-      false),
-  DrawerItem(
-      'Notas',
-      const Icon(
-        Icons.note_add,
-      ),
-      ProfileScreen.routeName,
-      [],
-      false),
-  DrawerItem(
-      'Administración',
-      const Icon(
-        Icons.settings_system_daydream,
-      ),
-      ProfileScreen.routeName,
-      [],
-      false),
+  // DrawerItem(
+  //     'Grupos',
+  //     const Icon(
+  //       Icons.list,
+  //     ),
+  //     GroupsScreen.routeName,
+  //     [],
+  //     false),
+  // DrawerItem(
+  //     'Mi Perfil',
+  //     const Icon(
+  //       Icons.person,
+  //     ),
+  //     ProfileScreen.routeName,
+  //     [],
+  //     false),
+  // DrawerItem(
+  //     'Estadísticas',
+  //     const Icon(
+  //       Icons.dashboard_customize,
+  //     ),
+  //     ProfileScreen.routeName,
+  //     [],
+  //     false),
+  // DrawerItem(
+  //     'Notas',
+  //     const Icon(
+  //       Icons.note_add,
+  //     ),
+  //     ProfileScreen.routeName,
+  //     [],
+  //     false),
+  // DrawerItem(
+  //     'Administración',
+  //     const Icon(
+  //       Icons.settings_system_daydream,
+  //     ),
+  //     ProfileScreen.routeName,
+  //     [],
+  //     false),
   DrawerItem(
       'Cerrar Sesión',
       const Icon(
