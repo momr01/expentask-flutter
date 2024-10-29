@@ -109,7 +109,7 @@ class _ModalGenerateState extends State<ModalGenerate> {
                     text: 'año',
                     value: currentYear,
                     onChange: (int? value) {
-                      currentMonth = value!;
+                      currentYear = value!;
                     },
                     items: generateYears()),
                 Row(
