@@ -14,8 +14,10 @@ String capitalizeFirstLetter(String text) {
   String capitalized = "";
 
   for (var word in listOfWords) {
-    capitalized +=
-        '${word[0].toUpperCase()}${word.substring(1).toLowerCase()} ';
+    if (word.isNotEmpty) {
+      capitalized +=
+          '${word[0].toUpperCase()}${word.substring(1).toLowerCase()} ';
+    }
   }
   return capitalized.trim();
 }
