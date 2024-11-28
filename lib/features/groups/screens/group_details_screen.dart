@@ -62,7 +62,8 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             title: Text(
-                "Fecha de creación: ${datetimeToString(widget.group.dataEntry)}"),
+                // "Fecha de creación: ${datetimeToString(widget.group.dataEntry)}"),
+                "Fecha de creación: ffffffffffffffff"),
             tileColor: Colors.grey.shade400,
           ),
           ListTile(

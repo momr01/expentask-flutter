@@ -1,126 +1,132 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:payments_management/common/layouts/title_search_layout.dart';
+import 'package:payments_management/common/utils/fetch_data.dart';
+import 'package:payments_management/common/utils/run_filter.dart';
+import 'package:payments_management/common/widgets/conditional_list_view/conditional_list_view.dart';
 import 'package:payments_management/common/widgets/custom_app_bar.dart';
 import 'package:payments_management/common/widgets/drawer/custom_drawer.dart';
+import 'package:payments_management/common/widgets/loader.dart';
 import 'package:payments_management/common/widgets/main_title.dart';
 import 'package:payments_management/constants/global_variables.dart';
+import 'package:payments_management/features/groups/services/groups_services.dart';
 import 'package:payments_management/features/groups/utils/navigation_groups.dart';
 import 'package:payments_management/features/groups/widgets/group_main_card.dart';
 import 'package:payments_management/models/category/category.dart';
 import 'package:payments_management/models/group/group.dart';
 import 'package:payments_management/models/name/payment_name.dart';
 
-List<Group> groups = [
-  Group(
-      name: 'Pagos Mensuales',
-      dataEntry: DateTime.now(),
-      isActive: true,
-      paymentNames: [
-        PaymentName(
-            name: 'Seguro Tres Provincias',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true)),
-        PaymentName(
-            name: 'Seguro Rivadavia',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true)),
-        PaymentName(
-            name: 'Seguro de Vida',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true)),
-        PaymentName(
-            name: 'Seguro Tres Provincias',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true)),
-        PaymentName(
-            name: 'Seguro Rivadavia',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true)),
-        PaymentName(
-            name: 'Seguro de Vida',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true)),
-        PaymentName(
-            name: 'Seguro Tres Provincias',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true)),
-        PaymentName(
-            name: 'Seguro Rivadavia',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true)),
-        PaymentName(
-            name: 'Seguro de Vida',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true)),
-        PaymentName(
-            name: 'Seguro Tres Provincias',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true)),
-        PaymentName(
-            name: 'Seguro Rivadavia',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true)),
-        PaymentName(
-            name: 'Seguro de Vida',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true))
-      ]),
-  Group(
-      name: 'Pagos Semestrales',
-      dataEntry: DateTime.now(),
-      isActive: true,
-      paymentNames: [
-        PaymentName(
-            name: 'Seguro Tres Provincias',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true)),
-        PaymentName(
-            name: 'Seguro Rivadavia',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true)),
-        PaymentName(
-            name: 'Seguro de Vida',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true))
-      ]),
-  Group(
-      name: 'Pagos Anuales',
-      dataEntry: DateTime.now(),
-      isActive: true,
-      paymentNames: [
-        PaymentName(
-            name: 'Seguro Tres Provincias',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true)),
-        PaymentName(
-            name: 'Seguro Rivadavia',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true)),
-        PaymentName(
-            name: 'Seguro de Vida',
-            isActive: true,
-            category: Category(name: 'Seguros', isActive: true))
-      ]),
-  Group(
-    name: 'Pagos Especiales',
-    dataEntry: DateTime.now(),
-    isActive: true,
-    paymentNames: [
-      PaymentName(
-          name: 'Seguro Tres Provincias',
-          isActive: true,
-          category: Category(name: 'Seguros', isActive: true)),
-      PaymentName(
-          name: 'Seguro Rivadavia',
-          isActive: true,
-          category: Category(name: 'Seguros', isActive: true)),
-      PaymentName(
-          name: 'Seguro de Vida',
-          isActive: true,
-          category: Category(name: 'Seguros', isActive: true))
-    ],
-  )
-];
+// List<Group> groups = [
+//   Group(
+//       name: 'Pagos Mensuales',
+//       dataEntry: DateTime.now(),
+//       isActive: true,
+//       paymentNames: [
+//         PaymentName(
+//             name: 'Seguro Tres Provincias',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true)),
+//         PaymentName(
+//             name: 'Seguro Rivadavia',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true)),
+//         PaymentName(
+//             name: 'Seguro de Vida',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true)),
+//         PaymentName(
+//             name: 'Seguro Tres Provincias',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true)),
+//         PaymentName(
+//             name: 'Seguro Rivadavia',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true)),
+//         PaymentName(
+//             name: 'Seguro de Vida',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true)),
+//         PaymentName(
+//             name: 'Seguro Tres Provincias',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true)),
+//         PaymentName(
+//             name: 'Seguro Rivadavia',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true)),
+//         PaymentName(
+//             name: 'Seguro de Vida',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true)),
+//         PaymentName(
+//             name: 'Seguro Tres Provincias',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true)),
+//         PaymentName(
+//             name: 'Seguro Rivadavia',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true)),
+//         PaymentName(
+//             name: 'Seguro de Vida',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true))
+//       ]),
+//   Group(
+//       name: 'Pagos Semestrales',
+//       dataEntry: DateTime.now(),
+//       isActive: true,
+//       paymentNames: [
+//         PaymentName(
+//             name: 'Seguro Tres Provincias',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true)),
+//         PaymentName(
+//             name: 'Seguro Rivadavia',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true)),
+//         PaymentName(
+//             name: 'Seguro de Vida',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true))
+//       ]),
+//   Group(
+//       name: 'Pagos Anuales',
+//       dataEntry: DateTime.now(),
+//       isActive: true,
+//       paymentNames: [
+//         PaymentName(
+//             name: 'Seguro Tres Provincias',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true)),
+//         PaymentName(
+//             name: 'Seguro Rivadavia',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true)),
+//         PaymentName(
+//             name: 'Seguro de Vida',
+//             isActive: true,
+//             category: Category(name: 'Seguros', isActive: true))
+//       ]),
+//   Group(
+//     name: 'Pagos Especiales',
+//     dataEntry: DateTime.now(),
+//     isActive: true,
+//     paymentNames: [
+//       PaymentName(
+//           name: 'Seguro Tres Provincias',
+//           isActive: true,
+//           category: Category(name: 'Seguros', isActive: true)),
+//       PaymentName(
+//           name: 'Seguro Rivadavia',
+//           isActive: true,
+//           category: Category(name: 'Seguros', isActive: true)),
+//       PaymentName(
+//           name: 'Seguro de Vida',
+//           isActive: true,
+//           category: Category(name: 'Seguros', isActive: true))
+//     ],
+//   )
+// ];
 
 class GroupsScreen extends StatefulWidget {
   static const String routeName = '/groups';
@@ -133,7 +139,7 @@ class GroupsScreen extends StatefulWidget {
 class _GroupsScreenState extends State<GroupsScreen> {
   // List? groups = [];
   //List groups = [];
-  List _foundGroups = [];
+  /*List _foundGroups = [];
   final TextEditingController _searchController = TextEditingController();
   bool _isLoading = false;
 
@@ -166,8 +172,50 @@ class _GroupsScreenState extends State<GroupsScreen> {
     setState(() {
       _foundGroups = results;
     });
+  }*/
+
+  List<Group>? groups;
+  List<Group> _foundGroups = [];
+  final GroupsServices groupsServices = GroupsServices();
+  final TextEditingController _searchController = TextEditingController();
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchActiveGroups();
   }
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void fetchActiveGroups() {
+    fetchData<Group>(
+      context: context,
+      fetchFunction: groupsServices.fetchActiveGroups,
+      onStart: () => setState(() => _isLoading = true),
+      onSuccess: (items) => setState(() {
+        groups = items;
+        _foundGroups = items;
+      }),
+      onComplete: () => setState(() => _isLoading = false),
+    );
+  }
+
+  void _runFilter(String keyword) {
+    setState(() {
+      _foundGroups = runFilter<Group>(
+        keyword,
+        groups!,
+        (group) => group.name.toLowerCase().contains(keyword.toLowerCase()),
+      );
+    });
+  }
+
+/*
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -249,6 +297,50 @@ class _GroupsScreenState extends State<GroupsScreen> {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }*/
+
+  @override
+  Widget build(BuildContext context) {
+    return TitleSearchLayout(
+      isLoading: _isLoading,
+      title: 'Grupos',
+      searchController: _searchController,
+      onSearch: _runFilter,
+      searchPlaceholder: "Buscar grupo...",
+      /* child: ConditionalListView(
+        items: groups,
+        foundItems: _foundGroups,
+        loader: const Loader(),
+        emptyMessage: "¡No existen grupos para mostrar!",
+        // itemBuilder: (context, payment) => PaymentCard(payment: payment),
+        itemBuilder: (context, group) => GestureDetector(
+          onTap: () => fromGroupsToGroupDetails(context, group),
+          child: GroupMainCard(
+            group: group,
+          ),
+        ),
+        separatorBuilder: (context, _) => const Divider(),
+      ),*/
+      child: Expanded(
+        child: GridView.count(
+          primary: false,
+          crossAxisSpacing: 5,
+          mainAxisSpacing: 5,
+          crossAxisCount: 2,
+          //children: _foundGroups
+          children: _foundGroups
+              .map(
+                (group) => GestureDetector(
+                  onTap: () => fromGroupsToGroupDetails(context, group),
+                  child: GroupMainCard(
+                    group: group,
+                  ),
+                ),
+              )
+              .toList(),
         ),
       ),
     );

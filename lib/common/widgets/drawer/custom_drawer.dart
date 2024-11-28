@@ -23,14 +23,14 @@ final List<DrawerItem> items = [
       CategoriesScreen.routeName,
       [],
       false),
-  // DrawerItem(
-  //     'Grupos',
-  //     const Icon(
-  //       Icons.list,
-  //     ),
-  //     GroupsScreen.routeName,
-  //     [],
-  //     false),
+  DrawerItem(
+      'Grupos',
+      const Icon(
+        Icons.list,
+      ),
+      GroupsScreen.routeName,
+      [],
+      false),
   // DrawerItem(
   //     'Mi Perfil',
   //     const Icon(

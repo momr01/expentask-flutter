@@ -7,7 +7,7 @@ part 'group.g.dart';
 class Group {
   final String? id;
   final String name;
-  final DateTime dataEntry;
+  final String dataEntry;
   final bool isActive;
   final List<PaymentName> paymentNames;
 

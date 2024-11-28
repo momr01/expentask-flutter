@@ -3,7 +3,8 @@ part of 'group.dart';
 Group _$GroupFromJson(Map<String, dynamic> json) => Group(
     id: json['_id'] == null ? null : json['_id'] as String,
     name: json['name'] as String,
-    dataEntry: DateTime.parse(json['dataEntry']),
+    // dataEntry: DateTime.parse(json['dataEntry']),
+    dataEntry: json['dataEntry'] as String,
     isActive: json['isActive'] as bool,
     paymentNames: List<PaymentName>.from(
         (json['paymentNames']?.map((x) => PaymentName.fromJson(x)))));
