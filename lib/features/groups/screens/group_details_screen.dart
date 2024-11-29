@@ -55,7 +55,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
           ListTile(
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            title: Text("Nombre: Grupo ${widget.group.name}"),
+            title: Text("Nombre: Grupo ${widget.group.name.toUpperCase()}"),
             tileColor: Colors.grey.shade400,
           ),
           ListTile(
@@ -63,7 +63,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
                 const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             title: Text(
                 // "Fecha de creación: ${datetimeToString(widget.group.dataEntry)}"),
-                "Fecha de creación: ffffffffffffffff"),
+                "Fecha de creación: ${dateFormatFromString(widget.group.dataEntry)}"),
             tileColor: Colors.grey.shade400,
           ),
           ListTile(

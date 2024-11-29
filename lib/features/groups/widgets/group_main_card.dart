@@ -23,7 +23,7 @@ class GroupMainCard extends StatelessWidget {
           GroupLogo(letter: group.name[0]),
           const Spacer(),
           Text(
-            'Grupo ${group.name}',
+            'Grupo ${group.name.toUpperCase()}',
             textAlign: TextAlign.center,
             style: const TextStyle(
                 color: GlobalVariables.whiteColor,

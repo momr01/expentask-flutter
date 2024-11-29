@@ -11,6 +11,7 @@ import 'package:payments_management/common/widgets/main_title.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/groups/services/groups_services.dart';
 import 'package:payments_management/features/groups/utils/navigation_groups.dart';
+import 'package:payments_management/features/groups/widgets/group_grid_view.dart';
 import 'package:payments_management/features/groups/widgets/group_main_card.dart';
 import 'package:payments_management/models/category/category.dart';
 import 'package:payments_management/models/group/group.dart';
@@ -305,12 +306,12 @@ class _GroupsScreenState extends State<GroupsScreen> {
   @override
   Widget build(BuildContext context) {
     return TitleSearchLayout(
-      isLoading: _isLoading,
-      title: 'Grupos',
-      searchController: _searchController,
-      onSearch: _runFilter,
-      searchPlaceholder: "Buscar grupo...",
-      /* child: ConditionalListView(
+        isLoading: _isLoading,
+        title: 'Grupos',
+        searchController: _searchController,
+        onSearch: _runFilter,
+        searchPlaceholder: "Buscar grupo...",
+        /* child: ConditionalListView(
         items: groups,
         foundItems: _foundGroups,
         loader: const Loader(),
@@ -324,7 +325,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
         ),
         separatorBuilder: (context, _) => const Divider(),
       ),*/
-      child: Expanded(
+        /* child: Expanded(
         child: GridView.count(
           primary: false,
           crossAxisSpacing: 5,
@@ -342,7 +343,12 @@ class _GroupsScreenState extends State<GroupsScreen> {
               )
               .toList(),
         ),
-      ),
-    );
+      ),*/
+        child: GroupGridView(
+          groups: groups,
+          foundGroups: _foundGroups,
+          loader: const Loader(),
+          emptyMessage: "¡No existen grupos para mostrar!",
+        ));
   }
 }
