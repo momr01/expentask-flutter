@@ -75,19 +75,35 @@ class PaymentCard extends StatelessWidget {
                     const SizedBox(
                       width: 20,
                     ),
-                    CircularPercentIndicator(
-                      radius: 55,
-                      lineWidth: 15.0,
-                      percent: countCompletedTasks(payment.tasks),
-                      center: Text(
-                        '${numberToPercent(payment.tasks)}%',
-                        style: const TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green),
-                      ),
-                      progressColor: Colors.green,
-                    ),
+                    payment.hasInstallments
+                        ? new CircularPercentIndicator(
+                            radius: 55,
+                            animation: true,
+                            animationDuration: 1200,
+                            lineWidth: 15.0,
+                            percent: 0.5,
+                            center: new Text(
+                              "18/18",
+                              style: new TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20.0),
+                            ),
+                            circularStrokeCap: CircularStrokeCap.butt,
+                            backgroundColor: Colors.yellow,
+                            progressColor: Colors.red,
+                          )
+                        : CircularPercentIndicator(
+                            radius: 55,
+                            lineWidth: 15.0,
+                            percent: countCompletedTasks(payment.tasks),
+                            center: Text(
+                              '${numberToPercent(payment.tasks)}%',
+                              style: const TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green),
+                            ),
+                            progressColor: Colors.green,
+                          ),
                     Expanded(
                         child: Column(children: [
                       Text(
@@ -107,15 +123,21 @@ class PaymentCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
-                Center(
-                    child: Wrap(spacing: 20.0, runSpacing: 10.0, children: [
-                  for (var task in payment.tasks)
-                    if (task.isActive)
-                      ButtonCompleteTask(
-                          task: task,
-                          idPayment: payment.id!,
-                          amount: payment.amount)
-                ])),
+                payment.hasInstallments
+                    ? Center(
+                        child: Container(
+                          decoration: BoxDecoration(border: Border.all()),
+                        ),
+                      )
+                    : Center(
+                        child: Wrap(spacing: 20.0, runSpacing: 10.0, children: [
+                        for (var task in payment.tasks)
+                          if (task.isActive)
+                            ButtonCompleteTask(
+                                task: task,
+                                idPayment: payment.id!,
+                                amount: payment.amount)
+                      ])),
                 const SizedBox(height: 20),
               ],
             )),

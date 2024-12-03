@@ -15,6 +15,7 @@ class Task {
   final DateTime? dateCompleted;
   final String? place;
   final double amountPaid;
+  final int instalmentNumber;
 
   Task(
       {this.id,
@@ -24,7 +25,8 @@ class Task {
       required this.isCompleted,
       this.dateCompleted,
       this.place,
-      required this.amountPaid});
+      required this.amountPaid,
+      required this.instalmentNumber});
 
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
 

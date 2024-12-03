@@ -40,11 +40,13 @@ class PaymentDetailsServices {
               deadline: DateTime.now(),
               isActive: false,
               isCompleted: false,
-              amountPaid: -1)
+              amountPaid: -1,
+              instalmentNumber: 0)
         ],
         isActive: false,
         isCompleted: false,
-        period: "");
+        period: "",
+        hasInstallments: false);
 
     try {
       http.Response res = await http
