@@ -101,7 +101,8 @@ class _GenerateMainScreenState extends State<GenerateMainScreen> {
   Widget build(BuildContext context) {
     List generationTypes = [
       {'title': 'Grupos', 'onTap': fetchGroups},
-      {'title': 'Individual', 'onTap': fetchPaymentNames}
+      {'title': 'Individual', 'onTap': fetchPaymentNames},
+      {'title': 'Cuotas', 'onTap': fetchGroups}
     ];
 
     return Scaffold(

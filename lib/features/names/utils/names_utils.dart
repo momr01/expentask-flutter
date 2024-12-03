@@ -29,7 +29,7 @@ Future<void> getDataToForm(context, PaymentName name) async {
       },
     );
   } else {
-    taskCodes = await tasksServices.fetchTaskCodes();
+    taskCodes = await tasksServices.fetchUsableTaskCodes();
     if (taskCodes.isEmpty) {
       errorModal(
         context: context,

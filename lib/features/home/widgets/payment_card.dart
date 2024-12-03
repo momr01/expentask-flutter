@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/home/widgets/button_complete_task.dart';
 import 'package:payments_management/features/payment_details/screens/payment_details_screen.dart';
@@ -36,9 +37,42 @@ class PaymentCard extends StatelessWidget {
         arguments: paymentId);
   }
 
+  //int firstIncompleteInstalment(Payment payment) {
+  Map<String, int> installmentsQuantityData(Payment payment) {
+// if (payment.hasInstallments) {
+    //debugPrint(payment.id);
+
+    List allNumbers = [];
+    List undoneNumbers = [];
+
+    for (var i = 0; i < payment.tasks.length; i++) {
+      //debugPrint(payment.tasks[i].instalmentNumber.toString());
+      allNumbers.add(payment.tasks[i].instalmentNumber);
+
+      if (!payment.tasks[i].isCompleted) {
+        undoneNumbers.add(payment.tasks[i].instalmentNumber);
+      }
+    }
+    List allFinalList = allNumbers.toSet().toList();
+    List finalList = undoneNumbers.toSet().toList();
+    // debugPrint(finalList[0].toString());
+    //}
+
+    // debugPrint(finalList.length.toString());
+
+    Map<String, int> data = {
+      "firstInstalment": finalList[0],
+      "doneInstallments": allFinalList.length - finalList.length
+    };
+
+    // return finalList[0];
+    return data;
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+
     return Card(
       elevation: 0,
       //color: Colors.grey.shade300,
@@ -76,20 +110,21 @@ class PaymentCard extends StatelessWidget {
                       width: 20,
                     ),
                     payment.hasInstallments
-                        ? new CircularPercentIndicator(
+                        ? CircularPercentIndicator(
                             radius: 55,
                             animation: true,
                             animationDuration: 1200,
                             lineWidth: 15.0,
-                            percent: 0.5,
-                            center: new Text(
-                              "18/18",
-                              style: new TextStyle(
+                            //percent: 0.5,
+                            percent: countCompletedTasks(payment.tasks),
+                            center: Text(
+                              "${installmentsQuantityData(payment)["doneInstallments"]} /${payment.installmentsQuantity}",
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20.0),
                             ),
                             circularStrokeCap: CircularStrokeCap.butt,
-                            backgroundColor: Colors.yellow,
-                            progressColor: Colors.red,
+                            // backgroundColor: Colors.yellow,
+                            progressColor: Colors.green,
                           )
                         : CircularPercentIndicator(
                             radius: 55,
@@ -126,9 +161,67 @@ class PaymentCard extends StatelessWidget {
                 payment.hasInstallments
                     ? Center(
                         child: Container(
-                          decoration: BoxDecoration(border: Border.all()),
-                        ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 20),
+                            decoration: BoxDecoration(
+                                color: GlobalVariables.whiteColor,
+                                // border: Border.all(),
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color.fromRGBO(0, 0, 0, 0.35),
+                                    blurRadius: 15,
+                                    spreadRadius: 0,
+                                    offset: Offset(
+                                      0,
+                                      5,
+                                    ),
+                                  ),
+                                ]),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "CUOTA ${installmentsQuantityData(payment)["firstInstalment"]}",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: GlobalVariables.primaryColor),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Wrap(
+                                    spacing: 20.0,
+                                    runSpacing: 10.0,
+                                    children: [
+                                      for (var task in payment.tasks)
+                                        if (task.isActive &&
+                                            task.instalmentNumber ==
+                                                installmentsQuantityData(
+                                                    payment)["firstInstalment"])
+                                          ButtonCompleteTask(
+                                              task: task,
+                                              idPayment: payment.id!,
+                                              amount: payment.amount)
+                                    ]),
+                              ],
+                            )),
                       )
+                    // Center(
+                    //     child: Flexible(
+                    //         child: SizedBox(
+                    //     height: 100,
+                    //     child: ListView.separated(
+                    //       separatorBuilder: (context, index) => const SizedBox(
+                    //         width: 20,
+                    //       ),
+                    //       scrollDirection: Axis.horizontal,
+                    //       itemBuilder: (context, index) {
+                    //         return Text("hola");
+                    //       },
+                    //       itemCount: 18,
+                    //     ),
+                    //   )))
                     : Center(
                         child: Wrap(spacing: 20.0, runSpacing: 10.0, children: [
                         for (var task in payment.tasks)

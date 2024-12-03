@@ -20,6 +20,7 @@ class Payment {
   final UserHistorical? user;
   final String? dataEntry;
   final bool hasInstallments;
+  final int installmentsQuantity;
 
   Payment(
       {this.id,
@@ -32,7 +33,8 @@ class Payment {
       required this.period,
       this.user,
       this.dataEntry,
-      required this.hasInstallments});
+      required this.hasInstallments,
+      required this.installmentsQuantity});
 
   factory Payment.fromJson(Map<String, dynamic> json) =>
       _$PaymentFromJson(json);

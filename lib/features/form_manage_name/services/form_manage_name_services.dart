@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/bottom_bar.dart';
 import 'package:payments_management/constants/error_handling.dart';
 import 'package:payments_management/constants/global_variables.dart';
+import 'package:payments_management/constants/navigator_keys.dart';
 import 'package:payments_management/constants/success_modal.dart';
 import 'package:payments_management/constants/utils.dart';
+import 'package:payments_management/features/names/utils/navigation_names.dart';
 import 'package:payments_management/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -40,11 +42,12 @@ class FormManageNameServices {
           context: context,
           onSuccess: () {
             successModal(
-              context: context,
-              description: 'El nombre se modificó correctamente.',
-              onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                  context, BottomBar.routeName, arguments: 1, (route) => true),
-            );
+                context: context,
+                description: 'El nombre se modificó correctamente.',
+                // onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                //     context, BottomBar.routeName, arguments: 1, (route) => true),
+                onPressed: () => fromSuccessEditToNames(
+                    NavigatorKeys.navKey.currentContext!));
           });
     } catch (e) {
       showSnackBar(context, e.toString());

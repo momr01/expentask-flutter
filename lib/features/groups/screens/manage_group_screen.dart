@@ -11,19 +11,19 @@ import 'package:payments_management/features/groups/utils/navigation_groups.dart
 import 'package:payments_management/features/groups/widgets/modal_select_names.dart';
 import 'package:payments_management/models/group/group.dart';
 
-class EditGroupScreen extends StatefulWidget {
+class ManageGroupScreen extends StatefulWidget {
   static const String routeName = '/edit-group';
   final Group group;
-  const EditGroupScreen({
+  const ManageGroupScreen({
     Key? key,
     required this.group,
   }) : super(key: key);
 
   @override
-  State<EditGroupScreen> createState() => _EditGroupScreenState();
+  State<ManageGroupScreen> createState() => _EditGroupScreenState();
 }
 
-class _EditGroupScreenState extends State<EditGroupScreen> {
+class _EditGroupScreenState extends State<ManageGroupScreen> {
   final TextEditingController _nameController = TextEditingController();
 
   @override
@@ -57,7 +57,9 @@ class _EditGroupScreenState extends State<EditGroupScreen> {
           padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
           child: Column(
             children: [
-              const MainTitle(title: 'Editar Grupo'),
+              MainTitle(
+                  title:
+                      '${widget.group.id == null ? "Crear" : "Editar"} Grupo'),
               const SizedBox(
                 height: 30,
               ),

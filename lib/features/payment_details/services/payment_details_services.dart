@@ -46,7 +46,8 @@ class PaymentDetailsServices {
         isActive: false,
         isCompleted: false,
         period: "",
-        hasInstallments: false);
+        hasInstallments: false,
+        installmentsQuantity: 0);
 
     try {
       http.Response res = await http

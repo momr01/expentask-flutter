@@ -35,7 +35,7 @@ class _TasksScreenState extends State<TasksScreen> {
     setState(() {
       _isLoading = true;
     });
-    taskCodes = await tasksServices.fetchTaskCodes();
+    taskCodes = await tasksServices.fetchOwnTaskCodes();
     setState(() {
       _foundTaskCodes = taskCodes!;
       _isLoading = false;

@@ -216,6 +216,11 @@ class _GroupsScreenState extends State<GroupsScreen> {
     });
   }
 
+  void navigateToAddNewGroup() {
+    fromGroupDetailsToManageGroup(context,
+        Group(name: "", dataEntry: "", isActive: false, paymentNames: []));
+  }
+
 /*
   @override
   Widget build(BuildContext context) {
@@ -311,6 +316,9 @@ class _GroupsScreenState extends State<GroupsScreen> {
         searchController: _searchController,
         onSearch: _runFilter,
         searchPlaceholder: "Buscar grupo...",
+        withFloatBtn: true,
+        floatBtnLocation: FloatingActionButtonLocation.centerDocked,
+        onTapFloatBtn: navigateToAddNewGroup,
         /* child: ConditionalListView(
         items: groups,
         foundItems: _foundGroups,

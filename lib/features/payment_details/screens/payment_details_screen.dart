@@ -117,7 +117,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
         },
       );
     } else {
-      taskCodes = await tasksServices.fetchTaskCodes();
+      taskCodes = await tasksServices.fetchUsableTaskCodes();
       if (taskCodes.isEmpty) {
         errorModal(
           context: NavigatorKeys.navKey.currentContext!,

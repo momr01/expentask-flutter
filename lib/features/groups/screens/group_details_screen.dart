@@ -40,8 +40,8 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
                 Row(
                   children: [
                     CustomButtonIcons(
-                        onTap: () =>
-                            fromGroupDetailsToEditGroup(context, widget.group),
+                        onTap: () => fromGroupDetailsToManageGroup(
+                            context, widget.group),
                         delete: false),
                     CustomButtonIcons(onTap: () {}, delete: true),
                   ],
