@@ -124,11 +124,14 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
                 group: group,
               ));
     case ManageGroupScreen.routeName:
-      var group = routeSettings.arguments as Group;
+      // var group = routeSettings.arguments as Group;
+      List<dynamic> args = routeSettings.arguments as List<dynamic>;
       return MaterialPageRoute(
           settings: routeSettings,
           builder: (_) => ManageGroupScreen(
-                group: group,
+                // group: group,
+                group: args[0],
+                namesList: args[1],
               ));
     case ProfileScreen.routeName:
       return MaterialPageRoute(

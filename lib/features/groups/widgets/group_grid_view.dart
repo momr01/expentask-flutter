@@ -38,6 +38,10 @@ class GroupGridView extends StatelessWidget {
       );
     }
 
+    for (var element in foundGroups!) {
+      debugPrint(element.id);
+    }
+
     return Expanded(
       child: GridView.count(
         primary: false,

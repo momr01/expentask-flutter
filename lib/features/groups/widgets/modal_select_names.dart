@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:payments_management/constants/utils.dart';
+import 'package:payments_management/features/groups/screens/manage_group_screen.dart';
 import 'package:payments_management/features/groups/utils/navigation_groups.dart';
 import 'package:payments_management/features/names/services/names_services.dart';
+import 'package:payments_management/models/group/group.dart';
+import 'package:payments_management/models/group/group_name_checkbox.dart';
 import 'package:payments_management/models/name/payment_name.dart';
 
 class ModalSelectNames extends StatefulWidget {
-  const ModalSelectNames({super.key});
+  final List<GroupNameCheckbox> selectedNames;
+  const ModalSelectNames({super.key, required this.selectedNames});
 
   @override
   State<ModalSelectNames> createState() => _ModalSelectNamesState();
@@ -13,8 +17,9 @@ class ModalSelectNames extends StatefulWidget {
 
 class _ModalSelectNamesState extends State<ModalSelectNames> {
   List<PaymentName>? names;
+  List<GroupNameCheckbox> namesList = [];
   final NamesServices namesServices = NamesServices();
-  bool _isLoading = false;
+  // bool _isLoading = false;
 
   @override
   void initState() {
@@ -23,14 +28,33 @@ class _ModalSelectNamesState extends State<ModalSelectNames> {
   }
 
   fetchPaymentNames() async {
-    setState(() {
-      _isLoading = true;
-    });
+    // setState(() {
+    //   _isLoading = true;
+    // });
     names = await namesServices.fetchPaymentNames();
-    setState(() {
-      // _foundNames = names!;
-      _isLoading = false;
-    });
+    if (names != null && names != []) {
+      for (var name in names!) {
+        namesList
+            .add(GroupNameCheckbox(id: name.id, name: name.name, state: false));
+      }
+    }
+
+    if (widget.selectedNames.isNotEmpty) {
+      for (var name in widget.selectedNames) {
+        // GroupNameCheckbox foundItem =
+        //     namesList.where((element) => element.id == name.id).first;
+
+        // debugPrint(foundItem.name.toString());
+        namesList.where((element) => element.id == name.id).first.state = true;
+      }
+    }
+
+    setState(() {});
+
+    // setState(() {
+    //   // _foundNames = names!;
+    //   _isLoading = false;
+    // });
   }
 
   void openModalConfirmation() async {
@@ -46,7 +70,29 @@ class _ModalSelectNamesState extends State<ModalSelectNames> {
     //         ));
   }
 
-  void applyNamesSelection() {}
+  void applyNamesSelection() {
+    List<GroupNameCheckbox> selectedNames = [];
+    if (namesList != []) {
+      for (var name in namesList) {
+        if (name.state!) {
+          debugPrint(name.name);
+          selectedNames.add(name);
+        }
+      }
+    }
+
+    //fromSelectionToForm(context, namesList);
+
+    Navigator.pop(context, selectedNames); // Devuelve 'Nombre 1'
+  }
+
+  void fromSelectionToForm(context, List<GroupNameCheckbox> finalSelection) {
+    Navigator.pop(context);
+    Navigator.popAndPushNamed(context, ManageGroupScreen.routeName, arguments: [
+      Group(name: "", dataEntry: "", isActive: false, paymentNames: []),
+      finalSelection
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +118,7 @@ class _ModalSelectNamesState extends State<ModalSelectNames> {
           height: 400,
           child: names != null
               ? ListView.builder(
-                  itemCount: names!.length,
+                  itemCount: namesList.length,
                   itemBuilder: (_, i) {
                     return Container(
                       decoration: const BoxDecoration(
@@ -85,7 +131,7 @@ class _ModalSelectNamesState extends State<ModalSelectNames> {
                           children: [
                             Expanded(
                               child: Text(
-                                capitalizeFirstLetter(names![i].name),
+                                capitalizeFirstLetter(namesList[i].name!),
                                 textAlign: TextAlign.start,
                                 style: const TextStyle(
                                   fontSize: 16.0,
@@ -101,8 +147,13 @@ class _ModalSelectNamesState extends State<ModalSelectNames> {
                             //   style: const TextStyle(fontSize: 16),
                             // ),
                             Checkbox(
-                              value: true,
-                              onChanged: (value) {},
+                              value: namesList[i].state,
+                              // onChanged: (value) {},
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  namesList[i].state = value!;
+                                });
+                              },
                             )
                           ],
 

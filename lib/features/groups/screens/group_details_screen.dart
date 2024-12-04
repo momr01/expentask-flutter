@@ -2,8 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button_icons.dart';
 import 'package:payments_management/common/widgets/custom_app_bar.dart';
+import 'package:payments_management/common/widgets/modals/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/date_format.dart';
 import 'package:payments_management/constants/global_variables.dart';
+import 'package:payments_management/features/groups/services/groups_services.dart';
 import 'package:payments_management/features/groups/utils/navigation_groups.dart';
 import 'package:payments_management/features/groups/widgets/group_logo.dart';
 import 'package:payments_management/models/group/group.dart';
@@ -22,6 +24,24 @@ class GroupDetailsScreen extends StatefulWidget {
 
 class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
   bool isExpanded = false;
+  final GroupsServices groupsServices = GroupsServices();
+
+  Future<void> disableGroup() async {
+    await groupsServices.disableGroup(groupId: widget.group.id!);
+  }
+
+  void openDeleteConfirmation(BuildContext context) async {
+    showDialog<String>(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => ModalConfirmation(
+              onTap: disableGroup,
+              confirmText: 'eliminar',
+              confirmColor: Colors.red,
+              middleText: 'eliminar',
+              endText: 'el grupo',
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +63,10 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
                         onTap: () => fromGroupDetailsToManageGroup(
                             context, widget.group),
                         delete: false),
-                    CustomButtonIcons(onTap: () {}, delete: true),
+                    CustomButtonIcons(
+                        //onTap: () {},
+                        onTap: () => openDeleteConfirmation(context),
+                        delete: true),
                   ],
                 )
               ],
