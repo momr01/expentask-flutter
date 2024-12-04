@@ -10,6 +10,7 @@ import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/groups/utils/navigation_groups.dart';
 import 'package:payments_management/features/groups/widgets/modal_select_names.dart';
 import 'package:payments_management/models/group/group.dart';
+import 'package:payments_management/models/name/payment_name.dart';
 
 class ManageGroupScreen extends StatefulWidget {
   static const String routeName = '/edit-group';
@@ -25,11 +26,14 @@ class ManageGroupScreen extends StatefulWidget {
 
 class _EditGroupScreenState extends State<ManageGroupScreen> {
   final TextEditingController _nameController = TextEditingController();
+  final _manageGroupFormKey = GlobalKey<FormState>();
+  List<PaymentName> payments = [];
 
   @override
   void initState() {
     super.initState();
     _nameController.text = widget.group.name;
+    payments = widget.group.id != null ? widget.group.paymentNames : [];
   }
 
   @override
@@ -40,6 +44,11 @@ class _EditGroupScreenState extends State<ManageGroupScreen> {
 
   void editGroup() {
     debugPrint('editar');
+    debugPrint(_nameController.text);
+
+    for (var payment in payments) {
+      debugPrint(payment.name.toString());
+    }
   }
 
   void openPaymentNamesModal() async {
@@ -65,89 +74,92 @@ class _EditGroupScreenState extends State<ManageGroupScreen> {
               ),
               Expanded(
                 child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Nombre:'),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      CustomTextField(
-                          controller: _nameController,
-                          hintText: 'Ingrese el nombre del grupo'),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Nombres de Pagos:'),
-                          GestureDetector(
-                              onTap: openPaymentNamesModal,
-                              child: Icon(
-                                Icons.edit,
-                                color: GlobalVariables.completeButtonColor,
-                              ))
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                          height: 250,
-                          decoration: BoxDecoration(
-                              color: GlobalVariables.greyBackgroundColor,
-                              border: Border.all(color: Colors.black38),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5))),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListView.separated(
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(
-                                height: 5,
+                  child: Form(
+                    key: _manageGroupFormKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Nombre:'),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        CustomTextField(
+                            controller: _nameController,
+                            hintText: 'Ingrese el nombre del grupo'),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Nombres de Pagos:'),
+                            GestureDetector(
+                                onTap: openPaymentNamesModal,
+                                child: Icon(
+                                  Icons.edit,
+                                  color: GlobalVariables.completeButtonColor,
+                                ))
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                            height: 250,
+                            decoration: BoxDecoration(
+                                color: GlobalVariables.greyBackgroundColor,
+                                border: Border.all(color: Colors.black38),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                  height: 5,
+                                ),
+                                itemBuilder: (context, index) => Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: const BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(30))),
+                                  child: Center(
+                                      child: Text(
+                                    widget.group.paymentNames[index].name,
+                                    style: const TextStyle(fontSize: 15),
+                                  )),
+                                ),
+                                itemCount: widget.group.paymentNames.length,
                               ),
-                              itemBuilder: (context, index) => Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(10),
-                                decoration: const BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30))),
-                                child: Center(
-                                    child: Text(
-                                  widget.group.paymentNames[index].name,
-                                  style: const TextStyle(fontSize: 15),
-                                )),
-                              ),
-                              itemCount: widget.group.paymentNames.length,
+                            )),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        CustomButton(
+                          text: 'EDITAR',
+                          onTap: editGroup,
+                          color: GlobalVariables.secondaryColor,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Center(
+                          child: GestureDetector(
+                            onTap: () => fromEditGroupToGroupDetails(context),
+                            child: const Text(
+                              'CANCELAR',
+                              style: TextStyle(
+                                  fontSize: 25, color: Colors.black54),
                             ),
-                          )),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      CustomButton(
-                        text: 'EDITAR',
-                        onTap: editGroup,
-                        color: GlobalVariables.secondaryColor,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Center(
-                        child: GestureDetector(
-                          onTap: () => fromEditGroupToGroupDetails(context),
-                          child: const Text(
-                            'CANCELAR',
-                            style:
-                                TextStyle(fontSize: 25, color: Colors.black54),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      )
-                    ],
+                        const SizedBox(
+                          height: 10,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
