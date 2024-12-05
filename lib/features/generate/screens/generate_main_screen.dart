@@ -7,8 +7,10 @@ import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/form_edit_payment/services/form_edit_payment_services.dart';
 import 'package:payments_management/features/generate/screens/generate_details_screen.dart';
 import 'package:payments_management/features/generate/widgets/main_card_type.dart';
+import 'package:payments_management/features/groups/services/groups_services.dart';
 import 'package:payments_management/features/names/services/names_services.dart';
 import 'package:payments_management/models/generate_payment.dart';
+import 'package:payments_management/models/group/group.dart';
 import 'package:payments_management/models/name/payment_name.dart';
 
 class GenerateMainScreen extends StatefulWidget {
@@ -21,11 +23,13 @@ class GenerateMainScreen extends StatefulWidget {
 
 class _GenerateMainScreenState extends State<GenerateMainScreen> {
   List<PaymentName>? names;
+  List<Group>? groups;
   List<GeneratePayment> _payments = [];
 
   // final FormEditPaymentServices formEditPaymentServices =
   //    FormEditPaymentServices();
   final NamesServices namesServices = NamesServices();
+  final GroupsServices groupsServices = GroupsServices();
 
   bool _isLoading = false;
 
@@ -64,16 +68,19 @@ class _GenerateMainScreenState extends State<GenerateMainScreen> {
     setState(() {
       _isLoading = true;
     });
-    await namesServices.fetchPaymentNames();
+    groups = await groupsServices.fetchActiveGroups();
     setState(() {
-      _payments = [];
-      // if (names != null) {
-      //   _payments = [];
-      //   for (var name in names!) {
-      //     _payments
-      //         .add(GeneratePayment(id: name.id!, name: name.name, state: true));
-      //   }
-      // }
+      // _payments = [];
+      if (groups != null) {
+        _payments = [];
+        for (var group in groups!) {
+          _payments.add(GeneratePayment(
+              id: group.id!,
+              name: group.name,
+              state: true,
+              namesList: group.paymentNames));
+        }
+      }
       _isLoading = false;
 
       if (_payments.isNotEmpty) {

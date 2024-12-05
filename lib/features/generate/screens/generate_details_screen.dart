@@ -11,11 +11,13 @@ import 'package:payments_management/models/generate_payment.dart';
 
 class GenerateDetailsScreen extends StatefulWidget {
   static const String routeName = '/generate-payments-groups';
+  // final String type;
   final String title;
   final List<GeneratePayment> payments;
   const GenerateDetailsScreen({
     Key? key,
     required this.title,
+    // required this.type,
     required this.payments,
   }) : super(key: key);
 
@@ -24,7 +26,32 @@ class GenerateDetailsScreen extends StatefulWidget {
 }
 
 class _GenerateDetailsScreenState extends State<GenerateDetailsScreen> {
+  List<GeneratePayment> items = [];
   bool totalIsChecked = true;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+
+  //   switch (widget.type) {
+  //     case "individual":
+  //       {
+  //         items.add(widget.payments);
+  //       }
+
+  //       break;
+  //     default:
+  //   }
+
+  //   for (var payment in widget.payments) {
+  //     if (payment.namesList != null) {
+  //       for (var item in payment.namesList!) {
+  //         items
+  //             .add(GeneratePayment(id: item.id!, name: item.name, state: true));
+  //       }
+  //     }
+  //   }
+  // }
 
   void checkedSelectAll() {
     int checkedNames = 0;
@@ -52,6 +79,15 @@ class _GenerateDetailsScreenState extends State<GenerateDetailsScreen> {
   }
 
   void openGenerateModal() async {
+    // for (var element in widget.payments) {
+    //   if (element.namesList != null) {
+    //     debugPrint(element.namesList!.length.toString());
+    //     for (var el2 in element.namesList!) {
+    //       debugPrint(el2.name);
+    //     }
+    //   }
+    // }
+
     showDialog<String>(
         barrierDismissible: false,
         context: context,
