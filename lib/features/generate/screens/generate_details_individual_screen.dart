@@ -9,12 +9,12 @@ import 'package:payments_management/features/generate/widgets/message_empty.dart
 import 'package:payments_management/features/generate/widgets/modal_generate.dart';
 import 'package:payments_management/models/generate_payment.dart';
 
-class GenerateDetailsScreen extends StatefulWidget {
-  static const String routeName = '/generate-payments-groups';
+class GenerateDetailsIndividualScreen extends StatefulWidget {
+  static const String routeName = '/generate-payments-individual';
   // final String type;
   final String title;
   final List<GeneratePayment> payments;
-  const GenerateDetailsScreen({
+  const GenerateDetailsIndividualScreen({
     Key? key,
     required this.title,
     // required this.type,
@@ -22,11 +22,13 @@ class GenerateDetailsScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<GenerateDetailsScreen> createState() => _GenerateDetailsScreenState();
+  State<GenerateDetailsIndividualScreen> createState() =>
+      _GenerateDetailsScreenState();
 }
 
-class _GenerateDetailsScreenState extends State<GenerateDetailsScreen> {
-  List<GeneratePayment> items = [];
+class _GenerateDetailsScreenState
+    extends State<GenerateDetailsIndividualScreen> {
+  // List<GeneratePayment> items = [];
   bool totalIsChecked = true;
 
   // @override
