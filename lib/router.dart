@@ -6,6 +6,7 @@ import 'package:payments_management/features/auth/screens/login_screen.dart';
 import 'package:payments_management/features/auth/screens/register_screen.dart';
 import 'package:payments_management/features/categories/screens/categories_screen.dart';
 import 'package:payments_management/features/form_manage_name/screens/form_manage_name_screen.dart';
+import 'package:payments_management/features/generate/screens/generate_details_groups_screen.dart';
 import 'package:payments_management/features/generate/screens/generate_details_individual_screen.dart';
 import 'package:payments_management/features/generate/screens/generate_main_screen.dart';
 import 'package:payments_management/features/groups/screens/manage_group_screen.dart';
@@ -82,6 +83,14 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
           settings: routeSettings,
           builder: (_) => GenerateDetailsIndividualScreen(
+                payments: args[0],
+                title: args[1],
+              ));
+    case GenerateDetailsGroupsScreen.routeName:
+      List<dynamic> args = routeSettings.arguments as List<dynamic>;
+      return MaterialPageRoute(
+          settings: routeSettings,
+          builder: (_) => GenerateDetailsGroupsScreen(
                 payments: args[0],
                 title: args[1],
               ));

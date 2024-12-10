@@ -54,6 +54,18 @@ class _GenerateDetailsScreenState extends State<GenerateDetailsGroupsScreen> {
   //   }
   // }
 
+  @override
+  void initState() {
+    super.initState();
+    for (var group in widget.payments) {
+      if (group.namesList!.isNotEmpty) {
+        for (var element in group.namesList!) {
+          debugPrint(element.name);
+        }
+      }
+    }
+  }
+
   void checkedSelectAll() {
     int checkedNames = 0;
     for (var payment in widget.payments) {

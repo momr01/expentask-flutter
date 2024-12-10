@@ -5,6 +5,7 @@ import 'package:payments_management/common/widgets/main_title.dart';
 import 'package:payments_management/constants/error_modal.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/form_edit_payment/services/form_edit_payment_services.dart';
+import 'package:payments_management/features/generate/screens/generate_details_groups_screen.dart';
 import 'package:payments_management/features/generate/screens/generate_details_individual_screen.dart';
 import 'package:payments_management/features/generate/widgets/main_card_type.dart';
 import 'package:payments_management/features/groups/services/groups_services.dart';
@@ -95,7 +96,7 @@ class _GenerateMainScreenState extends State<GenerateMainScreen> {
   }
 
   void navigateToGroups(BuildContext context) {
-    Navigator.pushNamed(context, GenerateDetailsIndividualScreen.routeName,
+    Navigator.pushNamed(context, GenerateDetailsGroupsScreen.routeName,
         arguments: [_payments, 'Generar Pagos por Grupo']);
   }
 
