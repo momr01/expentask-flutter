@@ -353,6 +353,14 @@ class _HistoricalScreenState extends State<HistoricalScreen> {
                             ),
                           ],
                         ),
+                        //Icon(Icons.arrow_circle_down_sharp),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Image.asset(
+                            "assets/images/desc-sort.png",
+                            width: 25,
+                          ),
+                        ),
                         GestureDetector(
                           onTap: () {
                             _navigateToFilterScreen(context);

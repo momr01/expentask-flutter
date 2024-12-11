@@ -201,7 +201,8 @@ class PaymentCard extends StatelessWidget {
                                                     payment)["firstInstalment"])
                                           ButtonCompleteTask(
                                               task: task,
-                                              idPayment: payment.id!,
+                                              // idPayment: payment.id!,
+                                              payment: payment,
                                               amount: payment.amount)
                                     ]),
                               ],
@@ -228,7 +229,8 @@ class PaymentCard extends StatelessWidget {
                           if (task.isActive)
                             ButtonCompleteTask(
                                 task: task,
-                                idPayment: payment.id!,
+                                // idPayment: payment.id!,
+                                payment: payment,
                                 amount: payment.amount)
                       ])),
                 const SizedBox(height: 20),

@@ -10,11 +10,13 @@ import 'package:payments_management/models/generate_payment.dart';
 class ModalGenerate extends StatefulWidget {
   final int totalSelected;
   final List<GeneratePayment> payments;
-  const ModalGenerate({
-    Key? key,
-    required this.totalSelected,
-    required this.payments,
-  }) : super(key: key);
+  final String type;
+  const ModalGenerate(
+      {Key? key,
+      required this.totalSelected,
+      required this.payments,
+      this.type = "individual"})
+      : super(key: key);
 
   @override
   State<ModalGenerate> createState() => _ModalGenerateState();
@@ -75,8 +77,47 @@ class _ModalGenerateState extends State<ModalGenerate> {
               confirmText: 'confirmar',
               confirmColor: GlobalVariables.completeButtonColor!,
               middleText: 'generar ${widget.totalSelected}',
-              endText: widget.totalSelected == 1 ? "pago" : 'pagos',
+              // endText: widget.totalSelected == 1 ? "pago" : 'pagos',
+              endText: confirmationLabel(),
             ));
+  }
+
+  String modalLengthLabel() {
+    String label = "";
+    switch (widget.type) {
+      case "individual":
+        {
+          label = "Pagos";
+        }
+        break;
+      case "group":
+        {
+          label = "Grupos";
+        }
+        break;
+      //default:
+    }
+
+    return label;
+  }
+
+  String confirmationLabel() {
+    String label = "";
+    switch (widget.type) {
+      case "individual":
+        {
+          label = widget.totalSelected == 1 ? "pago" : 'pagos';
+        }
+        break;
+      case "group":
+        {
+          label = widget.totalSelected == 1 ? "grupo" : 'grupos';
+        }
+        break;
+      // default:
+    }
+
+    return label;
   }
 
   @override
@@ -85,9 +126,9 @@ class _ModalGenerateState extends State<ModalGenerate> {
       //insetPadding: const EdgeInsets.symmetric(horizontal: 10),
       insetPadding: const EdgeInsets.all(0),
       content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-        const Text(
-          'Generación Masiva de Pagos',
-          style: TextStyle(fontSize: 30),
+        Text(
+          'Generación Masiva de ${modalLengthLabel()}',
+          style: const TextStyle(fontSize: 30),
           overflow: TextOverflow.ellipsis,
           maxLines: 2,
           textAlign: TextAlign.center,
@@ -115,9 +156,9 @@ class _ModalGenerateState extends State<ModalGenerate> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Pagos a generar:',
-                      style: TextStyle(fontSize: 18),
+                    Text(
+                      '${modalLengthLabel()} a generar:',
+                      style: const TextStyle(fontSize: 18),
                     ),
                     Text(widget.totalSelected.toString(),
                         style: const TextStyle(

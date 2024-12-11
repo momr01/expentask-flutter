@@ -39,7 +39,7 @@ class _GenerateMainScreenState extends State<GenerateMainScreen> {
     super.initState();
   }
 
-  fetchPaymentNames() async {
+  fetchPaymentNames(String type) async {
     setState(() {
       _isLoading = true;
     });
@@ -55,7 +55,19 @@ class _GenerateMainScreenState extends State<GenerateMainScreen> {
       _isLoading = false;
 
       if (_payments.isNotEmpty) {
-        navigateToIndividualList(context);
+        switch (type) {
+          case "individual":
+            {
+              navigateToIndividualList(context);
+            }
+
+            break;
+          case "installments":
+            {
+              navigateToInstallmentsList(context);
+            }
+          // default:
+        }
       } else {
         errorModal(
             context: context,
@@ -105,12 +117,17 @@ class _GenerateMainScreenState extends State<GenerateMainScreen> {
         arguments: [_payments, 'Generación Individual de Pagos']);
   }
 
+  void navigateToInstallmentsList(BuildContext context) {
+    Navigator.pushNamed(context, GenerateDetailsIndividualScreen.routeName,
+        arguments: [_payments, 'Generación Individual de Cuotas']);
+  }
+
   @override
   Widget build(BuildContext context) {
     List generationTypes = [
       {'title': 'Grupos', 'onTap': fetchGroups},
-      {'title': 'Individual', 'onTap': fetchPaymentNames},
-      {'title': 'Cuotas', 'onTap': fetchGroups}
+      {'title': 'Individual', 'onTap': () => fetchPaymentNames("individual")},
+      {'title': 'Cuotas', 'onTap': () => fetchPaymentNames("installments")}
     ];
 
     return Scaffold(

@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_randomcolor/flutter_randomcolor.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/home/widgets/modal_complete_task.dart';
+import 'package:payments_management/models/payment/payment.dart';
 import 'package:payments_management/models/task/task.dart';
 
 class ButtonCompleteTask extends StatefulWidget {
   final Task task;
-  final String idPayment;
+  // final String idPayment;
   final double amount;
+  final Payment payment;
   const ButtonCompleteTask(
       {Key? key,
       required this.task,
-      required this.idPayment,
-      required this.amount})
+      // required this.idPayment,
+      required this.amount,
+      required this.payment})
       : super(key: key);
 
   @override
@@ -55,7 +58,8 @@ class _ButtonCompleteTaskState extends State<ButtonCompleteTask> {
         context: context,
         builder: (context) => ModalCompleteTask(
             task: widget.task,
-            idPayment: widget.idPayment,
+            //idPayment: widget.idPayment,
+            payment: widget.payment,
             amount: widget.amount));
   }
 

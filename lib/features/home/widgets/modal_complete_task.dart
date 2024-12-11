@@ -5,20 +5,29 @@ import 'package:payments_management/common/widgets/custom_textfield.dart';
 import 'package:payments_management/common/widgets/modals/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/error_modal.dart';
 import 'package:payments_management/constants/global_variables.dart';
+import 'package:payments_management/constants/navigator_keys.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/form_edit_payment/utils/form_edit_payment_utils.dart';
 import 'package:payments_management/features/home/services/home_services.dart';
+import 'package:payments_management/models/payment/payment.dart';
 import 'package:payments_management/models/task/task.dart';
+import 'package:payments_management/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class ModalCompleteTask extends StatefulWidget {
   final Task task;
-  final String idPayment;
+  //final String idPayment;
+  final Payment payment;
   final double amount;
+  //final bool hasInstallments;
   const ModalCompleteTask(
       {Key? key,
       required this.task,
-      required this.idPayment,
-      required this.amount})
+      //required this.idPayment,
+      required this.amount,
+      required this.payment
+      // this.hasInstallments = false
+      })
       : super(key: key);
 
   @override
@@ -37,8 +46,16 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
   @override
   void initState() {
     super.initState();
-    _placeController.text = "Macro Maxi";
-    _amountPaidController.text = widget.amount.toString();
+    final userProvider = Provider.of<UserProvider>(
+        NavigatorKeys.navKey.currentContext!,
+        listen: false);
+    //debugPrint(userProvider.user.email);
+    _placeController.text =
+        userProvider.user.email == "maxi.omr01@gmail.com" ? "Macro Maxi" : "";
+    //_amountPaidController.text = widget.amount.toString();
+    _amountPaidController.text = widget.payment.hasInstallments
+        ? (widget.amount / widget.payment.installmentsQuantity).toString()
+        : widget.amount.toString();
     _dateCompletedController.text =
         '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
   }
@@ -73,7 +90,7 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
 
     await homeServices.completeTask(
         context: context,
-        paymentId: widget.idPayment,
+        paymentId: widget.payment.id!,
         taskId: widget.task.id!,
         dateCompleted: completedDate,
         place: widget.task.code.number == 1 ? _placeController.text : "",
@@ -124,8 +141,10 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // if (widget.task.code.number == 1)
-                  if (widget.task.code.name.toLowerCase().contains("pag") ||
-                      widget.task.code.name.toLowerCase().contains("pay"))
+                  if (widget.task.code.name.toLowerCase() == "pagar"
+                      //||
+                      // widget.task.code.name.toLowerCase().contains("pay")
+                      )
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

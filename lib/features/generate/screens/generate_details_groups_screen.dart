@@ -91,6 +91,21 @@ class _GenerateDetailsScreenState extends State<GenerateDetailsGroupsScreen> {
     }
   }
 
+  List<GeneratePayment> generateGroupContent(List<GeneratePayment> list) {
+    List<GeneratePayment> finalList = [];
+
+    for (var element in list) {
+      if (element.state) {
+        for (var payment in element.namesList!) {
+          finalList.add(GeneratePayment(
+              id: payment.id!, name: payment.name, state: true));
+        }
+      }
+    }
+
+    return finalList;
+  }
+
   void openGenerateModal() async {
     // for (var element in widget.payments) {
     //   if (element.namesList != null) {
@@ -105,10 +120,15 @@ class _GenerateDetailsScreenState extends State<GenerateDetailsGroupsScreen> {
         barrierDismissible: false,
         context: context,
         builder: (context) => ModalGenerate(
-            totalSelected: widget.payments
-                .where((payment) => payment.state == true)
-                .length,
-            payments: widget.payments));
+              totalSelected: widget.payments
+                  .where((payment) => payment.state == true)
+                  .length,
+              // payments: widget.payments
+              payments: generateGroupContent(widget.payments),
+              type: "group",
+              //  payments: widget.payments
+              //       .where((payment) => payment.state == true),
+            ));
   }
 
   void onChangeCheckboxEverything(value) {
