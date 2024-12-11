@@ -4,6 +4,7 @@ import 'package:payments_management/common/widgets/buttons/custom_button.dart';
 import 'package:payments_management/common/widgets/custom_app_bar.dart';
 import 'package:payments_management/common/widgets/main_title.dart';
 import 'package:payments_management/constants/global_variables.dart';
+import 'package:payments_management/features/generate/screens/generate_%C3%AFnstallments_form_screen.dart';
 import 'package:payments_management/features/generate/widgets/card_checkbox_item.dart';
 import 'package:payments_management/features/generate/widgets/message_empty.dart';
 import 'package:payments_management/features/generate/widgets/modal_generate.dart';
@@ -14,12 +15,14 @@ class GenerateDetailsIndividualScreen extends StatefulWidget {
   // final String type;
   final String title;
   final List<GeneratePayment> payments;
-  const GenerateDetailsIndividualScreen({
-    Key? key,
-    required this.title,
-    // required this.type,
-    required this.payments,
-  }) : super(key: key);
+  final String type;
+  const GenerateDetailsIndividualScreen(
+      {Key? key,
+      required this.title,
+      // required this.type,
+      required this.payments,
+      this.type = "individual"})
+      : super(key: key);
 
   @override
   State<GenerateDetailsIndividualScreen> createState() =>
@@ -80,6 +83,19 @@ class _GenerateDetailsScreenState
     }
   }
 
+  void defineRedirect() {
+    switch (widget.type) {
+      case "individual":
+        openGenerateModal();
+
+        break;
+      case "installments":
+        openInstallmentsScreen();
+        break;
+      //default:
+    }
+  }
+
   void openGenerateModal() async {
     // for (var element in widget.payments) {
     //   if (element.namesList != null) {
@@ -98,6 +114,14 @@ class _GenerateDetailsScreenState
                 .where((payment) => payment.state == true)
                 .length,
             payments: widget.payments));
+  }
+
+  void openInstallmentsScreen() async {
+    await Navigator.pushNamed(context, GenerateInstallmentsFormScreen.routeName,
+        arguments: [
+          widget.payments.where((payment) => payment.state == true).length,
+          widget.payments
+        ]);
   }
 
   void onChangeCheckboxEverything(value) {
@@ -153,7 +177,8 @@ class _GenerateDetailsScreenState
                       text: 'GENERAR',
                       color: GlobalVariables.completeButtonColor,
                       textColor: Colors.white,
-                      onTap: openGenerateModal,
+                      //  onTap: openGenerateModal,
+                      onTap: defineRedirect,
                     )
                   : null,
             )

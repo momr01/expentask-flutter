@@ -6,6 +6,7 @@ import 'package:payments_management/features/auth/screens/login_screen.dart';
 import 'package:payments_management/features/auth/screens/register_screen.dart';
 import 'package:payments_management/features/categories/screens/categories_screen.dart';
 import 'package:payments_management/features/form_manage_name/screens/form_manage_name_screen.dart';
+import 'package:payments_management/features/generate/screens/generate_%C3%AFnstallments_form_screen.dart';
 import 'package:payments_management/features/generate/screens/generate_details_groups_screen.dart';
 import 'package:payments_management/features/generate/screens/generate_details_individual_screen.dart';
 import 'package:payments_management/features/generate/screens/generate_main_screen.dart';
@@ -85,6 +86,10 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           builder: (_) => GenerateDetailsIndividualScreen(
                 payments: args[0],
                 title: args[1],
+                // type: args[2] ?? null,
+                type: args.length > 2
+                    ? args[2]
+                    : "individual", // Solo pasa `type` si existe.
               ));
     case GenerateDetailsGroupsScreen.routeName:
       List<dynamic> args = routeSettings.arguments as List<dynamic>;
@@ -93,6 +98,15 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           builder: (_) => GenerateDetailsGroupsScreen(
                 payments: args[0],
                 title: args[1],
+              ));
+
+    case GenerateInstallmentsFormScreen.routeName:
+      List<dynamic> args = routeSettings.arguments as List<dynamic>;
+      return MaterialPageRoute(
+          settings: routeSettings,
+          builder: (_) => GenerateInstallmentsFormScreen(
+                totalSelected: args[0],
+                payments: args[1],
               ));
     case AlertsScreen.routeName:
       return MaterialPageRoute(

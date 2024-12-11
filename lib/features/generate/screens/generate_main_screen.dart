@@ -119,7 +119,11 @@ class _GenerateMainScreenState extends State<GenerateMainScreen> {
 
   void navigateToInstallmentsList(BuildContext context) {
     Navigator.pushNamed(context, GenerateDetailsIndividualScreen.routeName,
-        arguments: [_payments, 'Generación Individual de Cuotas']);
+        arguments: [
+          _payments,
+          'Generación Individual de Cuotas',
+          "installments"
+        ]);
   }
 
   @override
