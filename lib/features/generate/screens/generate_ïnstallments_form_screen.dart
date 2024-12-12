@@ -74,8 +74,12 @@ class _GenerateInstallmentsFormScreenState
       }
     }
 
-    await generateServices.generatePayments(
-        context: context, names: names, month: currentMonth, year: currentYear);
+    await generateServices.generateInstallments(
+        context: context,
+        names: names,
+        month: currentMonth,
+        year: currentYear,
+        quantity: int.parse(_quantityController.text));
   }
 
   void openModalConfirmation() async {
@@ -194,7 +198,7 @@ class _GenerateInstallmentsFormScreenState
                         validator: (val) {
                           if (val == null ||
                               val.isEmpty ||
-                              int.tryParse(val) != null) {
+                              int.tryParse(val) == null) {
                             return "Ingrese la cantidad de cuotas";
                           }
                           return null;

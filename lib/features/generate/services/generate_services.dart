@@ -56,4 +56,56 @@ class GenerateServices {
       //         'No fue posible generar los pagos. Por favor, intente nuevamente más tarde.');
     }
   }
+
+  Future<void> generateInstallments(
+      {required BuildContext context,
+      required List<String> names,
+      required int month,
+      required int year,
+      required int quantity}) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    List<String> finalNames = [];
+    for (var name in names) {
+      //debugPrint(name)
+      finalNames.add(name);
+    }
+
+    Map body = {
+      'names': finalNames,
+      'month': month,
+      'year': year,
+      'quantity': quantity
+    };
+
+    try {
+      http.Response res =
+          await http.post(Uri.parse('$uri/api/payments/add-installments'),
+              headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+                'x-auth-token': userProvider.user.token
+              },
+              body: jsonEncode(body));
+
+      httpErrorHandle(
+          response: res,
+          context: context,
+          onSuccess: () {
+            debugPrint(res.body);
+            successModal(
+              context: context,
+              description: 'Los pagos se agregaron correctamente.',
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                  context, BottomBar.routeName, arguments: 2, (route) => false),
+            );
+          },
+          closingTimes: 2);
+    } catch (e) {
+      showSnackBar(context, e.toString());
+      // errorModal(
+      //     context: context,
+      //     description:
+      //         'No fue posible generar los pagos. Por favor, intente nuevamente más tarde.');
+    }
+  }
 }

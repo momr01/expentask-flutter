@@ -59,6 +59,7 @@ class PaymentCard extends StatelessWidget {
     //}
 
     // debugPrint(finalList.length.toString());
+    finalList.sort();
 
     Map<String, int> data = {
       "firstInstalment": finalList[0],
@@ -66,6 +67,10 @@ class PaymentCard extends StatelessWidget {
     };
 
     // return finalList[0];
+    //debugPrint(finalList[0].toString());
+    // for (var element in finalList) {
+    //   debugPrint(element.toString());
+    // }
     return data;
   }
 
