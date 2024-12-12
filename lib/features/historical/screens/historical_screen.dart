@@ -30,6 +30,7 @@ class _HistoricalScreenState extends State<HistoricalScreen> {
   final TextEditingController _searchController = TextEditingController();
   final HistoricalServices historicalServices = HistoricalServices();
   bool _isLoading = false;
+  bool _isSortedDesc = false;
 
   @override
   void initState() {
@@ -53,6 +54,19 @@ class _HistoricalScreenState extends State<HistoricalScreen> {
     payments = customFilter(beforeFilter);
     setState(() {
       _foundPayments = payments!;
+      _foundPayments.sort((a, b) {
+        // Extraer año y mes de cada período
+        final yearA = int.parse(a.period.split('-')[1]);
+        final monthA = int.parse(a.period.split('-')[0]);
+        final yearB = int.parse(b.period.split('-')[1]);
+        final monthB = int.parse(b.period.split('-')[0]);
+
+        // Ordenar primero por año y luego por mes
+        if (yearA == yearB) {
+          return monthA.compareTo(monthB);
+        }
+        return yearA.compareTo(yearB);
+      });
       _isLoading = false;
     });
   }
@@ -354,22 +368,73 @@ class _HistoricalScreenState extends State<HistoricalScreen> {
                           ],
                         ),
                         //Icon(Icons.arrow_circle_down_sharp),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Image.asset(
-                            "assets/images/desc-sort.png",
-                            width: 25,
-                          ),
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (_isSortedDesc) {
+                                    _foundPayments.sort((a, b) {
+                                      // Extraer año y mes de cada período
+                                      final yearA =
+                                          int.parse(a.period.split('-')[1]);
+                                      final monthA =
+                                          int.parse(a.period.split('-')[0]);
+                                      final yearB =
+                                          int.parse(b.period.split('-')[1]);
+                                      final monthB =
+                                          int.parse(b.period.split('-')[0]);
+
+                                      // Ordenar primero por año y luego por mes
+                                      if (yearA == yearB) {
+                                        return monthA.compareTo(monthB);
+                                      }
+                                      return yearA.compareTo(yearB);
+                                    });
+                                    _isSortedDesc = false;
+                                  } else {
+                                    _foundPayments.sort((a, b) {
+                                      // Extraer año y mes de cada período
+                                      final yearA =
+                                          int.parse(a.period.split('-')[1]);
+                                      final monthA =
+                                          int.parse(a.period.split('-')[0]);
+                                      final yearB =
+                                          int.parse(b.period.split('-')[1]);
+                                      final monthB =
+                                          int.parse(b.period.split('-')[0]);
+
+                                      // Ordenar primero por año y luego por mes
+                                      if (yearA == yearB) {
+                                        return monthB.compareTo(monthA);
+                                      }
+                                      return yearB.compareTo(yearA);
+                                    });
+                                    _isSortedDesc = true;
+                                  }
+                                });
+                              },
+                              child: Image.asset(
+                                _isSortedDesc
+                                    ? "assets/images/desc-sort.png"
+                                    : "assets/images/asc-sort.png",
+                                width: 25,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 50,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                _navigateToFilterScreen(context);
+                              },
+                              child: Image.asset(
+                                'assets/images/filter.png',
+                                width: 25,
+                              ),
+                            )
+                          ],
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            _navigateToFilterScreen(context);
-                          },
-                          child: Image.asset(
-                            'assets/images/filter.png',
-                            width: 25,
-                          ),
-                        )
                       ],
                     ),
                   ],

@@ -166,6 +166,7 @@ class _FormEditPaymentState extends State<FormEditPayment> {
         id: widget.payment.id!,
         name: _nameValue,
         deadline: dateFormatWithDash(_deadlineController.text),
+        hasInstallments: widget.payment.hasInstallments,
         amount: double.tryParse(_amountController.text) != null
             ? double.parse(_amountController.text)
             : double.parse(_amountController.text.replaceAll(',', '.')),
@@ -202,76 +203,93 @@ class _FormEditPaymentState extends State<FormEditPayment> {
                   const SizedBox(
                     height: 20,
                   ),
-                  DeadlinePaymentSection(
-                      onTap: (controller) => selectDate(controller),
-                      controller: _deadlineController),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  !widget.payment.hasInstallments
+                      ? Column(
+                          children: [
+                            DeadlinePaymentSection(
+                                onTap: (controller) => selectDate(controller),
+                                controller: _deadlineController),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        )
+                      : const SizedBox(),
                   AmountPaymentSection(controller: _amountController),
                   const SizedBox(
                     height: 30,
                   ),
-                  Column(
-                    children: [
-                      TasksPaymentSection(
-                        isExpanded: tasksSectionIsExpanded,
-                        onTap: () {
-                          setState(() {
-                            tasksSectionIsExpanded = !tasksSectionIsExpanded;
-                          });
-                        },
-                      ),
-                      if (tasksSectionIsExpanded)
-                        Column(
+                  !widget.payment.hasInstallments
+                      ? Column(
                           children: [
-                            const SizedBox(
-                              height: 20,
+                            TasksPaymentSection(
+                              isExpanded: tasksSectionIsExpanded,
+                              onTap: () {
+                                setState(() {
+                                  tasksSectionIsExpanded =
+                                      !tasksSectionIsExpanded;
+                                });
+                              },
                             ),
-                            const Padding(
-                              padding: EdgeInsets.only(right: 50, left: 20),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [Text('Tareas'), Text('Vto')]),
-                            ),
-                            const SizedBox(height: 10),
-                            taskItems.isNotEmpty
-                                ? ListView.separated(
-                                    separatorBuilder: (context, index) =>
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                    shrinkWrap: true,
-                                    itemCount: taskItems.length,
-                                    itemBuilder: (context, index) {
-                                      return TaskCheckboxItem(
-                                          item: taskItems[index],
-                                          onChangeCheckbox: (bool? value) {
-                                            setState(() {
-                                              taskItems[index].state = value!;
-                                              checkAtLeastOneTrue();
-                                            });
-                                          },
-                                          onChangeDate: () => selectDate(
-                                              taskItems[index].controller!));
-                                    })
-                                : Container(
-                                    alignment: Alignment.center,
-                                    child: const Center(
-                                      child: Text(
-                                        'Sin Datos',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
+                            if (tasksSectionIsExpanded)
+                              Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 20,
                                   ),
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.only(right: 50, left: 20),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('Tareas'),
+                                          Text('Vto')
+                                        ]),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  taskItems.isNotEmpty
+                                      ? ListView.separated(
+                                          separatorBuilder: (context, index) =>
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                          shrinkWrap: true,
+                                          itemCount: taskItems.length,
+                                          itemBuilder: (context, index) {
+                                            return TaskCheckboxItem(
+                                                item: taskItems[index],
+                                                onChangeCheckbox:
+                                                    (bool? value) {
+                                                  setState(() {
+                                                    taskItems[index].state =
+                                                        value!;
+                                                    checkAtLeastOneTrue();
+                                                  });
+                                                },
+                                                onChangeDate: () => selectDate(
+                                                    taskItems[index]
+                                                        .controller!));
+                                          })
+                                      : Container(
+                                          alignment: Alignment.center,
+                                          child: const Center(
+                                            child: Text(
+                                              'Sin Datos',
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ),
+                                ],
+                              ),
+                            const SizedBox(height: 30),
                           ],
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 30),
+                        )
+                      // : const SizedBox(height: 30),
+                      : const SizedBox(),
                   if (atLeastOneTaskIsChecked)
                     CustomButton(
                         text: 'EDITAR',

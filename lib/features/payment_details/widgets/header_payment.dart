@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:payments_management/constants/date_format.dart';
+import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/models/payment/payment.dart';
 
 class HeaderPayment extends StatelessWidget {
@@ -53,7 +54,7 @@ class HeaderPayment extends StatelessWidget {
         Row(children: [
           const Text("Importe", style: TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(width: 10),
-          Text('\$ ${payment.amount}',
+          Text('\$ ${formatMoney(payment.amount)}',
               style: const TextStyle(fontWeight: FontWeight.bold))
         ]),
       ],

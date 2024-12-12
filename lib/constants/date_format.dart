@@ -53,3 +53,14 @@ DateTime dateFormatFromString(String date) {
 
   return finalDate;
 }
+
+String formatDateWithTime(String date) {
+  // String inputDate = "2024-11-28 16:06:43.000";
+  DateTime parsedDate = DateTime.parse(date);
+
+  // Crear un formateador con el formato deseado
+  String formattedDate = DateFormat('dd-MM-yyyy').format(parsedDate);
+
+  //print(formattedDate); // Salida: 28-11-2024
+  return formattedDate;
+}

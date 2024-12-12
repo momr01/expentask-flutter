@@ -97,7 +97,8 @@ class PaymentDetailsServices {
                 context: NavigatorKeys.navKey.currentContext!,
                 description: 'El pago se eliminó correctamente.',
                 onPressed: () => Navigator.pushNamed(
-                    NavigatorKeys.navKey.currentContext!, BottomBar.routeName));
+                    NavigatorKeys.navKey.currentContext!, BottomBar.routeName,
+                    arguments: 0));
           });
     } catch (e) {
       // showSnackBar(context, e.toString());

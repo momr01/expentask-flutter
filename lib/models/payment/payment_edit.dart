@@ -12,16 +12,17 @@ class PaymentEdit {
   List<TaskEdit> tasks;
   bool? isActive;
   bool? isCompleted;
+  bool hasInstallments;
 
-  PaymentEdit({
-    required this.id,
-    required this.name,
-    required this.deadline,
-    required this.amount,
-    required this.tasks,
-    this.isActive,
-    this.isCompleted,
-  });
+  PaymentEdit(
+      {required this.id,
+      required this.name,
+      required this.deadline,
+      required this.amount,
+      required this.tasks,
+      this.isActive,
+      this.isCompleted,
+      required this.hasInstallments});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -32,6 +33,7 @@ class PaymentEdit {
       'tasks': tasks.toList(),
       'isActive': isActive,
       'isCompleted': isCompleted,
+      'hasInstallments': hasInstallments
     };
   }
 
@@ -50,6 +52,7 @@ class PaymentEdit {
       isActive: map['isActive'] != null ? map['isActive'] as bool : false,
       isCompleted:
           map['isCompleted'] != null ? map['isCompleted'] as bool : false,
+      hasInstallments: map['hasInstallments'] as bool,
     );
   }
 

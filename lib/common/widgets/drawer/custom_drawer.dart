@@ -84,22 +84,22 @@ class CustomDrawer extends StatelessWidget {
       child: Column(
         children: [
           UserAccountsDrawerHeader(
-            decoration:
-                BoxDecoration(color: Theme.of(context).colorScheme.primary),
-            accountName: Text(
-              capitalizeFirstLetter(user.name),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
+              decoration:
+                  BoxDecoration(color: Theme.of(context).colorScheme.primary),
+              accountName: Text(
+                capitalizeFirstLetter(user.name),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            accountEmail: Text(
-              user.email,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
+              accountEmail: Text(
+                user.email,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            currentAccountPicture: const FlutterLogo(),
-          ),
+              // currentAccountPicture: const FlutterLogo(),
+              currentAccountPicture: Image.asset("assets/images/user.png")),
           Flexible(
             child: ListView.builder(
                 padding: EdgeInsets.zero,

@@ -54,7 +54,8 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
         userProvider.user.email == "maxi.omr01@gmail.com" ? "Macro Maxi" : "";
     //_amountPaidController.text = widget.amount.toString();
     _amountPaidController.text = widget.payment.hasInstallments
-        ? (widget.amount / widget.payment.installmentsQuantity).toString()
+        ? (formatMoney(widget.amount / widget.payment.installmentsQuantity))
+            .toString()
         : widget.amount.toString();
     _dateCompletedController.text =
         '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';

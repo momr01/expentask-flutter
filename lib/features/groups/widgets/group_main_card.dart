@@ -31,7 +31,7 @@ class GroupMainCard extends StatelessWidget {
                 fontSize: 16),
           ),
           Text(
-            group.paymentNames.length.toString(),
+            '- ${group.paymentNames.length} -',
             style: const TextStyle(
                 color: GlobalVariables.whiteColor,
                 fontWeight: FontWeight.w500,

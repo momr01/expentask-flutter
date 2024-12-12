@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button_icons.dart';
 import 'package:payments_management/common/widgets/custom_app_bar.dart';
 import 'package:payments_management/common/widgets/modals/modal_confirmation/modal_confirmation.dart';
@@ -43,6 +44,22 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
             ));
   }
 
+  RichText listTileContent(String label, String value) {
+    return RichText(
+        text: TextSpan(
+            style: const TextStyle(color: Colors.black, fontSize: 18),
+            text: "$label: ",
+            children: [
+          TextSpan(
+              //text: widget.group.name.toUpperCase(),
+              text: value.toUpperCase(),
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: GlobalVariables.primaryColor,
+                  fontSize: 20))
+        ]));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,22 +95,53 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
           ListTile(
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            title: Text("Nombre: Grupo ${widget.group.name.toUpperCase()}"),
+            //title: Text("Nombre: Grupo ${widget.group.name.toUpperCase()}"),
+            tileColor: Colors.grey.shade400,
+            title: listTileContent("Nombre", widget.group.name),
+            // title: RichText(
+            //     text: TextSpan(
+            //         style: const TextStyle(color: Colors.black, fontSize: 18),
+            //         text: "Nombre: ",
+            //         children: [
+            //       TextSpan(
+            //           text: widget.group.name.toUpperCase(),
+            //           style: const TextStyle(
+            //               fontWeight: FontWeight.bold,
+            //               color: GlobalVariables.primaryColor,
+            //               fontSize: 20))
+            //     ]))
+          ),
+          ListTile(
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            // title: Text(
+            //     // "Fecha de creación: ${datetimeToString(widget.group.dataEntry)}"),
+            //     "Fecha de creación: ${dateFormatFromString(widget.group.dataEntry)}"),
+            title: listTileContent(
+                "Fecha de creación",
+                formatDateWithTime(
+                    dateFormatFromString(widget.group.dataEntry).toString())),
+            // title: RichText(
+            //     text: TextSpan(
+            //         style: const TextStyle(color: Colors.black, fontSize: 18),
+            //         text: "Fecha de creación: ",
+            //         children: [
+            //       TextSpan(
+            //           text: widget.group.name.toUpperCase(),
+            //           style: const TextStyle(
+            //               fontWeight: FontWeight.bold,
+            //               color: GlobalVariables.primaryColor,
+            //               fontSize: 20))
+            //     ])),
             tileColor: Colors.grey.shade400,
           ),
           ListTile(
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            title: Text(
-                // "Fecha de creación: ${datetimeToString(widget.group.dataEntry)}"),
-                "Fecha de creación: ${dateFormatFromString(widget.group.dataEntry)}"),
-            tileColor: Colors.grey.shade400,
-          ),
-          ListTile(
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            title:
-                Text("Nombres de Pagos: ${widget.group.paymentNames.length}"),
+            // title:
+            //     Text("Nombres de Pagos: ${widget.group.paymentNames.length}"),
+            title: listTileContent("Cantidad de nombres",
+                widget.group.paymentNames.length.toString()),
             tileColor: Colors.grey.shade400,
             trailing: GestureDetector(
               onTap: () {

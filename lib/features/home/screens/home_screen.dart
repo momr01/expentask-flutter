@@ -50,6 +50,20 @@ class _HomeScreenState extends State<HomeScreen> {
       onSuccess: (items) => setState(() {
         payments = items;
         _foundPayments = items;
+
+        // _foundPayments.sort((a, b) {
+        //   // Extraer año y mes de cada período
+        //   final yearA = int.parse(a.period.split('-')[1]);
+        //   final monthA = int.parse(a.period.split('-')[0]);
+        //   final yearB = int.parse(b.period.split('-')[1]);
+        //   final monthB = int.parse(b.period.split('-')[0]);
+
+        //   // Ordenar primero por año y luego por mes
+        //   if (yearA == yearB) {
+        //     return monthA.compareTo(monthB);
+        //   }
+        //   return yearA.compareTo(yearB);
+        // });
       }),
       onComplete: () => setState(() => _isLoading = false),
     );
