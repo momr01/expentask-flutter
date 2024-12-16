@@ -80,22 +80,44 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> _refreshData() async {
+    // Simula la carga de nuevos datos
+    // await Future.delayed(Duration(seconds: 2));
+    // setState(() {
+    //   _items.add('Item nuevo');
+    // });
+    // setState(() {});
+    fetchUndonePayments();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return TitleSearchLayout(
-      isMain: true,
-      isLoading: _isLoading,
-      title: 'Pagos en tratamiento',
-      searchController: _searchController,
-      onSearch: _runFilter,
-      searchPlaceholder: "Buscar pago...",
-      child: ConditionalListView(
-        items: payments,
-        foundItems: _foundPayments,
-        loader: const Loader(),
-        emptyMessage: "¡No existen pagos para mostrar!",
-        itemBuilder: (context, payment) => PaymentCard(payment: payment),
-        separatorBuilder: (context, _) => const Divider(),
+    return RefreshIndicator(
+      onRefresh: _refreshData,
+      child: TitleSearchLayout(
+        isMain: true,
+        isLoading: _isLoading,
+        title: 'Pagos en tratamiento',
+        searchController: _searchController,
+        onSearch: _runFilter,
+        searchPlaceholder: "Buscar pago...",
+        // child: ConditionalListView(
+        //   items: payments,
+        //   foundItems: _foundPayments,
+        //   loader: const Loader(),
+        //   emptyMessage: "¡No existen pagos para mostrar!",
+        //   itemBuilder: (context, payment) => PaymentCard(payment: payment),
+        //   separatorBuilder: (context, _) => const Divider(),
+        // ),
+
+        child: ConditionalListView(
+          items: payments,
+          foundItems: _foundPayments,
+          loader: const Loader(),
+          emptyMessage: "¡No existen pagos para mostrar!",
+          itemBuilder: (context, payment) => PaymentCard(payment: payment),
+          separatorBuilder: (context, _) => const Divider(),
+        ),
       ),
     );
   }

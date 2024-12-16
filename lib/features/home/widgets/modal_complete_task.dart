@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button_options.dart';
+import 'package:payments_management/common/widgets/custom_currency_textfield.dart';
 import 'package:payments_management/common/widgets/custom_textfield.dart';
 import 'package:payments_management/common/widgets/modals/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/constants/error_modal.dart';
@@ -186,6 +187,12 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
                           modal: true,
                           isAmount: true,
                         ),
+                        // CustomCurrencyTextfield(
+                        //   controller: _amountPaidController,
+                        //   hintText: "Enter amount",
+                        //   isAmount: true,
+                        //   centeredText: true,
+                        // ),
                       ],
                     ),
                   const SizedBox(
