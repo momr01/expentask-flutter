@@ -32,6 +32,25 @@ String getTaskState(bool isActive, bool isCompleted) {
   return state;
 }
 
+Color getTaskStateColor(bool isActive, bool isCompleted) {
+  Color state = Colors.black;
+  if (isActive) {
+    if (isCompleted) {
+      state = Colors.green;
+    } else {
+      state = Colors.blue;
+    }
+  } else {
+    if (isCompleted) {
+      state = Colors.orange;
+    } else {
+      state = Colors.red;
+    }
+  }
+
+  return state;
+}
+
 List<Payment> filterByState(
     List<Payment> allItems, List<HistoricalFilter> finalFilter) {
   List<Payment> list = [];

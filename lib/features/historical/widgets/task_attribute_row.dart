@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 class TaskAttributeRow extends StatelessWidget {
   final String attribute;
   final String value;
-  const TaskAttributeRow({
-    Key? key,
-    required this.attribute,
-    required this.value,
-  }) : super(key: key);
+  final Color? color;
+  const TaskAttributeRow(
+      {Key? key, required this.attribute, required this.value, this.color})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +23,11 @@ class TaskAttributeRow extends StatelessWidget {
           child: SizedBox(
             child: Text(
               value,
-              style: const TextStyle(
-                  fontSize: 17, letterSpacing: 1, fontWeight: FontWeight.w700),
+              style: TextStyle(
+                  fontSize: 17,
+                  letterSpacing: 1,
+                  fontWeight: FontWeight.w700,
+                  color: color ?? Colors.black),
               textAlign: TextAlign.end,
             ),
           ),

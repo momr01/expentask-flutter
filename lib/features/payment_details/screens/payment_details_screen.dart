@@ -59,13 +59,25 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
     return true;
   }
 
+  List<Function> sortOptions = [
+    // (a, b) => b.isCompleted.toString().compareTo(a.isCompleted.toString()),
+    (a, b) => a.instalmentNumber.compareTo(b.instalmentNumber),
+    // (a, b) => a.deadline.compareTo(b.deadline),
+    (a, b) => a.code.name.compareTo(b.code.name),
+  ];
+
   fetchPayment() async {
     payment =
         await paymentDetailsServices.fetchPayment(paymentId: widget.paymentId);
     setState(() {
       payment?.id != ""
-          ? payment!.tasks.sort((a, b) =>
-              b.isCompleted.toString().compareTo(a.isCompleted.toString()))
+          ? payment!.tasks.sort((a, b) {
+              for (var compare in sortOptions) {
+                int result = compare(a, b);
+                if (result != 0) return result;
+              }
+              return 0; // Si todos los comparadores devuelven 0, los elementos son iguales
+            })
           : null;
     });
   }

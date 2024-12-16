@@ -54,8 +54,9 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
         userProvider.user.email == "maxi.omr01@gmail.com" ? "Macro Maxi" : "";
     //_amountPaidController.text = widget.amount.toString();
     _amountPaidController.text = widget.payment.hasInstallments
-        ? (formatMoney(widget.amount / widget.payment.installmentsQuantity))
-            .toString()
+        ?
+        //(formatMoney(widget.amount / widget.payment.installmentsQuantity))
+        (widget.amount / widget.payment.installmentsQuantity).toString()
         : widget.amount.toString();
     _dateCompletedController.text =
         '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
@@ -99,8 +100,14 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
   }
 
   void validateFormData() {
-    if (validateAmount(_amountPaidController.text)) {
-      openModalConfirmation();
+    //debugPrint(stringMoneyToDouble(_amountPaidController.text).toString());
+    if (double.tryParse(_amountPaidController.text) is double) {
+      if (validateAmount(double.parse(_amountPaidController.text).toString())
+          //||
+          //stringMoneyToDouble(_amountPaidController.text) is double
+          ) {
+        openModalConfirmation();
+      }
     } else {
       errorModal(
           context: context,

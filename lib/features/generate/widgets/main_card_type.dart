@@ -16,7 +16,7 @@ class MainCardType extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 200,
+        //width: 200,
         //height: 60,
         decoration: BoxDecoration(
             //color: GlobalVariables.primaryColor,

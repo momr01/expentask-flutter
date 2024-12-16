@@ -54,19 +54,20 @@ class _HistoricalScreenState extends State<HistoricalScreen> {
     payments = customFilter(beforeFilter);
     setState(() {
       _foundPayments = payments!;
-      _foundPayments.sort((a, b) {
-        // Extraer año y mes de cada período
-        final yearA = int.parse(a.period.split('-')[1]);
-        final monthA = int.parse(a.period.split('-')[0]);
-        final yearB = int.parse(b.period.split('-')[1]);
-        final monthB = int.parse(b.period.split('-')[0]);
+      // _foundPayments.sort((a, b) {
+      // Extraer año y mes de cada período
+      // final yearA = int.parse(a.period.split('-')[1]);
+      // final monthA = int.parse(a.period.split('-')[0]);
+      // final yearB = int.parse(b.period.split('-')[1]);
+      // final monthB = int.parse(b.period.split('-')[0]);
 
-        // Ordenar primero por año y luego por mes
-        if (yearA == yearB) {
-          return monthA.compareTo(monthB);
-        }
-        return yearA.compareTo(yearB);
-      });
+      // // Ordenar primero por año y luego por mes
+      // if (yearA == yearB) {
+      //   return monthA.compareTo(monthB);
+      // }
+      // return yearA.compareTo(yearB);
+
+      //  });
       _isLoading = false;
     });
   }

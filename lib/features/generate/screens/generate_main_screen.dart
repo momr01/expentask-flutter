@@ -150,22 +150,40 @@ class _GenerateMainScreenState extends State<GenerateMainScreen> {
                 height: 40,
               ),
               Flexible(
-                  child: SizedBox(
-                height: 100,
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => const SizedBox(
-                    width: 20,
-                  ),
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return MainCardType(
-                      title: generationTypes[index]['title'],
-                      onTap: generationTypes[index]['onTap'],
-                    );
-                  },
-                  itemCount: generationTypes.length,
-                ),
-              ))
+                // child: SizedBox(
+                // height: 100,
+                child: GridView.count(
+                    primary: false,
+                    crossAxisSpacing: 15,
+                    mainAxisSpacing: 15,
+                    crossAxisCount: 2,
+                    //children: _foundGroups
+                    children: generationTypes
+                        .map(
+                          (e) =>
+                              // SizedBox(
+                              //height: 20,
+                              //child:
+                              MainCardType(
+                                  title: e['title'], onTap: e['onTap']),
+                          // )
+                        )
+                        .toList()),
+                // child: ListView.separated(
+                //   separatorBuilder: (context, index) => const SizedBox(
+                //     width: 20,
+                //   ),
+                //   scrollDirection: Axis.horizontal,
+                //   itemBuilder: (context, index) {
+                //     return MainCardType(
+                //       title: generationTypes[index]['title'],
+                //       onTap: generationTypes[index]['onTap'],
+                //     );
+                //   },
+                //   itemCount: generationTypes.length,
+                // ),
+                //)
+              )
             ],
           ),
         ),

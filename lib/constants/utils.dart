@@ -29,6 +29,24 @@ String formatMoney(double money) {
   return formatter.format(money);
 }
 
+double stringMoneyToDouble(String moneyString) {
+  // String formatMoney(double money) {
+  //   NumberFormat formatter =
+  //       NumberFormat.decimalPatternDigits(locale: 'es_ar', decimalDigits: 2);
+  //   return formatter.format(money);
+  // }
+
+  // String formatted = formatMoney(1234.56);
+  // print('String formateado: $formatted'); // Ejemplo: "1.234,56"
+
+  // Convertir de String a double
+  NumberFormat formatter = NumberFormat.decimalPattern('es_ar');
+  // double parsed = formatter.parse(moneyString);
+  double parsed = formatter.parse(moneyString).toDouble();
+  // print('Número convertido: $parsed'); // Salida: 1234.56
+  return parsed;
+}
+
 String defineTextTask(int code) {
   switch (code) {
     case 1:
