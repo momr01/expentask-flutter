@@ -46,6 +46,7 @@ double correctAmount(String controllerValue) {
 //create controllers and checkbox of every task
 defineControllersAndCheckbox(List<TaskCode> taskCodes, Payment payment,
     List<TextEditingController> controllers, List<EditTaskCheckbox> taskItems) {
+  // debugPrint(payment.tasks.length.toString());
   for (var i = 0; i < taskCodes.length; i++) {
     DateTime dateNow = DateTime.now();
 

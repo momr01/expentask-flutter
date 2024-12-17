@@ -7,24 +7,66 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:payments_management/features/alerts/screens/alerts_screen.dart';
 
 import 'package:payments_management/main.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:payments_management/providers/user_provider.dart';
+import 'package:provider/provider.dart';
+
+Widget wrapWithProvider(Widget child) {
+  return MultiProvider(
+    providers: [
+      ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
+    ],
+    child: MaterialApp(
+      home: child,
+    ),
+  );
+}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  // testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  //   // Build our app and trigger a frame.
+  //   await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  //   // Verify that our counter starts at 0.
+  //   expect(find.text('0'), findsOneWidget);
+  //   expect(find.text('1'), findsNothing);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  //   // Tap the '+' icon and trigger a frame.
+  //   await tester.tap(find.byIcon(Icons.add));
+  //   await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  //   // Verify that our counter has incremented.
+  //   expect(find.text('0'), findsNothing);
+  //   expect(find.text('1'), findsOneWidget);
+  // });
+
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+  // testWidgets('Flujo de inicio de sesión', (WidgetTester tester) async {
+  //   await tester.pumpWidget(MyApp());
+
+  //   // await tester.enterText(find.byType(TextField), 'usuario');
+  //   await tester.enterText(find.byType(TextField), 'Email:');
+  //   await tester.enterText(find.byKey(Key('passwordField')), 'Contraseña:');
+  //   await tester.tap(find.text('INGRESAR'));
+  //   await tester.pumpAndSettle();
+
+  //   expect(find.text('Bienvenido'), findsOneWidget);
+  // });
+  // testWidgets('Flujo de inicio de sesión', (WidgetTester tester) async {
+  //   await tester.pumpWidget(const AlertsScreen());
+
+  //   expect(find.text('Alertas'), findsOneWidget);
+  // });
+
+//ALERTS
+  testWidgets('Test AlertsScreen', (WidgetTester tester) async {
+    await tester.pumpWidget(wrapWithProvider(const AlertsScreen()));
+
+    expect(find.text('Alertas'), findsOneWidget);
+    expect(find.text('¡No existen alertas para mostrar!'), findsOneWidget);
   });
 }

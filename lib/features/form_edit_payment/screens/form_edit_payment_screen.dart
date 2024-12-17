@@ -61,6 +61,7 @@ class _FormEditPaymentState extends State<FormEditPayment> {
     super.initState;
     initControllersValues();
     setControllersAndCheckbox();
+    checkAtLeastOneTrue();
   }
 
   @override
@@ -118,6 +119,7 @@ class _FormEditPaymentState extends State<FormEditPayment> {
     int checkedTasks = 0;
 
     for (var item in taskItems) {
+      debugPrint(item.state.toString());
       if (item.state!) checkedTasks++;
     }
     if (checkedTasks >= 1) {
