@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:payments_management/common/layouts/title_search_layout.dart';
 import 'package:payments_management/common/utils/fetch_data.dart';
 import 'package:payments_management/common/utils/run_filter.dart';
+import 'package:payments_management/common/widgets/color_rounded_item.dart';
 import 'package:payments_management/common/widgets/conditional_list_view/conditional_list_view.dart';
 import 'package:payments_management/common/widgets/loader.dart';
+import 'package:payments_management/constants/global_variables.dart';
+import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/home/services/home_services.dart';
 import 'package:payments_management/features/home/widgets/payment_card.dart';
 import 'package:payments_management/models/payment/payment.dart';
@@ -90,6 +93,12 @@ class _HomeScreenState extends State<HomeScreen> {
     fetchUndonePayments();
   }
 
+  List<Map<String, String>> filterOptions = [
+    {"id": "1", "name": "individuales"},
+    {"id": "2", "name": "cuotas"},
+    {"id": "3", "name": "todos"},
+  ];
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -110,13 +119,43 @@ class _HomeScreenState extends State<HomeScreen> {
         //   separatorBuilder: (context, _) => const Divider(),
         // ),
 
-        child: ConditionalListView(
-          items: payments,
-          foundItems: _foundPayments,
-          loader: const Loader(),
-          emptyMessage: "¡No existen pagos para mostrar!",
-          itemBuilder: (context, payment) => PaymentCard(payment: payment),
-          separatorBuilder: (context, _) => const Divider(),
+        child: Flexible(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 40,
+                child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) => ColorRoundedItem(
+                          colorBackCard: GlobalVariables.blueActionColor,
+                          colorBorderCard: GlobalVariables.blueActionColor,
+                          text: capitalizeFirstLetter(
+                              filterOptions[index]["name"]!),
+                          colorText: Colors.black,
+                          sizeText: 13,
+                          onTap: () {
+                            debugPrint(filterOptions[index]["name"]!);
+                          },
+                        ),
+                    separatorBuilder: (context, index) => const SizedBox(
+                          width: 15,
+                        ),
+                    itemCount: filterOptions.length),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              ConditionalListView(
+                items: payments,
+                foundItems: _foundPayments,
+                loader: const Loader(),
+                emptyMessage: "¡No existen pagos para mostrar!",
+                itemBuilder: (context, payment) =>
+                    PaymentCard(payment: payment),
+                separatorBuilder: (context, _) => const Divider(),
+              ),
+            ],
+          ),
         ),
       ),
     );

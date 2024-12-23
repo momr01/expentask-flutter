@@ -28,17 +28,19 @@ class CategoriesServices {
             'x-auth-token': userProvider.user.token
           });
 
+      // debugPrint(res.body);
+
       httpErrorHandle(
           response: res,
           context: NavigatorKeys.navKey.currentContext!,
           onSuccess: () {
             for (int i = 0; i < jsonDecode(res.body).length; i++) {
               categoriesList.add(Category.fromJson(jsonDecode(res.body)[i]));
-              // debugPrint(jsonDecode(res.body)[i]);
+              //debugPrint(jsonDecode(res.body)[i]);
             }
           });
     } catch (e) {
-      showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());
+      showSnackBar(NavigatorKeys.navKey.currentContext!, "23" + e.toString());
     }
     return categoriesList;
   }

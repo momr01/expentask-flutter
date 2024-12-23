@@ -13,6 +13,7 @@ import 'package:payments_management/main.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:payments_management/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:fake_async/fake_async.dart';
 
 Widget wrapWithProvider(Widget child) {
   return MultiProvider(
@@ -67,6 +68,29 @@ void main() {
     await tester.pumpWidget(wrapWithProvider(const AlertsScreen()));
 
     expect(find.text('Alertas'), findsOneWidget);
+    // expect(find.text('¡No existen alertas para mostrar!'), findsOneWidget);
+  });
+
+  testWidgets(
+      'Muestra CircularProgressIndicator mientras se cargan las alertas',
+      (WidgetTester tester) async {
+    await tester
+        // .pumpWidget(wrapWithProvider(MaterialApp(home: AlertsScreen())));
+        .pumpWidget(wrapWithProvider(AlertsScreen()));
+
+    // Verifica que se muestra el indicador de carga inicialmente
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+    // Avanza el tiempo simulado para completar la carga de datos
+    fakeAsync((async) {
+      async.elapse(Duration(seconds: 1));
+      async.flushMicrotasks();
+    });
+
+    // Actualiza el estado del widget
+    await tester.pump();
+
+    // Verifica que se muestra el texto cuando alerts está vacío
     expect(find.text('¡No existen alertas para mostrar!'), findsOneWidget);
   });
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:payments_management/common/widgets/color_rounded_item.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/home/widgets/button_complete_task.dart';
@@ -94,13 +95,36 @@ class PaymentCard extends StatelessWidget {
         child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              //  crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                GestureDetector(
-                    onTap: () =>
-                        navigateToPaymentInfoScreen(context, payment.id!),
-                    child: const Icon(Icons.visibility_rounded,
-                        size: 30, color: Colors.black)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    // Text(payment.name.category.name),
+                    //  Flexible(
+                    //    child:
+                    ColorRoundedItem(
+                      colorBackCard: Colors.purple,
+                      colorBorderCard: Colors.purple,
+                      text: capitalizeFirstLetter(payment.name.category.name),
+                      colorText: Colors.white,
+                      sizeText: 13,
+                    ),
+                    //),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 4,
+                    ),
+                    GestureDetector(
+                        onTap: () =>
+                            navigateToPaymentInfoScreen(context, payment.id!),
+                        child: const Icon(Icons.visibility_rounded,
+                            size: 30, color: Colors.black)),
+                  ],
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+
                 // ElevatedButton(
                 //   style: ElevatedButton.styleFrom(
                 //       backgroundColor: Colors.grey.shade300),
