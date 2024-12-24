@@ -83,6 +83,43 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _filterHasInstallments(String type, {String? keyword}) {
+    setState(() {
+      switch (type) {
+        case "individual":
+          {
+            _foundPayments =
+                payments!.where((payment) => !payment.hasInstallments).toList();
+          }
+
+          break;
+        case "installments":
+          {
+            _foundPayments =
+                payments!.where((payment) => payment.hasInstallments).toList();
+          }
+          break;
+        case "all":
+          {
+            _foundPayments = payments!;
+          }
+          break;
+        case "search":
+          {
+            _foundPayments = runFilter<Payment>(
+              keyword!,
+              payments!,
+              (payment) => payment.name.name
+                  .toLowerCase()
+                  .contains(keyword.toLowerCase()),
+            );
+          }
+          break;
+        default:
+      }
+    });
+  }
+
   Future<void> _refreshData() async {
     // Simula la carga de nuevos datos
     // await Future.delayed(Duration(seconds: 2));
@@ -94,9 +131,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<Map<String, String>> filterOptions = [
-    {"id": "1", "name": "individuales"},
-    {"id": "2", "name": "cuotas"},
-    {"id": "3", "name": "todos"},
+    {"id": "1", "name": "individuales", "type": "individual"},
+    {"id": "2", "name": "cuotas", "type": "installments"},
+    {"id": "3", "name": "todos", "type": "all"},
   ];
 
   @override
@@ -134,7 +171,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           colorText: Colors.black,
                           sizeText: 13,
                           onTap: () {
-                            debugPrint(filterOptions[index]["name"]!);
+                            // debugPrint(filterOptions[index]["name"]!);
+                            _filterHasInstallments(
+                                filterOptions[index]["type"]!);
                           },
                         ),
                     separatorBuilder: (context, index) => const SizedBox(
