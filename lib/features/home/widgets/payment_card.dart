@@ -142,7 +142,7 @@ class PaymentCard extends StatelessWidget {
                         ? CircularPercentIndicator(
                             radius: 55,
                             animation: true,
-                            animationDuration: 1200,
+                            animationDuration: 1500,
                             lineWidth: 15.0,
                             //percent: 0.5,
                             percent: countCompletedTasks(payment.tasks),
@@ -158,6 +158,9 @@ class PaymentCard extends StatelessWidget {
                         : CircularPercentIndicator(
                             radius: 55,
                             lineWidth: 15.0,
+                            animation: true,
+                            animationDuration: 1500,
+                            restartAnimation: true,
                             percent: countCompletedTasks(payment.tasks),
                             center: Text(
                               '${numberToPercent(payment.tasks)}%',

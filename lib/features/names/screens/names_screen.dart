@@ -44,6 +44,12 @@ class _NamesScreenState extends State<NamesScreen> {
       _isLoading = true;
     });
     names = await namesServices.fetchPaymentNames();
+    // if (names != null) {
+    //   names!.sort((a, b) {
+    //     return a.name.toLowerCase().compareTo(b.name.toLowerCase());
+    //   });
+    // }
+
     setState(() {
       _foundNames = names!;
       _isLoading = false;
