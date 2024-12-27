@@ -11,6 +11,21 @@ import 'package:payments_management/features/home/services/home_services.dart';
 import 'package:payments_management/features/home/widgets/payment_card.dart';
 import 'package:payments_management/models/payment/payment.dart';
 
+class FilterOption {
+  final int id;
+  final String name;
+  final String type;
+  bool state;
+
+  FilterOption(
+      {required this.id,
+      required this.name,
+      required this.type,
+      required this.state});
+
+  //  {"id": "1", "name": "individuales", "type": "individual", "state": },
+}
+
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
   const HomeScreen({super.key});
@@ -32,11 +47,27 @@ class _HomeScreenState extends State<HomeScreen> {
   final HomeServices homeServices = HomeServices();
   final TextEditingController _searchController = TextEditingController();
   bool _isLoading = false;
+  // bool _individualFilter = false;
+  // bool _instalmentFilter = false;
+  // bool _allFilter = true;
+  //  List<Map<String, String>> filterOptions = [
+  //   {"id": "1", "name": "individuales", "type": "individual"},
+  //   {"id": "2", "name": "cuotas", "type": "installments"},
+  //   {"id": "3", "name": "todos", "type": "all"},
+  // ];
+  List<FilterOption> filterOptions = [];
 
   @override
   void initState() {
     super.initState();
     fetchUndonePayments();
+
+    filterOptions.add(FilterOption(
+        id: 1, name: "individuales", type: "individual", state: false));
+    filterOptions.add(FilterOption(
+        id: 2, name: "cuotas", type: "installments", state: false));
+    filterOptions
+        .add(FilterOption(id: 3, name: "todos", type: "all", state: true));
   }
 
   @override
@@ -80,7 +111,25 @@ class _HomeScreenState extends State<HomeScreen> {
         (payment) =>
             payment.name.name.toLowerCase().contains(keyword.toLowerCase()),
       );
+
+      //filterOptions.forEach((element) => element.state = false);
+      for (var element in filterOptions) {
+        if (element.type == "all") {
+          element.state = true;
+        } else {
+          element.state = false;
+        }
+      }
     });
+  }
+
+  void _updateFilterState(String selectedType) {
+    filterOptions.where((element) => element.type == selectedType).first.state =
+        true;
+
+    filterOptions
+        .where((element) => element.type != selectedType)
+        .forEach((element) => element.state = false);
   }
 
   void _filterHasInstallments(String type, {String? keyword}) {
@@ -90,6 +139,15 @@ class _HomeScreenState extends State<HomeScreen> {
           {
             _foundPayments =
                 payments!.where((payment) => !payment.hasInstallments).toList();
+
+            _updateFilterState(type);
+
+            // filterOptions.where((element) => element.type == type).first.state =
+            //     true;
+
+            // filterOptions
+            //     .where((element) => element.type != type)
+            //     .forEach((element) => element.state = false);
           }
 
           break;
@@ -97,11 +155,15 @@ class _HomeScreenState extends State<HomeScreen> {
           {
             _foundPayments =
                 payments!.where((payment) => payment.hasInstallments).toList();
+
+            _updateFilterState(type);
           }
           break;
         case "all":
           {
             _foundPayments = payments!;
+
+            _updateFilterState(type);
           }
           break;
         case "search":
@@ -113,6 +175,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   .toLowerCase()
                   .contains(keyword.toLowerCase()),
             );
+
+            // filterOptions.forEach((element) => element.state = false);
+            // // for (var element in filterOptions) {
+            // //   element.state = false;
+            // // }
           }
           break;
         default:
@@ -129,12 +196,6 @@ class _HomeScreenState extends State<HomeScreen> {
     // setState(() {});
     fetchUndonePayments();
   }
-
-  List<Map<String, String>> filterOptions = [
-    {"id": "1", "name": "individuales", "type": "individual"},
-    {"id": "2", "name": "cuotas", "type": "installments"},
-    {"id": "3", "name": "todos", "type": "all"},
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -164,16 +225,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) => ColorRoundedItem(
-                          colorBackCard: GlobalVariables.blueActionColor,
+                          // colorBackCard: GlobalVariables.blueActionColor,
+                          colorBackCard: filterOptions[index].state
+                              ? GlobalVariables.blueActionColor
+                              : GlobalVariables.greyBackgroundColor,
                           colorBorderCard: GlobalVariables.blueActionColor,
                           text: capitalizeFirstLetter(
-                              filterOptions[index]["name"]!),
+                              //  filterOptions[index]["name"]!
+                              filterOptions[index].name),
                           colorText: Colors.black,
                           sizeText: 13,
                           onTap: () {
                             // debugPrint(filterOptions[index]["name"]!);
                             _filterHasInstallments(
-                                filterOptions[index]["type"]!);
+                                // filterOptions[index]["type"]!
+                                filterOptions[index].type);
                           },
                         ),
                     separatorBuilder: (context, index) => const SizedBox(
