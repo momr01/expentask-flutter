@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/color_rounded_item.dart';
+import 'package:payments_management/constants/date_format.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/home/widgets/button_complete_task.dart';
@@ -237,6 +238,16 @@ class PaymentCard extends StatelessWidget {
                                               payment: payment,
                                               amount: payment.amount)
                                     ]),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Vence el ${formatDateWithTime(payment.tasks.where((element) => element.instalmentNumber == installmentsQuantityData(payment)["firstInstalment"]).first.deadline.toString())}",
+                                  style: const TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
                               ],
                             )),
                       )
