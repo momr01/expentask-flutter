@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:payments_management/common/utils/run_filter.dart';
 import 'package:payments_management/common/widgets/custom_app_bar.dart';
 import 'package:payments_management/common/widgets/drawer/custom_drawer.dart';
 import 'package:payments_management/common/widgets/loader.dart';
@@ -9,6 +10,7 @@ import 'package:payments_management/features/tasks/services/tasks_services.dart'
 import 'package:payments_management/features/tasks/widgets/add_task_form.dart';
 import 'package:payments_management/features/tasks/widgets/task_card_individual.dart';
 import 'package:payments_management/models/task_code/task_code.dart';
+import 'package:payments_management/common/utils/fetch_data.dart';
 
 class TasksScreen extends StatefulWidget {
   static const String routeName = '/tasks';
@@ -31,19 +33,55 @@ class _TasksScreenState extends State<TasksScreen> {
     fetchAllTaskCodes();
   }
 
-  fetchAllTaskCodes() async {
-    setState(() {
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void fetchAllTaskCodes() {
+    /* setState(() {
       _isLoading = true;
     });
     taskCodes = await tasksServices.fetchOwnTaskCodes();
     setState(() {
       _foundTaskCodes = taskCodes!;
       _isLoading = false;
-    });
+    });*/
+    fetchData<TaskCode>(
+        context: context,
+        fetchFunction: tasksServices.fetchOwnTaskCodes,
+        onSuccess: (items) => setState(() {
+              taskCodes = items;
+              _foundTaskCodes = items;
+            }),
+        onStart: () => setState(() => _isLoading = true),
+        onComplete: () => setState(() => _isLoading = false));
   }
 
-  void _runFilter(String enteredKeyword) {
-    List<TaskCode> results = [];
+  void _runFilter(String keyword) {
+    setState(() {
+      _foundTaskCodes = runFilter<TaskCode>(
+          keyword,
+          taskCodes!,
+          (code) =>
+              code.name.toLowerCase().contains(keyword.toLowerCase()) ||
+              code.abbr.toLowerCase().contains(keyword.toLowerCase()) ||
+              code.number
+                  .toString()
+                  .toLowerCase()
+                  .contains(keyword.toLowerCase()));
+
+      /* for (var element in filterOptions) {
+        if (element.type == "all") {
+          element.state = true;
+        } else {
+          element.state = false;
+        }
+      }*/
+    });
+
+    /* List<TaskCode> results = [];
     if (enteredKeyword.isEmpty) {
       results = taskCodes!;
     } else {
@@ -60,7 +98,7 @@ class _TasksScreenState extends State<TasksScreen> {
 
     setState(() {
       _foundTaskCodes = results;
-    });
+    });*/
   }
 
   @override

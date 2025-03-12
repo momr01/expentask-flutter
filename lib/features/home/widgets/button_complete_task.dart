@@ -71,13 +71,13 @@ class _ButtonCompleteTaskState extends State<ButtonCompleteTask> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5.0),
         ),
-        fixedSize: const Size(150, 60),
+        fixedSize: const Size(160, 60),
       ),
       onPressed: widget.task.isCompleted ? null : openCompleteModal,
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: SizedBox(
-              width: 120,
+              width: 160,
               child: Row(children: [
                 defineIconTask(widget.task.isCompleted),
                 const SizedBox(width: 5),

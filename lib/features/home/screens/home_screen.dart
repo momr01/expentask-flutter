@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:payments_management/common/layouts/title_search_layout.dart';
 import 'package:payments_management/common/utils/fetch_data.dart';
 import 'package:payments_management/common/utils/run_filter.dart';
-import 'package:payments_management/common/widgets/color_rounded_item.dart';
+// import 'package:payments_management/common/widgets/color_rounded_item.dart';
 import 'package:payments_management/common/widgets/conditional_list_view/conditional_list_view.dart';
 import 'package:payments_management/common/widgets/loader.dart';
-import 'package:payments_management/constants/global_variables.dart';
-import 'package:payments_management/constants/utils.dart';
+// import 'package:payments_management/constants/global_variables.dart';
+// import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/home/services/home_services.dart';
+import 'package:payments_management/features/home/utils/filter_data.dart';
+import 'package:payments_management/features/home/utils/filter_option.dart';
+import 'package:payments_management/features/home/widgets/filter_row.dart';
 import 'package:payments_management/features/home/widgets/payment_card.dart';
-import 'package:payments_management/models/filter/filter_option.dart';
 import 'package:payments_management/models/payment/payment.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -50,12 +52,22 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void fillFilterOptionsList() {
-    filterOptions
+    /*filterOptions
         .add(FilterOption(id: 1, name: "todos", type: "all", state: true));
     filterOptions.add(FilterOption(
         id: 2, name: "individuales", type: "individual", state: false));
     filterOptions.add(FilterOption(
         id: 3, name: "cuotas", type: "installments", state: false));
+    filterOptions
+        .add(FilterOption(id: 4, name: "mes", type: "month", state: false));*/
+    for (var data in filterData) {
+      filterOptions.add(FilterOption(
+          id: data["id"],
+          name: data["name"],
+          type: data["type"],
+          state: data["state"],
+          filter: data["filter"]));
+    }
   }
 
   void fetchUndonePayments() {
@@ -90,57 +102,57 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _updateFilterState(String selectedType) {
-    filterOptions.where((element) => element.type == selectedType).first.state =
-        true;
+  // void _updateFilterState(String selectedType) {
+  //   filterOptions.where((element) => element.type == selectedType).first.state =
+  //       true;
 
-    filterOptions
-        .where((element) => element.type != selectedType)
-        .forEach((element) => element.state = false);
-  }
+  //   filterOptions
+  //       .where((element) => element.type != selectedType)
+  //       .forEach((element) => element.state = false);
+  // }
 
-  void _filterHasInstallments(String type, {String? keyword}) {
-    setState(() {
-      switch (type) {
-        case "individual":
-          {
-            _foundPayments =
-                payments!.where((payment) => !payment.hasInstallments).toList();
+  // void _filterHasInstallments(String type, {String? keyword}) {
+  //   setState(() {
+  //     switch (type) {
+  //       case "individual":
+  //         {
+  //           _foundPayments =
+  //               payments!.where((payment) => !payment.hasInstallments).toList();
 
-            _updateFilterState(type);
-          }
+  //           _updateFilterState(type);
+  //         }
 
-          break;
-        case "installments":
-          {
-            _foundPayments =
-                payments!.where((payment) => payment.hasInstallments).toList();
+  //         break;
+  //       case "installments":
+  //         {
+  //           _foundPayments =
+  //               payments!.where((payment) => payment.hasInstallments).toList();
 
-            _updateFilterState(type);
-          }
-          break;
-        case "all":
-          {
-            _foundPayments = payments!;
+  //           _updateFilterState(type);
+  //         }
+  //         break;
+  //       case "all":
+  //         {
+  //           _foundPayments = payments!;
 
-            _updateFilterState(type);
-          }
-          break;
-        case "search":
-          {
-            _foundPayments = runFilter<Payment>(
-              keyword!,
-              payments!,
-              (payment) => payment.name.name
-                  .toLowerCase()
-                  .contains(keyword.toLowerCase()),
-            );
-          }
-          break;
-        default:
-      }
-    });
-  }
+  //           _updateFilterState(type);
+  //         }
+  //         break;
+  //       case "search":
+  //         {
+  //           _foundPayments = runFilter<Payment>(
+  //             keyword!,
+  //             payments!,
+  //             (payment) => payment.name.name
+  //                 .toLowerCase()
+  //                 .contains(keyword.toLowerCase()),
+  //           );
+  //         }
+  //         break;
+  //       default:
+  //     }
+  //   });
+  // }
 
   Future<void> _refreshData() async {
     fetchUndonePayments();
@@ -150,6 +162,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (payments != null) {
+      debugPrint(payments!
+          .where((payment) => payment.name.name.toLowerCase().contains("korea"))
+          .first
+          .tasks
+          .where((element) => !element.isCompleted)
+          .first
+          .deadline
+          .toString());
+    }
+
     return RefreshIndicator(
       onRefresh: _refreshData,
       child: TitleSearchLayout(
@@ -162,27 +185,38 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Flexible(
           child: Column(
             children: [
-              SizedBox(
-                height: 40,
-                child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => ColorRoundedItem(
-                          colorBackCard: filterOptions[index].state
-                              ? GlobalVariables.blueActionColor
-                              : GlobalVariables.greyBackgroundColor,
-                          colorBorderCard: GlobalVariables.blueActionColor,
-                          text:
-                              capitalizeFirstLetter(filterOptions[index].name),
-                          colorText: Colors.black,
-                          sizeText: 13,
-                          onTap: () {
-                            _filterHasInstallments(filterOptions[index].type);
-                          },
-                        ),
-                    separatorBuilder: (context, index) => const SizedBox(
-                          width: 15,
-                        ),
-                    itemCount: filterOptions.length),
+              // SizedBox(
+              //   height: 40,
+              //   child: ListView.separated(
+              //       scrollDirection: Axis.horizontal,
+              //       itemBuilder: (context, index) => ColorRoundedItem(
+              //             colorBackCard: filterOptions[index].state
+              //                 ? GlobalVariables.blueActionColor
+              //                 : GlobalVariables.greyBackgroundColor,
+              //             colorBorderCard: GlobalVariables.blueActionColor,
+              //             text:
+              //                 capitalizeFirstLetter(filterOptions[index].name),
+              //             colorText: Colors.black,
+              //             sizeText: 13,
+              //             onTap: () {
+              //               _filterHasInstallments(filterOptions[index].type);
+              //             },
+              //           ),
+              //       separatorBuilder: (context, index) => const SizedBox(
+              //             width: 15,
+              //           ),
+              //       itemCount: filterOptions.length),
+              // ),
+              FilterRow(
+                filterOptions: filterOptions,
+                payments: payments != null ? payments! : [],
+                foundPayments: _foundPayments,
+                onPaymentsFiltered: (filteredList) {
+                  setState(() {
+                    _foundPayments =
+                        filteredList; // Actualiza la lista en el widget padre
+                  });
+                },
               ),
               const SizedBox(
                 height: 15,

@@ -57,7 +57,7 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
     _amountPaidController.text = widget.payment.hasInstallments
         ?
         //(formatMoney(widget.amount / widget.payment.installmentsQuantity))
-        (widget.amount / widget.payment.installmentsQuantity).toString()
+        (widget.amount / widget.payment.installmentsQuantity).toStringAsFixed(2)
         : widget.amount.toString();
     _dateCompletedController.text =
         '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
