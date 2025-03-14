@@ -11,18 +11,20 @@ class ConditionalListView<T> extends StatelessWidget {
   final Widget Function(BuildContext, T) itemBuilder;
   final Widget Function(BuildContext, int)? separatorBuilder;
   final double paddingEnd;
+  final bool verticalPosition;
 
-  const ConditionalListView({
-    Key? key,
-    required this.items,
-    this.foundItems,
-    required this.loader,
-    required this.emptyMessage,
-    this.noResultsMessage,
-    required this.itemBuilder,
-    this.separatorBuilder,
-    this.paddingEnd = 0,
-  }) : super(key: key);
+  const ConditionalListView(
+      {Key? key,
+      required this.items,
+      this.foundItems,
+      required this.loader,
+      required this.emptyMessage,
+      this.noResultsMessage,
+      required this.itemBuilder,
+      this.separatorBuilder,
+      this.paddingEnd = 0,
+      this.verticalPosition = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,10 @@ class ConditionalListView<T> extends StatelessWidget {
 
     return Expanded(
       child: separatorBuilder != null
+          // return separatorBuilder != null
           ? ListView.separated(
+              scrollDirection:
+                  verticalPosition ? Axis.vertical : Axis.horizontal,
               padding: EdgeInsets.only(bottom: paddingEnd),
               itemBuilder: (context, index) =>
                   itemBuilder(context, foundItems![index]),
@@ -51,6 +56,8 @@ class ConditionalListView<T> extends StatelessWidget {
               itemCount: foundItems!.length,
             )
           : ListView.builder(
+              scrollDirection:
+                  verticalPosition ? Axis.vertical : Axis.horizontal,
               padding: EdgeInsets.only(bottom: paddingEnd),
               itemBuilder: (context, index) =>
                   itemBuilder(context, items![index]),

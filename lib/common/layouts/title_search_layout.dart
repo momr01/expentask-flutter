@@ -98,7 +98,9 @@ class TitleSearchLayout extends StatelessWidget {
                 onChange: onSearch,
               ),
               const SizedBox(height: 20),
-              child, // Parte dinámica
+              //child, // Parte dinámica
+              //Expanded(child: child),
+              child
             ],
           ),
         ),

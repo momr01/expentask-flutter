@@ -103,6 +103,7 @@ class _FilterRowState extends State<FilterRow> {
         _foundPayments = runFilter<Payment>(
           keyword,
           widget.payments,
+          //widget.foundPayments,
           (payment) =>
               payment.name.name.toLowerCase().contains(keyword.toLowerCase()),
         );

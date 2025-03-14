@@ -88,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _foundPayments = runFilter<Payment>(
         keyword,
         payments!,
+        //_foundPayments,
         (payment) =>
             payment.name.name.toLowerCase().contains(keyword.toLowerCase()),
       );
@@ -162,16 +163,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (payments != null) {
-      debugPrint(payments!
-          .where((payment) => payment.name.name.toLowerCase().contains("korea"))
-          .first
-          .tasks
-          .where((element) => !element.isCompleted)
-          .first
-          .deadline
-          .toString());
-    }
+    // if (payments != null) {
+    //   debugPrint(payments!
+    //       .where((payment) => payment.name.id == "672f8a0180d3188948c98f4f"
+    //           //name.toLowerCase().contains("korea")
+
+    //           )
+    //       .first
+    //       .tasks
+    //       .where((element) =>
+    //           !element.isCompleted &&
+    //           element.deadline.month == 3 &&
+    //           element.deadline.year == 2025)
+    //       .first
+    //       .deadline
+    //       .toString());
+    // }
 
     return RefreshIndicator(
       onRefresh: _refreshData,

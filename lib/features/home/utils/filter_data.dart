@@ -30,11 +30,10 @@ List<Map<String, dynamic>> filterData = [
     "type": "month",
     "state": false,
     "filter": (List<Payment> payments) => payments
-        .where((payment) => payment.tasks.any(
-              (task) =>
-                  !task.isCompleted &&
-                  task.deadline.month == DateTime.now().month,
-            ))
+        .where((payment) => payment.tasks.any((task) =>
+            !task.isCompleted &&
+            task.deadline.month == DateTime.now().month &&
+            task.deadline.year == DateTime.now().year))
         .toList(),
   },
 ];

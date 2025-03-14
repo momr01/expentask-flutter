@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:payments_management/common/layouts/title_search_layout.dart';
 import 'package:payments_management/common/utils/run_filter.dart';
+import 'package:payments_management/common/widgets/conditional_list_view/conditional_list_view.dart';
 import 'package:payments_management/common/widgets/custom_app_bar.dart';
 import 'package:payments_management/common/widgets/drawer/custom_drawer.dart';
 import 'package:payments_management/common/widgets/loader.dart';
@@ -101,6 +103,53 @@ class _TasksScreenState extends State<TasksScreen> {
     });*/
   }
 
+  Future<void> _refreshData() async {
+    fetchAllTaskCodes();
+    _searchController.clear();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: _refreshData,
+      child: TitleSearchLayout(
+        //isMain: true,
+        isLoading: _isLoading,
+        title: 'Tareas',
+        searchController: _searchController,
+        onSearch: _runFilter,
+        searchPlaceholder: "Buscar tarea...",
+        child: Expanded(
+          child: ListView(
+            children: [
+              SizedBox(
+                height: 250,
+                child: ConditionalListView(
+                  items: _foundTaskCodes,
+                  foundItems: _foundTaskCodes,
+                  loader: const Loader(),
+                  emptyMessage: "¡No existen tareas para mostrar!",
+                  itemBuilder: (context, code) => TaskCardIndividual(
+                    code: code,
+                  ),
+                  separatorBuilder: (context, index) => const SizedBox(
+                    width: 20,
+                  ),
+                  verticalPosition: false,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const AddTaskForm()
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+/*
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -181,5 +230,5 @@ class _TasksScreenState extends State<TasksScreen> {
         ),
       ),
     );
-  }
+  }*/
 }
