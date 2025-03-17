@@ -44,25 +44,24 @@ class ConditionalListView<T> extends StatelessWidget {
     }
 
     return Expanded(
-      child: separatorBuilder != null
-          // return separatorBuilder != null
-          ? ListView.separated(
-              scrollDirection:
-                  verticalPosition ? Axis.vertical : Axis.horizontal,
-              padding: EdgeInsets.only(bottom: paddingEnd),
-              itemBuilder: (context, index) =>
-                  itemBuilder(context, foundItems![index]),
-              separatorBuilder: separatorBuilder!,
-              itemCount: foundItems!.length,
-            )
-          : ListView.builder(
-              scrollDirection:
-                  verticalPosition ? Axis.vertical : Axis.horizontal,
-              padding: EdgeInsets.only(bottom: paddingEnd),
-              itemBuilder: (context, index) =>
-                  itemBuilder(context, items![index]),
-              itemCount: items!.length,
-            ),
-    );
+        child: separatorBuilder != null
+            //return separatorBuilder != null
+            ? ListView.separated(
+                scrollDirection:
+                    verticalPosition ? Axis.vertical : Axis.horizontal,
+                padding: EdgeInsets.only(bottom: paddingEnd),
+                itemBuilder: (context, index) =>
+                    itemBuilder(context, foundItems![index]),
+                separatorBuilder: separatorBuilder!,
+                itemCount: foundItems!.length,
+              )
+            : ListView.builder(
+                scrollDirection:
+                    verticalPosition ? Axis.vertical : Axis.horizontal,
+                padding: EdgeInsets.only(bottom: paddingEnd),
+                itemBuilder: (context, index) =>
+                    itemBuilder(context, items![index]),
+                itemCount: items!.length,
+              ));
   }
 }

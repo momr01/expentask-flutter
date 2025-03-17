@@ -107,7 +107,7 @@ class _TasksScreenState extends State<TasksScreen> {
     fetchAllTaskCodes();
     _searchController.clear();
   }
-
+/*
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -147,9 +147,8 @@ class _TasksScreenState extends State<TasksScreen> {
         ),
       ),
     );
-  }
+  }*/
 
-/*
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -230,5 +229,5 @@ class _TasksScreenState extends State<TasksScreen> {
         ),
       ),
     );
-  }*/
+  }
 }

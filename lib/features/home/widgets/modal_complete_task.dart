@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:payments_management/common/widgets/buttons/custom_button_options.dart';
+import 'package:payments_management/common/widgets/color_rounded_item.dart';
 import 'package:payments_management/common/widgets/custom_currency_textfield.dart';
 import 'package:payments_management/common/widgets/custom_textfield.dart';
 import 'package:payments_management/common/widgets/modals/modal_confirmation/modal_confirmation.dart';
@@ -193,6 +196,21 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
                         //   isAmount: true,
                         //   centeredText: true,
                         // ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                          height: 40,
+                          decoration: BoxDecoration(border: Border.all()),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Todo"),
+                              Text("Mitad"),
+                              Text("Cero")
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   const SizedBox(
