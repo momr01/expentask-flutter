@@ -47,6 +47,10 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
       TextEditingController();
   final HomeServices homeServices = HomeServices();
 
+  bool _amountTotal = true;
+  bool _amountHalf = false;
+  bool _amountZero = false;
+
   @override
   void initState() {
     super.initState();
@@ -199,18 +203,126 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
                         const SizedBox(
                           height: 5,
                         ),
-                        Container(
-                          height: 40,
-                          decoration: BoxDecoration(border: Border.all()),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Todo"),
-                              Text("Mitad"),
-                              Text("Cero")
-                            ],
-                          ),
-                        )
+                        // Container(
+                        //     height: 40,
+                        //     decoration: BoxDecoration(border: Border.all()),
+                        //     child: SizedBox(
+                        //       height: 40,
+                        //       child: ListView.separated(
+                        //         itemBuilder: (context, index) => Text("hola"),
+                        //         separatorBuilder: (context, index) => SizedBox(
+                        //           width: 10,
+                        //         ),
+                        //         itemCount: 5,
+                        //         scrollDirection: Axis.horizontal,
+                        //       ),
+                        //     )),
+                        !widget.payment.hasInstallments
+                            ? SizedBox(
+                                height: 40,
+                                //decoration: BoxDecoration(border: Border.all()),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    ColorRoundedItem(
+                                      colorBackCard: _amountTotal
+                                          ? GlobalVariables.blueActionColor
+                                          : GlobalVariables.greyBackgroundColor,
+                                      colorBorderCard:
+                                          GlobalVariables.blueActionColor,
+                                      text: capitalizeFirstLetter("Total"),
+                                      colorText: Colors.black,
+                                      sizeText: 13,
+                                      onTap: () {
+                                        setState(() {
+                                          if (!_amountTotal) {
+                                            _amountTotal = true;
+                                            _amountHalf = false;
+                                            _amountZero = false;
+                                          }
+
+                                          _amountPaidController.text =
+                                              //widget
+                                              //      .payment.hasInstallments
+                                              //   ?
+                                              //(formatMoney(widget.amount / widget.payment.installmentsQuantity))
+                                              //  (widget.amount /
+                                              //   widget.payment
+                                              //       .installmentsQuantity)
+                                              //  .toStringAsFixed(2)
+                                              // :
+                                              widget.amount.toString();
+                                        });
+                                      },
+                                    ),
+                                    ColorRoundedItem(
+                                      colorBackCard: _amountHalf
+                                          ? GlobalVariables.blueActionColor
+                                          : GlobalVariables.greyBackgroundColor,
+                                      colorBorderCard:
+                                          GlobalVariables.blueActionColor,
+                                      text: capitalizeFirstLetter("Mitad"),
+                                      colorText: Colors.black,
+                                      sizeText: 13,
+                                      onTap: () {
+                                        setState(() {
+                                          if (!_amountHalf) {
+                                            _amountTotal = false;
+                                            _amountHalf = true;
+                                            _amountZero = false;
+                                          }
+
+                                          _amountPaidController.text =
+                                              // widget
+                                              //         .payment.hasInstallments
+                                              //     ?
+                                              //     //(formatMoney(widget.amount / widget.payment.installmentsQuantity))
+                                              //     (widget.amount /
+                                              //             widget.payment
+                                              //                 .installmentsQuantity)
+                                              //         .toStringAsFixed(2)
+                                              //     :
+                                              (widget.amount / 2)
+                                                  .toStringAsFixed(2);
+                                        });
+                                      },
+                                    ),
+                                    ColorRoundedItem(
+                                      colorBackCard: _amountZero
+                                          ? GlobalVariables.blueActionColor
+                                          : GlobalVariables.greyBackgroundColor,
+                                      colorBorderCard:
+                                          GlobalVariables.blueActionColor,
+                                      text: capitalizeFirstLetter("Cero"),
+                                      colorText: Colors.black,
+                                      sizeText: 13,
+                                      onTap: () {
+                                        setState(() {
+                                          if (!_amountZero) {
+                                            _amountTotal = false;
+                                            _amountHalf = false;
+                                            _amountZero = true;
+                                          }
+
+                                          _amountPaidController.text =
+                                              // widget
+                                              //         .payment.hasInstallments
+                                              //     ?
+                                              //     //(formatMoney(widget.amount / widget.payment.installmentsQuantity))
+                                              //     (widget.amount /
+                                              //             widget.payment
+                                              //                 .installmentsQuantity)
+                                              //         .toStringAsFixed(2)
+                                              //     :
+                                              "0.0";
+                                        });
+                                      },
+                                    )
+                                  ],
+                                ),
+                              )
+                            : const SizedBox()
                       ],
                     ),
                   const SizedBox(
