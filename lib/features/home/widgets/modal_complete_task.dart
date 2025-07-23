@@ -13,6 +13,9 @@ import 'package:payments_management/constants/navigator_keys.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/form_edit_payment/utils/form_edit_payment_utils.dart';
 import 'package:payments_management/features/home/services/home_services.dart';
+import 'package:payments_management/features/home/utils/pay_data.dart';
+import 'package:payments_management/features/home/utils/pay_option.dart';
+import 'package:payments_management/features/home/widgets/pay_option_btn.dart';
 import 'package:payments_management/models/payment/payment.dart';
 import 'package:payments_management/models/task/task.dart';
 import 'package:payments_management/providers/user_provider.dart';
@@ -47,9 +50,11 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
       TextEditingController();
   final HomeServices homeServices = HomeServices();
 
-  bool _amountTotal = true;
+  List<PayOption> payOptions = [];
+  bool enableAmountField = true;
+  /*bool _amountTotal = true;
   bool _amountHalf = false;
-  bool _amountZero = false;
+  bool _amountZero = false;*/
 
   @override
   void initState() {
@@ -68,6 +73,19 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
         : widget.amount.toString();
     _dateCompletedController.text =
         '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
+
+    // payOptions.add(PayOptionBtn(label: "total", state: true));
+    // payOptions.add(PayOptionBtn(label: "half", state: false));
+    // payOptions.add(PayOptionBtn(label: "zero", state: false));
+    for (var element in payData) {
+      payOptions.add(PayOption(
+          id: element["id"],
+          code: element["code"],
+          label: element["label"],
+          state: element["id"] == "1" ? true : false));
+    }
+
+    enableAmountField = false;
   }
 
   @override
@@ -137,6 +155,87 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
             ));
   }
 
+  // void _updateAmount(String type) {
+  //   setState(() {
+  //     // Resetea todos los estados
+  //     _amountTotal = false;
+  //     _amountHalf = false;
+  //     _amountZero = false;
+
+  //     // Asigna el estado y actualiza el controller según el tipo
+  //     switch (type) {
+  //       case 'total':
+  //         _amountTotal = true;
+  //         _amountPaidController.text = widget.amount.toString();
+  //         break;
+  //       case 'half':
+  //         _amountHalf = true;
+  //         _amountPaidController.text = (widget.amount / 2).toStringAsFixed(2);
+  //         break;
+  //       case 'zero':
+  //         _amountZero = true;
+  //         _amountPaidController.text = "0.0";
+  //         break;
+  //     }
+  //   });
+  // }
+
+  void _updateAmount(PayOption option) {
+    setState(() {
+      // Resetea todos los estados
+      /* _amountTotal = false;
+      _amountHalf = false;
+      _amountZero = false;
+
+      // Asigna el estado y actualiza el controller según el tipo
+      switch (type) {
+        case 'total':
+          _amountTotal = true;
+          _amountPaidController.text = widget.amount.toString();
+          break;
+        case 'half':
+          _amountHalf = true;
+          _amountPaidController.text = (widget.amount / 2).toStringAsFixed(2);
+          break;
+        case 'zero':
+          _amountZero = true;
+          _amountPaidController.text = "0.0";
+          break;
+      }*/
+
+      for (var element in payOptions) {
+        if (element.label == option.label) {
+          element.state = true;
+        } else {
+          element.state = false;
+        }
+      }
+
+      switch (option.code) {
+        case 'total':
+          // _amountTotal = true;
+          _amountPaidController.text = widget.amount.toString();
+          enableAmountField = false;
+          break;
+        case 'half':
+          // _amountHalf = true;
+          _amountPaidController.text = (widget.amount / 2).toStringAsFixed(2);
+          enableAmountField = false;
+          break;
+        case 'zero':
+          // _amountZero = true;
+          _amountPaidController.text = "0.0";
+          enableAmountField = false;
+          break;
+        case 'custom':
+          // _amountZero = true;
+          _amountPaidController.text = widget.amount.toString();
+          enableAmountField = true;
+          break;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -193,6 +292,7 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
                           hintText: 'Ingrese el importe cancelado',
                           modal: true,
                           isAmount: true,
+                          isEnabled: enableAmountField,
                         ),
                         // CustomCurrencyTextfield(
                         //   controller: _amountPaidController,
@@ -222,9 +322,32 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
                                 height: 40,
                                 //decoration: BoxDecoration(border: Border.all()),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children:
+                                        //["total", "half", "zero"]
+                                        payOptions.map((element) {
+                                      // return ColorRoundedItem(
+                                      //   colorBackCard: _amountTotal
+                                      //       ? GlobalVariables.blueActionColor
+                                      //       : GlobalVariables
+                                      //           .greyBackgroundColor,
+                                      //   colorBorderCard:
+                                      //       GlobalVariables.blueActionColor,
+                                      //   text: capitalizeFirstLetter("Total"),
+                                      //   colorText: Colors.black,
+                                      //   sizeText: 13,
+                                      //   onTap: () => _updateAmount(element),
+                                      // );
+                                      return PayOptionBtn(
+                                        // amountTotal: element.state,
+                                        payOption: element,
+                                        updateAmount: (element) =>
+                                            _updateAmount(element),
+                                        //label: element.label
+                                      );
+                                    }).toList()
+                                    /*[
                                     ColorRoundedItem(
                                       colorBackCard: _amountTotal
                                           ? GlobalVariables.blueActionColor
@@ -319,8 +442,8 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
                                         });
                                       },
                                     )
-                                  ],
-                                ),
+                                  ],*/
+                                    ),
                               )
                             : const SizedBox()
                       ],

@@ -217,7 +217,10 @@ class _FormEditPaymentState extends State<FormEditPayment> {
                           ],
                         )
                       : const SizedBox(),
-                  AmountPaymentSection(controller: _amountController),
+                  AmountPaymentSection(
+                    controller: _amountController,
+                    paymentId: widget.payment.id!,
+                  ),
                   const SizedBox(
                     height: 30,
                   ),

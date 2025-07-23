@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Future.wait(
       [LocalNotificationsServices.init(), WorkManagerServices().init()]);
 

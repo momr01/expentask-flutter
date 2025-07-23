@@ -16,6 +16,7 @@ class CustomTextField extends StatelessWidget {
   final bool centeredText;
   final bool withLabel;
   final String labelText;
+  final bool isEnabled;
   const CustomTextField(
       {super.key,
       required this.controller,
@@ -28,6 +29,7 @@ class CustomTextField extends StatelessWidget {
       this.fillColor,
       this.centeredText = false,
       this.withLabel = false,
+      this.isEnabled = true,
       this.labelText = ""});
 
   @override
@@ -72,6 +74,7 @@ class CustomTextField extends StatelessWidget {
           },
           maxLines: maxLines,
           onTap: onTap,
+          enabled: isEnabled,
         ),
       ],
     );
