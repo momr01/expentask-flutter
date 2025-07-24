@@ -127,19 +127,21 @@ class _ComposicionDialogState extends State<ComposicionDialog> {
     );
 
     if (confirmar == true) {
-      showDialog(
+      /* showDialog(
         context: context,
         barrierDismissible: false,
         builder: (_) => Center(child: CircularProgressIndicator()),
-      );
+      );*/
       try {
-        await eliminarRegistroDesdeAPI(_registros[index].id!);
+        /* await eliminarRegistroDesdeAPI(_registros[index].id!);
         setState(() {
           _registros.removeAt(index);
           _actualizarResumen();
-        });
+        });*/
+        await amountServices.disableAmount(amountId: _registros[index].id!);
+        await _cargarRegistros();
       } finally {
-        Navigator.pop(context);
+        // Navigator.pop(context);
       }
     }
   }

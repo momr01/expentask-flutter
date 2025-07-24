@@ -19,6 +19,7 @@ import 'package:payments_management/features/historical/screens/historical_scree
 import 'package:payments_management/features/home/screens/home_screen.dart';
 import 'package:payments_management/features/names/screens/names_screen.dart';
 import 'package:payments_management/features/form_edit_payment/screens/form_edit_payment_screen.dart';
+import 'package:payments_management/features/notes/screens/notes_screen.dart';
 import 'package:payments_management/features/payment_details/screens/payment_details_screen.dart';
 import 'package:payments_management/features/profile/screens/profile_screen.dart';
 import 'package:payments_management/features/tasks/screens/tasks_screen.dart';
@@ -139,6 +140,9 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case GroupsScreen.routeName:
       return MaterialPageRoute(
           settings: routeSettings, builder: (_) => const GroupsScreen());
+    case NotesScreen.routeName:
+      return MaterialPageRoute(
+          settings: routeSettings, builder: (_) => const NotesScreen());
     case GroupDetailsScreen.routeName:
       var group = routeSettings.arguments as Group;
       return MaterialPageRoute(

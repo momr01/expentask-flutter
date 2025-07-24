@@ -4,6 +4,7 @@ import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/categories/screens/categories_screen.dart';
 import 'package:payments_management/features/groups/screens/groups_screen.dart';
 import 'package:payments_management/features/historical/screens/historical_screen.dart';
+import 'package:payments_management/features/notes/screens/notes_screen.dart';
 import 'package:payments_management/features/profile/screens/profile_screen.dart';
 import 'package:payments_management/features/tasks/screens/tasks_screen.dart';
 import 'package:payments_management/models/drawer_item.dart';
@@ -47,11 +48,19 @@ final List<DrawerItem> items = [
   //     ProfileScreen.routeName,
   //     [],
   //     false),
-  // DrawerItem(
-  //     'Notas',
-  //     const Icon(
-  //       Icons.note_add,
-  //     ),
+  /* DrawerItem(
+       'Notas',
+       const Icon(
+         Icons.note_add,
+       ),*/
+  DrawerItem(
+      'Notas',
+      const Icon(
+        Icons.notes,
+      ),
+      NotesScreen.routeName,
+      [],
+      false),
   //     ProfileScreen.routeName,
   //     [],
   //     false),
