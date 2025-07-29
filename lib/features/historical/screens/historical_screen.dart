@@ -48,8 +48,7 @@ class _HistoricalScreenState extends State<HistoricalScreen> {
     setState(() {
       _isLoading = true;
     });
-    List<Payment> beforeFilter =
-        await historicalServices.fetchAllPayments(context: context);
+    List<Payment> beforeFilter = await historicalServices.fetchAllPayments();
 
     payments = customFilter(beforeFilter);
     setState(() {

@@ -304,6 +304,14 @@ class _AmountsDialogState extends State<AmountsDialog> {
                       const SizedBox(
                         height: 20,
                       ),
+                      // Text("Resumen: ${_resumen.toStringAsFixed(2)}"),
+                      Text(
+                        "Resumen:  ${formatter.format(_resumen)}",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      /* const SizedBox(
+                        height: 20,
+                      ),*/
                     ],
                   ),
       ),
