@@ -41,6 +41,61 @@ class NotesServices {
     return notesList;
   }
 
+  Future<void> addNote(
+      {required String title,
+      required String content,
+      String? associatedType,
+      String? associatedValue}) async {
+    final userProvider = Provider.of<UserProvider>(
+        NavigatorKeys.navKey.currentContext!,
+        listen: false);
+
+    Map body = {
+      'title': title,
+      'content': content,
+      'associatedType': associatedType,
+      'associatedValue': associatedValue
+    };
+
+    try {
+      http.Response res = await http.post(Uri.parse('$uri/api/notes/add'),
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'x-auth-token': userProvider.user.token
+          },
+          body: jsonEncode(body));
+
+      httpErrorHandle(
+          response: res,
+          context: NavigatorKeys.navKey.currentContext!,
+          onSuccess: () {
+            successModal(
+                context: NavigatorKeys.navKey.currentContext!,
+                description: 'La nota se creó correctamente.',
+                /* onPressed: () 
+              {│
+              Navigator.pop(NavigatorKeys.navKey.currentContext!);
+              Navigator.pop(NavigatorKeys.navKey.currentContext!);
+              }*/
+
+                /* onPressed: () {
+                  Navigator.pop(NavigatorKeys.navKey.currentContext!);
+                  /* final context = NavigatorKeys.navKey.currentContext!;
+                  Navigator.of(context).popUntil((route) => popCount++ >= 2);*/
+                }*/
+                onPressed: () {
+                  final context = NavigatorKeys.navKey.currentContext!;
+                  Navigator.of(context)
+                      .pop(true); // Devuelve resultado al modal anterior
+                  Navigator.of(context).pop(
+                      true); // Devuelve resultado al listado o pantalla principal
+                });
+          });
+    } catch (e) {
+      showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());
+    }
+  }
+
   Future<void> editNote(
       {required String id,
       required String title,
@@ -54,8 +109,8 @@ class NotesServices {
     Map body = {
       'title': title,
       'content': content,
-      'associatedType': associatedType != null ?? associatedType,
-      'associatedValue': associatedValue != null ?? associatedValue
+      'associatedType': associatedType,
+      'associatedValue': associatedValue
     };
 
     try {
@@ -82,13 +137,57 @@ class NotesServices {
                 });*/
                 onPressed: () {
                   final context = NavigatorKeys.navKey.currentContext!;
-                  Navigator.of(context)
-                      .pop(true); // Devuelve resultado al modal anterior
-                  Navigator.of(context).pop(
-                      true); // Devuelve resultado al listado o pantalla principal
+                  // Navigator.pop(NavigatorKeys.navKey.currentContext!);
+                  Navigator.of(context).pop(true);
+                  Navigator.of(context).pop(true);
+                  // Navigator.of(NavigatorKeys.navKey.currentContext!)
+                  //  .pop(true); // Devuelve resultado al modal anterior
+                  // Navigator.of(context).pop(
+                  //   true); // Devuelve resultado al listado o pantalla principal
                 });
           });
     } catch (e) {
+      showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());
+    }
+  }
+
+  Future<void> disableNote(
+      {
+      //required BuildContext context,
+      required String noteId}) async {
+    final userProvider = Provider.of<UserProvider>(
+        NavigatorKeys.navKey.currentContext!,
+        listen: false);
+
+    try {
+      http.Response res =
+          await http.put(Uri.parse('$uri/api/notes/disable/$noteId'), headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'x-auth-token': userProvider.user.token
+      });
+
+      httpErrorHandle(
+          response: res,
+          //context: context,
+          context: NavigatorKeys.navKey.currentContext!,
+          onSuccess: () {
+            successModal(
+                // context: context,
+                context: NavigatorKeys.navKey.currentContext!,
+                description: 'La nota se eliminó correctamente.',
+                // onPressed: () => Navigator.popUntil(
+                //     NavigatorKeys.navKey.currentContext!,
+                //     ModalRoute.withName(GroupsScreen.routeName))
+                // onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                //     NavigatorKeys.navKey.currentContext!,
+                //     GroupsScreen.routeName,
+                //     (route) => false),
+                onPressed: () =>
+                    //  fromSuccessToGroups(NavigatorKeys.navKey.currentContext!)
+                    Navigator.pop(NavigatorKeys.navKey.currentContext!));
+          });
+    } catch (e) {
+      // showSnackBar(context, e.toString());
       showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());
     }
   }

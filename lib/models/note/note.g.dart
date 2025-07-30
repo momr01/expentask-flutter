@@ -13,6 +13,10 @@ Note _$NoteFromJson(Map<String, dynamic> json) => Note(
       associatedValue: json['associatedValue'] == null
           ? null
           : json['associatedValue'] as String,
+      payment: json['payment'] != null
+          ? PaymentNote.fromJson(json['payment'])
+          : null,
+      name: json['name'] != null ? NameNote.fromJson(json['name']) : null,
     );
 
 Map<String, dynamic> _$NoteToJson(Note instance) => <String, dynamic>{
@@ -22,5 +26,7 @@ Map<String, dynamic> _$NoteToJson(Note instance) => <String, dynamic>{
       'dataEntry': instance.dataEntry,
       'isActive': instance.isActive,
       'associatedType': instance.associatedType?.toString(),
-      'associatedValue': instance.associatedValue?.toString()
+      'associatedValue': instance.associatedValue?.toString(),
+      if (instance.payment != null) 'payment': instance.payment!.toString(),
+      if (instance.name != null) 'name': instance.name!.toString(),
     };

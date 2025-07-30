@@ -1,7 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
 import 'package:payments_management/common/widgets/custom_textfield.dart';
 import 'package:payments_management/features/form_edit_payment/services/amount_services.dart';
 import 'package:payments_management/features/form_edit_payment/widgets/composicion_dialog.dart';
@@ -17,13 +15,10 @@ class Registro {
 }
 
 class AmountPaymentSection extends StatefulWidget {
-  // final double importe;
   final TextEditingController controller;
   final String paymentId;
   const AmountPaymentSection(
-      {Key? key, required this.controller, required this.paymentId
-      // required this.importe
-      })
+      {Key? key, required this.controller, required this.paymentId})
       : super(key: key);
 
   @override
@@ -32,52 +27,14 @@ class AmountPaymentSection extends StatefulWidget {
 
 class _AmountPaymentSectionState extends State<AmountPaymentSection> {
   double _importe = 0.0;
-  List<Amount> _registros = [];
+  // List<Amount> _registros = [];
   final AmountServices amountServices = AmountServices();
-  // void openAddMoneyParts() async {
-  //   showDialog<String>(
-  //       barrierDismissible: false,
-  //       context: context,
-  //       builder: (context) => ModalAddMoneyParts());
-  // }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // fetchAmounts();
   }
-
-  /* fetchAmounts() async {
-    setState(() {
-      // _isLoading = true;
-    });
-    /* List<Payment> beforeFilter =
-        await historicalServices.fetchAllPayments(context: context);
-
-    payments = customFilter(beforeFilter);*/
-
-    _registros =
-        await amountServices.fetchPaymentAmounts(paymentId: widget.paymentId);
-    setState(() {
-//      _foundPayments = payments!;
-
-      // _foundPayments.sort((a, b) {
-      // Extraer año y mes de cada período
-      // final yearA = int.parse(a.period.split('-')[1]);
-      // final monthA = int.parse(a.period.split('-')[0]);
-      // final yearB = int.parse(b.period.split('-')[1]);
-      // final monthB = int.parse(b.period.split('-')[0]);
-
-      // // Ordenar primero por año y luego por mes
-      // if (yearA == yearB) {
-      //   return monthA.compareTo(monthB);
-      // }
-      // return yearA.compareTo(yearB);
-
-      //  });
-      // _isLoading = false;
-    });
-  }*/
 
   void openAddMoneyParts() async {
     await showDialog(
@@ -89,7 +46,7 @@ class _AmountPaymentSectionState extends State<AmountPaymentSection> {
         onAceptar: (nuevoImporte, nuevosRegistros) {
           setState(() {
             _importe = nuevoImporte;
-            _registros = nuevosRegistros;
+            // _registros = nuevosRegistros;
             // _controller.text = _importe.toString();
             widget.controller.text = _importe.toString();
           });
@@ -115,10 +72,6 @@ class _AmountPaymentSectionState extends State<AmountPaymentSection> {
                 onTap: openAddMoneyParts, child: const Icon(Icons.add_comment))
           ],
         ),
-        // const Text(
-        //   'Importe:',
-        //   style: TextStyle(fontSize: 18),
-        // ),
         const SizedBox(
           height: 10,
         ),
