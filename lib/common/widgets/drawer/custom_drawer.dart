@@ -59,7 +59,7 @@ final List<DrawerItem> items = [
         Icons.notes,
       ),
       NotesScreen.routeName,
-      [],
+      [false],
       false),
   //     ProfileScreen.routeName,
   //     [],

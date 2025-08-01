@@ -141,8 +141,14 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
           settings: routeSettings, builder: (_) => const GroupsScreen());
     case NotesScreen.routeName:
+      // var isModal = routeSettings.arguments as bool;
+      List<dynamic> args = routeSettings.arguments as List<dynamic>;
       return MaterialPageRoute(
-          settings: routeSettings, builder: (_) => const NotesScreen());
+          settings: routeSettings,
+          builder: (_) => NotesScreen(
+                // isModal: isModal,
+                isModal: args[0],
+              ));
     case GroupDetailsScreen.routeName:
       var group = routeSettings.arguments as Group;
       return MaterialPageRoute(

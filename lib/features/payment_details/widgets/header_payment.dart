@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:payments_management/constants/date_format.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/form_edit_payment/services/amount_services.dart';
+import 'package:payments_management/features/notes/screens/notes_screen.dart';
 import 'package:payments_management/models/amount/amount.dart';
 import 'package:payments_management/models/payment/payment.dart';
 
@@ -58,6 +59,11 @@ class _HeaderPaymentState extends State<HeaderPayment> {
         );
   }
 
+  void openNotesModal() async {
+    showDialog(
+        context: context, builder: (_) => const NotesScreen(isModal: true));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -74,14 +80,14 @@ class _HeaderPaymentState extends State<HeaderPayment> {
           Text(countCompletedTasks(widget.payment.tasks),
               style: const TextStyle(fontWeight: FontWeight.bold))
         ]),
-        const SizedBox(height: 15),
+        const SizedBox(height: 5),
         Row(children: [
           const Text("Vto", style: TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(width: 10),
           Text(datetimeToString(widget.payment.deadline),
               style: const TextStyle(fontWeight: FontWeight.bold))
         ]),
-        const SizedBox(height: 15),
+        const SizedBox(height: 5),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Row(
             children: [
@@ -93,8 +99,31 @@ class _HeaderPaymentState extends State<HeaderPayment> {
             ],
           ),
           GestureDetector(
-              onTap: () => openAmountsModal(), child: Icon(Icons.comment))
+              onTap: () => openAmountsModal(), child: const Icon(Icons.comment))
         ]),
+        const SizedBox(height: 5),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Row(
+              children: [
+                Text("Notas asociadas:"),
+                SizedBox(
+                  width: 10,
+                ),
+                Text("0"),
+              ],
+            ),
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: () => openNotesModal(),
+                  child: const Icon(Icons.notes),
+                )
+              ],
+            )
+          ],
+        )
       ],
     );
   }

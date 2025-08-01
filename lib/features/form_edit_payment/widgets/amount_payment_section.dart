@@ -36,11 +36,51 @@ class _AmountPaymentSectionState extends State<AmountPaymentSection> {
     super.initState();
   }
 
+/*
   void openAddMoneyParts() async {
     await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (_) => ComposicionDialog(
+        // registros: _registros,
+        paymentId: widget.paymentId,
+        onAceptar: (nuevoImporte, nuevosRegistros) {
+          setState(() {
+            _importe = nuevoImporte;
+            // _registros = nuevosRegistros;
+            // _controller.text = _importe.toString();
+            widget.controller.text = _importe.toString();
+          });
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }*/
+  /* void openAddMoneyParts() async {
+  final resultado = await showDialog<(double, List<Registro>)>(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) => ComposicionDialog(
+      paymentId: widget.paymentId,
+    ),
+  );
+
+  if (resultado != null) {
+    final (nuevoImporte, nuevosRegistros) = resultado;
+
+    setState(() {
+      _importe = nuevoImporte;
+      widget.controller.text = _importe.toString();
+      // Podés almacenar `nuevosRegistros` si lo necesitás.
+    });
+  }
+}*/
+
+  void openAddMoneyParts() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => ComposicionProvider(
         // registros: _registros,
         paymentId: widget.paymentId,
         onAceptar: (nuevoImporte, nuevosRegistros) {

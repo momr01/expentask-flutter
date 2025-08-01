@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:payments_management/features/form_edit_payment/services/amount_services.dart';
 import 'package:payments_management/models/amount/amount.dart';
+import 'package:provider/provider.dart';
 
 /*Future<void> eliminarRegistroDesdeAPI(String id) async {
   await Future.delayed(Duration(seconds: 1));
   print('Registro con id $id eliminado');
 }*/
 
+/*
 class ComposicionDialog extends StatefulWidget {
   final String paymentId;
   final void Function(double nuevoImporte, List<Amount> nuevosRegistros)
@@ -206,6 +208,205 @@ class _ComposicionDialogState extends State<ComposicionDialog> {
         ),
         TextButton(
           onPressed: _agregarRegistro,
+          child: const Icon(Icons.add),
+        ),
+      ],
+    );
+  }
+}
+*/
+
+class ComposicionViewModel extends ChangeNotifier {
+  final String paymentId;
+  final AmountServices _amountServices = AmountServices();
+
+  List<Amount> registros = [];
+  double resumen = 0.0;
+  bool cargando = true;
+
+  ComposicionViewModel({required this.paymentId}) {
+    cargarRegistros();
+  }
+
+  Future<void> cargarRegistros() async {
+    cargando = true;
+    notifyListeners();
+
+    registros = await _amountServices.fetchPaymentAmounts(paymentId: paymentId);
+    _actualizarResumen();
+
+    cargando = false;
+    notifyListeners();
+  }
+
+  void _actualizarResumen() {
+    resumen = registros.fold(0.0, (suma, r) => suma + r.amount);
+  }
+
+  void ajustarResumen(String tipo) {
+    if (tipo == "TOTAL") {
+      _actualizarResumen();
+    } else if (tipo == "MITAD") {
+      resumen = resumen / 2;
+    } else if (tipo == "CERO") {
+      resumen = 0.0;
+    }
+    notifyListeners();
+  }
+
+  Future<void> eliminarRegistro(int index) async {
+    await _amountServices.disableAmount(amountId: registros[index].id!);
+    await cargarRegistros();
+  }
+}
+
+class ComposicionProvider extends StatelessWidget {
+  final String paymentId;
+  final void Function(double resumen, List<Amount> registros) onAceptar;
+
+  const ComposicionProvider({
+    super.key,
+    required this.paymentId,
+    required this.onAceptar,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => ComposicionViewModel(paymentId: paymentId),
+      child: ComposicionDialog(onAceptar: onAceptar),
+    );
+  }
+}
+
+class ComposicionDialog extends StatelessWidget {
+  final void Function(double resumen, List<Amount> registros) onAceptar;
+
+  const ComposicionDialog({super.key, required this.onAceptar});
+
+  @override
+  Widget build(BuildContext context) {
+    final vm = context.watch<ComposicionViewModel>();
+    final formatter = NumberFormat.currency(locale: 'es_AR', symbol: r'$');
+
+    return AlertDialog(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text("Composición del importe"),
+          IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      ),
+      content: SizedBox(
+        width: double.maxFinite,
+        height: 400,
+        child: vm.cargando
+            ? const Center(child: CircularProgressIndicator())
+            : Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: vm.registros.length,
+                      itemBuilder: (_, index) {
+                        final r = vm.registros[index];
+                        return ListTile(
+                          title: Text(
+                              "${DateFormat('dd/MM/yyyy').format(r.date)} - ${r.description}"),
+                          subtitle: Text(
+                            formatter.format(r.amount),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.edit),
+                                onPressed: () async {
+                                  final result = await showDialog(
+                                    context: context,
+                                    builder: (_) => RegistroDialog(
+                                      registro: r,
+                                      paymentId: vm.paymentId,
+                                    ),
+                                  );
+                                  if (result == true) vm.cargarRegistros();
+                                },
+                              ),
+                              IconButton(
+                                icon:
+                                    const Icon(Icons.delete, color: Colors.red),
+                                onPressed: () async {
+                                  final confirm = await showDialog<bool>(
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                      title: const Text("Confirmar"),
+                                      content: const Text(
+                                          "¿Eliminar este registro?"),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, false),
+                                            child: const Text("Cancelar")),
+                                        TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, true),
+                                            child: const Text("Eliminar")),
+                                      ],
+                                    ),
+                                  );
+                                  if (confirm == true) {
+                                    await vm.eliminarRegistro(index);
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    "Resumen: ${formatter.format(vm.resumen)}",
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                          onPressed: () => vm.ajustarResumen("TOTAL"),
+                          child: const Text("TOTAL")),
+                      TextButton(
+                          onPressed: () => vm.ajustarResumen("MITAD"),
+                          child: const Text("MITAD")),
+                      TextButton(
+                          onPressed: () => vm.ajustarResumen("CERO"),
+                          child: const Text("CERO")),
+                    ],
+                  ),
+                ],
+              ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text("Cancelar"),
+        ),
+        TextButton(
+          onPressed: () => onAceptar(vm.resumen, vm.registros),
+          child: const Text("Aceptar"),
+        ),
+        TextButton(
+          onPressed: () async {
+            final result = await showDialog(
+              context: context,
+              builder: (_) => RegistroDialog(paymentId: vm.paymentId),
+            );
+            if (result == true) vm.cargarRegistros();
+          },
           child: const Icon(Icons.add),
         ),
       ],

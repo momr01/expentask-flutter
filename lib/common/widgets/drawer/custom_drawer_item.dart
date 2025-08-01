@@ -9,7 +9,8 @@ class CustomDrawerItem extends StatelessWidget {
   final String title;
   final String route;
   final bool closeSession;
-  final List<HistoricalFilter> args;
+  // final List<HistoricalFilter> args;
+  final List args;
   const CustomDrawerItem(
       {Key? key,
       required this.icon,

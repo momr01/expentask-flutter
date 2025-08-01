@@ -6,7 +6,8 @@ class DrawerItem {
   final String title;
   final Icon icon;
   final String route;
-  final List<HistoricalFilter> args;
+  //final List<HistoricalFilter> args;
+  final List args;
   final bool closeSession;
 
   DrawerItem(
