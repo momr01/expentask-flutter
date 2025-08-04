@@ -304,121 +304,26 @@ class _NotesScreenState extends State<NotesScreen> {
             content: SizedBox(
               width: double.maxFinite,
               child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextField(
-                      controller: _searchController,
-                      decoration: const InputDecoration(
-                        labelText: 'Buscar nota',
-                        prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder(),
-                      ),
-                      onChanged: (val) {
-                        setState(() => _searchQuery = val);
-                      },
-                    ),
-                    const SizedBox(height: 12),
-                    SizedBox(
-                      height:
-                          300, // ✅ Fijamos altura para que funcione bien en el diálogo
-                      child: _isLoading
-                          ? const Center(child: CircularProgressIndicator())
-                          : _filteredNotes.isEmpty
-                              ? const Center(child: Text('No existen notas'))
-                              : GridView.builder(
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 3 / 2,
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 10,
-                                  ),
-                                  itemCount: _filteredNotes.length,
-                                  itemBuilder: (ctx, i) {
-                                    final note = _filteredNotes[i];
-                                    return GestureDetector(
-                                      onTap: () => showDialog(
-                                        context: context,
-                                        builder: (_) => AlertDialog(
-                                          title: Text("note.name"),
-                                          content: Text(note.content),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                              child: const Text('Cerrar'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                _addOrEditNote(note: note);
-                                              },
-                                              child: const Text('Editar'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                _deleteNote(note);
-                                              },
-                                              child: const Text('Eliminar'),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      child: Card(
-                                        elevation: 4,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text("note.name",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleMedium),
-                                              const SizedBox(height: 4),
-                                              Expanded(
-                                                child: Text(
-                                                  note.content,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 4,
-                                                ),
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  IconButton(
-                                                    icon: const Icon(Icons.edit,
-                                                        size: 20),
-                                                    onPressed: () =>
-                                                        _addOrEditNote(
-                                                            note: note),
-                                                  ),
-                                                  IconButton(
-                                                    icon: const Icon(
-                                                        Icons.delete,
-                                                        size: 20),
-                                                    onPressed: () =>
-                                                        _deleteNote(note),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                    ),
-                  ],
+                child: NotesMainGrid(
+                  isModal: true,
+                  // searchController: searchController,
+                  // searchQuery: searchQuery,
+                  // onSearchChanged: onSearchChanged,
+                  // isLoading: isLoading,
+                  // filteredNotes: filteredNotes,
+                  // onEditNote: onEditNote,
+                  // onDeleteNote: onDeleteNote
+                  searchController: _searchController,
+                  searchQuery: _searchQuery,
+                  onSearchChanged: (val) {
+                    setState(() {
+                      _searchQuery = val;
+                    });
+                  },
+                  isLoading: _isLoading,
+                  filteredNotes: _filteredNotes,
+                  onEditNote: _addOrEditNote,
+                  onDeleteNote: _deleteNote,
                 ),
               ),
             ),
