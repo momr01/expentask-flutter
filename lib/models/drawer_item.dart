@@ -6,7 +6,7 @@ class DrawerItem {
   final String title;
   final Icon icon;
   final String route;
-  //final List<HistoricalFilter> args;
+  final List<HistoricalFilter> argsHistorical;
   final List args;
   final bool closeSession;
 
@@ -14,6 +14,7 @@ class DrawerItem {
     this.title,
     this.icon,
     this.route,
+    this.argsHistorical,
     this.args,
     this.closeSession,
   );

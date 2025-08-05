@@ -41,6 +41,67 @@ class NotesServices {
     return notesList;
   }
 
+  Future<List<Note>> fetchPaymentNotes({required String paymentId}) async {
+    final userProvider = Provider.of<UserProvider>(
+        NavigatorKeys.navKey.currentContext!,
+        listen: false);
+    List<Note> notesList = [];
+
+    try {
+      http.Response res = await http.get(
+          Uri.parse('$uri/api/notes/getPaymentNotes/$paymentId'),
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'x-auth-token': userProvider.user.token
+          });
+
+      httpErrorHandle(
+          response: res,
+          context: NavigatorKeys.navKey.currentContext!,
+          onSuccess: () {
+            for (int i = 0; i < jsonDecode(res.body).length; i++) {
+              notesList
+                  // .add(Payment.fromJson(jsonEncode(jsonDecode(res.body)[i])));
+                  .add(Note.fromJson(jsonDecode(res.body)[i]));
+              //from json accepts string, jsondecode is an object
+            }
+          });
+    } catch (e) {
+      showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());
+    }
+    return notesList;
+  }
+
+  Future<List<Note>> fetchNameNotes({required String nameId}) async {
+    final userProvider = Provider.of<UserProvider>(
+        NavigatorKeys.navKey.currentContext!,
+        listen: false);
+    List<Note> notesList = [];
+
+    try {
+      http.Response res = await http
+          .get(Uri.parse('$uri/api/notes/getNameNotes/$nameId'), headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'x-auth-token': userProvider.user.token
+      });
+
+      httpErrorHandle(
+          response: res,
+          context: NavigatorKeys.navKey.currentContext!,
+          onSuccess: () {
+            for (int i = 0; i < jsonDecode(res.body).length; i++) {
+              notesList
+                  // .add(Payment.fromJson(jsonEncode(jsonDecode(res.body)[i])));
+                  .add(Note.fromJson(jsonDecode(res.body)[i]));
+              //from json accepts string, jsondecode is an object
+            }
+          });
+    } catch (e) {
+      showSnackBar(NavigatorKeys.navKey.currentContext!, e.toString());
+    }
+    return notesList;
+  }
+
   Future<void> addNote(
       {required String title,
       required String content,

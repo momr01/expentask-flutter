@@ -115,6 +115,8 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case HistoricalScreen.routeName:
       List<HistoricalFilter> args =
           routeSettings.arguments as List<HistoricalFilter>;
+      // List<dynamic> args =
+      //     routeSettings.arguments as List<dynamic>;
       return MaterialPageRoute(
           settings: routeSettings,
           builder: (_) => HistoricalScreen(

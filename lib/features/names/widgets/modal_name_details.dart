@@ -7,6 +7,7 @@ import 'package:payments_management/common/widgets/modals/modal_confirmation/mod
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/names/services/names_services.dart';
 import 'package:payments_management/features/names/utils/names_utils.dart';
+import 'package:payments_management/features/payment_details/widgets/notes_row.dart';
 import 'package:payments_management/models/name/payment_name.dart';
 
 class ModalNameDetails extends StatefulWidget {
@@ -80,8 +81,8 @@ class _ModalNameDetailsState extends State<ModalNameDetails> {
               )),
             ])),
           ]),
-          const SizedBox(height: 30),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+          const SizedBox(height: 10),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             const Text('Categoría:', style: TextStyle(fontSize: 20)),
             Flexible(
                 child: ColorRoundedItem(
@@ -93,7 +94,15 @@ class _ModalNameDetailsState extends State<ModalNameDetails> {
             )),
           ]),
           const SizedBox(
-            height: 40,
+            height: 10,
+          ),
+          NotesRow(
+            isPayment: false,
+            //  id: widget.name.id,
+            name: widget.name,
+          ),
+          const SizedBox(
+            height: 30,
           ),
           Row(
             children: [

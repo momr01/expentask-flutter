@@ -16,7 +16,19 @@ import 'package:payments_management/models/payment/payment.dart';
 class NotesScreen extends StatefulWidget {
   static const String routeName = '/notes';
   final bool isModal;
-  const NotesScreen({super.key, required this.isModal});
+  final bool hasId;
+  // final String? paymentId;
+  // final String? nameId;
+  final Payment? payment;
+  final PaymentName? name;
+  const NotesScreen(
+      {super.key,
+      required this.isModal,
+      // this.paymentId,
+      this.hasId = false,
+      //this.nameId
+      this.payment,
+      this.name});
 
   @override
   State<NotesScreen> createState() => _NotesScreenState();
@@ -47,7 +59,12 @@ class _NotesScreenState extends State<NotesScreen> {
 
   Future<void> _loadNotes() async {
     setState(() => _isLoading = true);
-    final data = await notesServices.fetchAllNotes();
+    final data = widget.hasId
+        ? widget.payment != null
+            ? await notesServices.fetchPaymentNotes(
+                paymentId: widget.payment!.id!)
+            : await notesServices.fetchNameNotes(nameId: widget.name!.id!)
+        : await notesServices.fetchAllNotes();
     setState(() {
       _notes = data;
       _isLoading = false;
@@ -60,6 +77,21 @@ class _NotesScreenState extends State<NotesScreen> {
       context: context,
       builder: (_) => ModalAddEditNote(
         note: note,
+        hasAssocType: widget.hasId
+            ? widget.payment != null
+                ? "PAGO"
+                : "NOMBRE"
+            : null,
+        hasAssocValue: widget.hasId
+            ? widget.payment != null
+                ? widget.payment!.id
+                : widget.name!.id
+            : null,
+        hasAssocName: widget.hasId
+            ? widget.payment != null
+                ? widget.payment!.name.name
+                : widget.name!.name
+            : null,
       ),
     );
 
@@ -300,7 +332,7 @@ class _NotesScreenState extends State<NotesScreen> {
             ),
           )
         : AlertDialog(
-            title: const Text("Notas"),
+            title: const Center(child: Text("Notas")),
             content: SizedBox(
               width: double.maxFinite,
               child: SingleChildScrollView(
@@ -328,6 +360,10 @@ class _NotesScreenState extends State<NotesScreen> {
               ),
             ),
             actions: [
+              TextButton(
+                onPressed: () => _addOrEditNote(),
+                child: const Text('Nueva'),
+              ),
               TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: const Text('Cerrar'),

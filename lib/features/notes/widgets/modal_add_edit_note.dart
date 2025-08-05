@@ -6,10 +6,15 @@ import 'package:payments_management/models/note/note.dart';
 
 class ModalAddEditNote extends StatefulWidget {
   final Note? note;
-  const ModalAddEditNote({
-    super.key,
-    this.note,
-  });
+  final String? hasAssocType;
+  final String? hasAssocValue;
+  final String? hasAssocName;
+  const ModalAddEditNote(
+      {super.key,
+      this.note,
+      this.hasAssocType,
+      this.hasAssocValue,
+      this.hasAssocName});
 
   @override
   State<ModalAddEditNote> createState() => _NoteFormDialogState();
@@ -35,6 +40,22 @@ class _NoteFormDialogState extends State<ModalAddEditNote> {
         _isAssociated = true;
         _assocType = widget.note!.associatedType;
         _assocValue = widget.note!.associatedValue;
+      }
+    }
+
+    ////////////////////////////
+
+    if (widget.hasAssocType != null) {
+      if (widget.hasAssocType == "PAGO") {
+        _isAssociated = true;
+        _assocType = "PAGO";
+        _assocValue = widget.hasAssocValue!;
+        _assocName = widget.hasAssocName;
+      } else {
+        _isAssociated = true;
+        _assocType = "NOMBRE";
+        _assocValue = widget.hasAssocValue!;
+        _assocName = widget.hasAssocName;
       }
     }
   }

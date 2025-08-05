@@ -13,15 +13,16 @@ import 'package:provider/provider.dart';
 
 final List<DrawerItem> items = [
   DrawerItem('Historial', const Icon(Icons.history_outlined),
-      HistoricalScreen.routeName, [], false),
-  DrawerItem(
-      'Tareas', const Icon(Icons.home_work), TasksScreen.routeName, [], false),
+      HistoricalScreen.routeName, [], [], false),
+  DrawerItem('Tareas', const Icon(Icons.home_work), TasksScreen.routeName, [],
+      [], false),
   DrawerItem(
       'Categorías',
       const Icon(
         Icons.category,
       ),
       CategoriesScreen.routeName,
+      [],
       [],
       false),
   DrawerItem(
@@ -30,6 +31,7 @@ final List<DrawerItem> items = [
         Icons.list,
       ),
       GroupsScreen.routeName,
+      [],
       [],
       false),
   // DrawerItem(
@@ -59,6 +61,7 @@ final List<DrawerItem> items = [
         Icons.notes,
       ),
       NotesScreen.routeName,
+      [],
       [false],
       false),
   //     ProfileScreen.routeName,
@@ -78,6 +81,7 @@ final List<DrawerItem> items = [
         Icons.logout,
       ),
       '',
+      [],
       [],
       true),
 ];
@@ -117,7 +121,9 @@ class CustomDrawer extends StatelessWidget {
                       icon: items[index].icon,
                       title: items[index].title,
                       route: items[index].route,
-                      args: items[index].args,
+                      args: items[index].title == 'Historial'
+                          ? items[index].argsHistorical
+                          : items[index].args,
                       closeSession: items[index].closeSession,
                     )),
           )

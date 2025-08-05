@@ -6,6 +6,7 @@ import 'package:payments_management/constants/date_format.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/form_edit_payment/services/amount_services.dart';
 import 'package:payments_management/features/notes/screens/notes_screen.dart';
+import 'package:payments_management/features/payment_details/widgets/notes_row.dart';
 import 'package:payments_management/models/amount/amount.dart';
 import 'package:payments_management/models/payment/payment.dart';
 
@@ -61,7 +62,12 @@ class _HeaderPaymentState extends State<HeaderPayment> {
 
   void openNotesModal() async {
     showDialog(
-        context: context, builder: (_) => const NotesScreen(isModal: true));
+        context: context,
+        builder: (_) => NotesScreen(
+              isModal: true,
+              //paymentId: widget.payment.id!,
+              payment: widget.payment,
+            ));
   }
 
   @override
@@ -102,7 +108,7 @@ class _HeaderPaymentState extends State<HeaderPayment> {
               onTap: () => openAmountsModal(), child: const Icon(Icons.comment))
         ]),
         const SizedBox(height: 5),
-        Row(
+        /*Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Row(
@@ -123,6 +129,10 @@ class _HeaderPaymentState extends State<HeaderPayment> {
               ],
             )
           ],
+        )*/
+        NotesRow(
+          // id: widget.payment.id,
+          payment: widget.payment,
         )
       ],
     );
