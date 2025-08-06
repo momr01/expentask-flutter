@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:payments_management/constants/date_format.dart';
 import 'package:payments_management/constants/utils.dart';
+import 'package:payments_management/features/form_edit_payment/widgets/composicion_dialog.dart';
 import 'package:payments_management/features/historical/widgets/state_payment_card.dart';
 import 'package:payments_management/features/payment_details/widgets/header_payment.dart';
 import 'package:payments_management/models/payment/payment.dart';
@@ -48,9 +49,25 @@ class _DetailsHeaderState extends State<DetailsHeader> {
       await showDialog(
           context: context,
           barrierDismissible: false,
-          builder: (_) => AmountsDialog(
+          /* builder: (_) => AmountsDialog(
                 paymentId: widget.payment.id!,
-              ) /*ComposicionDialog(
+              )*/
+          builder: (_) => ComposicionProvider(
+                paymentId: widget.payment.id!,
+                /*onAceptar: (nuevoImporte, nuevosRegistros) {
+              setState(() {
+                // _importe = nuevoImporte;
+                // _registros = nuevosRegistros;
+                // _controller.text = _importe.toString();
+                // widget.controller.text = _importe.toString();
+              });
+              Navigator.pop(context);
+            }*/
+                // onAceptar: null,
+                onlySee: true,
+              )
+
+          /*ComposicionDialog(
         // registros: _registros,
         paymentId: widget.paymentId,
         onAceptar: (nuevoImporte, nuevosRegistros) {

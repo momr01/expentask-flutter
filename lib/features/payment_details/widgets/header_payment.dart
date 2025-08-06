@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:payments_management/constants/date_format.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/form_edit_payment/services/amount_services.dart';
+import 'package:payments_management/features/form_edit_payment/widgets/composicion_dialog.dart';
 import 'package:payments_management/features/notes/screens/notes_screen.dart';
 import 'package:payments_management/features/payment_details/widgets/notes_row.dart';
 import 'package:payments_management/models/amount/amount.dart';
@@ -42,9 +43,27 @@ class _HeaderPaymentState extends State<HeaderPayment> {
     await showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (_) => AmountsDialog(
+        /*  builder: (_) => AmountsDialog(
               paymentId: widget.payment.id!,
-            ) /*ComposicionDialog(
+            )
+            */
+
+        builder: (_) => ComposicionProvider(
+              paymentId: widget.payment.id!,
+              /*onAceptar: (nuevoImporte, nuevosRegistros) {
+              setState(() {
+                // _importe = nuevoImporte;
+                // _registros = nuevosRegistros;
+                // _controller.text = _importe.toString();
+                // widget.controller.text = _importe.toString();
+              });
+              Navigator.pop(context);
+            }*/
+              // onAceptar: null,
+              onlySee: true,
+            )
+
+        /*ComposicionDialog(
         // registros: _registros,
         paymentId: widget.paymentId,
         onAceptar: (nuevoImporte, nuevosRegistros) {
@@ -139,6 +158,8 @@ class _HeaderPaymentState extends State<HeaderPayment> {
   }
 }
 
+
+/*
 class AmountsDialog extends StatefulWidget {
   final String paymentId;
   const AmountsDialog({super.key, required this.paymentId});
@@ -363,3 +384,4 @@ class _AmountsDialogState extends State<AmountsDialog> {
     );
   }
 }
+*/

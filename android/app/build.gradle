@@ -1,3 +1,9 @@
+
+
+
+
+
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -21,9 +27,11 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
 
 android {
     //local notifications
@@ -33,7 +41,10 @@ android {
     //compileSdkVersion rootProject.ext.compileSdkVersion
 
     //compileSdkVersion flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+    
+    
+    //ndkVersion flutter.ndkVersion
+    ndkVersion "25.1.8937393"
 
     compileOptions {
         //local notifications
@@ -108,3 +119,5 @@ dependencies {
      //implementation 'com.android.support:multidex:2.0.1' //enter the latest multidex version
      implementation 'androidx.multidex:multidex:2.0.1'
 }
+
+

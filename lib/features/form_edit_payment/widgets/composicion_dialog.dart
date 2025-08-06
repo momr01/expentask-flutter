@@ -262,42 +262,58 @@ class ComposicionViewModel extends ChangeNotifier {
 
 class ComposicionProvider extends StatelessWidget {
   final String paymentId;
-  final void Function(double resumen, List<Amount> registros) onAceptar;
+  final void Function(double resumen, List<Amount> registros)? onAceptar;
+  final bool onlySee;
 
-  const ComposicionProvider({
-    super.key,
-    required this.paymentId,
-    required this.onAceptar,
-  });
+  const ComposicionProvider(
+      {super.key,
+      required this.paymentId,
+      //required this.onAceptar,
+      this.onAceptar,
+      this.onlySee = false});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => ComposicionViewModel(paymentId: paymentId),
-      child: ComposicionDialog(onAceptar: onAceptar),
+      child: ComposicionDialog(
+        onAceptar: onlySee ? null : onAceptar,
+        onlySee: onlySee,
+      ),
     );
   }
 }
 
 class ComposicionDialog extends StatelessWidget {
-  final void Function(double resumen, List<Amount> registros) onAceptar;
+  final bool onlySee;
+  final void Function(double resumen, List<Amount> registros)? onAceptar;
 
-  const ComposicionDialog({super.key, required this.onAceptar});
+  const ComposicionDialog(
+      {super.key, required this.onAceptar, required this.onlySee});
 
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<ComposicionViewModel>();
-    final formatter = NumberFormat.currency(locale: 'es_AR', symbol: r'$');
+    //  final formatter = NumberFormat.currency(locale: 'es_AR', symbol: r'$');
+    final formatter = NumberFormat.currency(
+      locale: 'es_AR',
+      symbol: r'$',
+      decimalDigits: 2,
+      customPattern: "¤ #,##0.00", // ¤ (símbolo) seguido de espacio
+    );
 
     return AlertDialog(
       title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment:
+            onlySee ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
         children: [
           const Text("Composición del importe"),
-          IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: () => Navigator.pop(context),
-          ),
+          onlySee
+              ? const SizedBox()
+              : IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.pop(context),
+                ),
         ],
       ),
       content: SizedBox(
@@ -305,111 +321,141 @@ class ComposicionDialog extends StatelessWidget {
         height: 400,
         child: vm.cargando
             ? const Center(child: CircularProgressIndicator())
-            : Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: vm.registros.length,
-                      itemBuilder: (_, index) {
-                        final r = vm.registros[index];
-                        return ListTile(
-                          title: Text(
-                              "${DateFormat('dd/MM/yyyy').format(r.date)} - ${r.description}"),
-                          subtitle: Text(
-                            formatter.format(r.amount),
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () async {
-                                  final result = await showDialog(
-                                    context: context,
-                                    builder: (_) => RegistroDialog(
-                                      registro: r,
-                                      paymentId: vm.paymentId,
-                                    ),
-                                  );
-                                  if (result == true) vm.cargarRegistros();
-                                },
+            : vm.registros.isEmpty
+                ? const Center(
+                    child: Text("No existen datos para mostrar."),
+                  )
+                : Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: vm.registros.length,
+                          itemBuilder: (_, index) {
+                            final r = vm.registros[index];
+                            return ListTile(
+                              title: Text(onlySee
+                                  ? DateFormat('dd/MM/yyyy').format(r.date)
+                                  : "${DateFormat('dd/MM/yyyy').format(r.date)} - ${r.description}"),
+                              subtitle: Text(
+                                onlySee
+                                    ? r.description
+                                    : formatter.format(r.amount),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
-                              IconButton(
-                                icon:
-                                    const Icon(Icons.delete, color: Colors.red),
-                                onPressed: () async {
-                                  final confirm = await showDialog<bool>(
-                                    context: context,
-                                    builder: (_) => AlertDialog(
-                                      title: const Text("Confirmar"),
-                                      content: const Text(
-                                          "¿Eliminar este registro?"),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, false),
-                                            child: const Text("Cancelar")),
-                                        TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, true),
-                                            child: const Text("Eliminar")),
+                              trailing: onlySee
+                                  ? Text(
+                                      formatter.format(r.amount),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15),
+                                    )
+                                  : Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          onPressed: () async {
+                                            final result = await showDialog(
+                                              context: context,
+                                              builder: (_) => RegistroDialog(
+                                                registro: r,
+                                                paymentId: vm.paymentId,
+                                              ),
+                                            );
+                                            if (result == true)
+                                              vm.cargarRegistros();
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete,
+                                              color: Colors.red),
+                                          onPressed: () async {
+                                            final confirm =
+                                                await showDialog<bool>(
+                                              context: context,
+                                              builder: (_) => AlertDialog(
+                                                title: const Text("Confirmar"),
+                                                content: const Text(
+                                                    "¿Eliminar este registro?"),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              context, false),
+                                                      child: const Text(
+                                                          "Cancelar")),
+                                                  TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              context, true),
+                                                      child: const Text(
+                                                          "Eliminar")),
+                                                ],
+                                              ),
+                                            );
+                                            if (confirm == true) {
+                                              await vm.eliminarRegistro(index);
+                                            }
+                                          },
+                                        ),
                                       ],
                                     ),
-                                  );
-                                  if (confirm == true) {
-                                    await vm.eliminarRegistro(index);
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    "Resumen: ${formatter.format(vm.resumen)}",
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextButton(
-                          onPressed: () => vm.ajustarResumen("TOTAL"),
-                          child: const Text("TOTAL")),
-                      TextButton(
-                          onPressed: () => vm.ajustarResumen("MITAD"),
-                          child: const Text("MITAD")),
-                      TextButton(
-                          onPressed: () => vm.ajustarResumen("CERO"),
-                          child: const Text("CERO")),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        "Resumen: ${formatter.format(vm.resumen)}",
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      onlySee
+                          ? const SizedBox()
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TextButton(
+                                    onPressed: () => vm.ajustarResumen("TOTAL"),
+                                    child: const Text("TOTAL")),
+                                TextButton(
+                                    onPressed: () => vm.ajustarResumen("MITAD"),
+                                    child: const Text("MITAD")),
+                                TextButton(
+                                    onPressed: () => vm.ajustarResumen("CERO"),
+                                    child: const Text("CERO")),
+                              ],
+                            ),
                     ],
                   ),
-                ],
-              ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text("Cancelar"),
-        ),
-        TextButton(
-          onPressed: () => onAceptar(vm.resumen, vm.registros),
-          child: const Text("Aceptar"),
-        ),
-        TextButton(
-          onPressed: () async {
-            final result = await showDialog(
-              context: context,
-              builder: (_) => RegistroDialog(paymentId: vm.paymentId),
-            );
-            if (result == true) vm.cargarRegistros();
-          },
-          child: const Icon(Icons.add),
-        ),
-      ],
+      actions: onlySee
+          ? [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("CERRAR"),
+              ),
+            ]
+          : [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("Cancelar"),
+              ),
+              TextButton(
+                onPressed: () => onAceptar!(vm.resumen, vm.registros),
+                child: const Text("Aceptar"),
+              ),
+              TextButton(
+                onPressed: () async {
+                  final result = await showDialog(
+                    context: context,
+                    builder: (_) => RegistroDialog(paymentId: vm.paymentId),
+                  );
+                  if (result == true) vm.cargarRegistros();
+                },
+                child: const Icon(Icons.add),
+              ),
+            ],
     );
   }
 }
