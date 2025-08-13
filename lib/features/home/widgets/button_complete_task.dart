@@ -75,7 +75,7 @@ class _ButtonCompleteTaskState extends State<ButtonCompleteTask> {
       ),
       onPressed: widget.task.isCompleted ? null : openCompleteModal,
       child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 5),
           child: SizedBox(
               width: 160,
               child: Row(children: [

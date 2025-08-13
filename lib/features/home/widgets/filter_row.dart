@@ -47,47 +47,6 @@ class _FilterRowState extends State<FilterRow> {
 
   void _filterHasInstallments(String type, {String? keyword}) {
     setState(() {
-      // switch (type) {
-      //   case "individual":
-      //     {
-      //       _foundPayments = widget.payments
-      //           .where((payment) => !payment.hasInstallments)
-      //           .toList();
-
-      //       _updateFilterState(type);
-      //     }
-
-      //     break;
-      //   case "installments":
-      //     {
-      //       _foundPayments = widget.payments
-      //           .where((payment) => payment.hasInstallments)
-      //           .toList();
-
-      //       _updateFilterState(type);
-      //     }
-      //     break;
-      //   case "all":
-      //     {
-      //       _foundPayments = widget.payments;
-
-      //       _updateFilterState(type);
-      //     }
-      //     break;
-      //   case "search":
-      //     {
-      //       _foundPayments = runFilter<Payment>(
-      //         keyword!,
-      //         widget.payments,
-      //         (payment) => payment.name.name
-      //             .toLowerCase()
-      //             .contains(keyword.toLowerCase()),
-      //       );
-      //     }
-      //     break;
-      // }
-      // widget.onPaymentsFiltered(_foundPayments); // Notificamos al widget padre
-
       // Buscar el filtro en la lista
       var selectedFilter = filterData
           .firstWhere((filter) => filter["type"] == type, orElse: () => {});

@@ -3,6 +3,7 @@ import 'package:payments_management/common/layouts/title_search_layout.dart';
 import 'package:payments_management/common/utils/fetch_data.dart';
 import 'package:payments_management/common/utils/run_filter.dart';
 import 'package:payments_management/common/widgets/conditional_list_view/conditional_list_view.dart';
+import 'package:payments_management/common/widgets/float_btn.dart';
 import 'package:payments_management/common/widgets/loader.dart';
 import 'package:payments_management/common/widgets/modals/modal_confirmation/modal_confirmation.dart';
 import 'package:payments_management/common/widgets/modals/modal_form/modal_form_dialog.dart';
@@ -50,7 +51,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
   fetchAllCategories() async {
     fetchData(
-        context: context,
+        //  context: context,
         fetchFunction: categoriesServices.fetchCategories,
         onStart: () => setState(() => _isLoading = true),
         onSuccess: (items) => setState(() {
@@ -105,9 +106,15 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             ));
   }
 
+  Future<void> _refreshData() async {
+    fetchAllCategories();
+    _searchController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return TitleSearchLayout(
+      refreshData: _refreshData,
       isLoading: _isLoading,
       title: 'Categorías',
       searchController: _searchController,
@@ -115,7 +122,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       searchPlaceholder: "Buscar categoría...",
       // withFloatBtn: ,
       withFloatBtn: true,
-      onTapFloatBtn: addNewCategory,
+      // onTapFloatBtn: addNewCategory,
+      floatBtn: FloatBtn(
+        loadFloatBtn: false,
+        onTapFloatBtn: addNewCategory,
+      ),
       child: ConditionalListView(
         items: categories,
         foundItems: _foundCategories,

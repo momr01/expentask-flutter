@@ -94,7 +94,7 @@ class PaymentCard extends StatelessWidget {
       child: SizedBox(
         width: width - 30,
         child: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(5),
             child: Column(
               //  crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
@@ -123,7 +123,7 @@ class PaymentCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(
-                  height: 15,
+                  height: 5,
                 ),
 
                 // ElevatedButton(
@@ -178,11 +178,11 @@ class PaymentCard extends StatelessWidget {
                         capitalizeFirstLetter(payment.name.name),
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                            fontSize: 25.0, fontWeight: FontWeight.bold),
+                            fontSize: 20.0, fontWeight: FontWeight.bold),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 5),
                       Text(
                           //'Vto ${datetimeToString(payment.deadline)}',
                           'Período ${payment.period}',
@@ -195,7 +195,7 @@ class PaymentCard extends StatelessWidget {
                     ? Center(
                         child: Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 20),
+                                horizontal: 8, vertical: 10),
                             decoration: BoxDecoration(
                                 color: GlobalVariables.whiteColor,
                                 // border: Border.all(),
@@ -221,7 +221,7 @@ class PaymentCard extends StatelessWidget {
                                       color: GlobalVariables.primaryColor),
                                 ),
                                 const SizedBox(
-                                  height: 15,
+                                  height: 10,
                                 ),
                                 Wrap(
                                     spacing: 20.0,
@@ -276,7 +276,7 @@ class PaymentCard extends StatelessWidget {
                                 payment: payment,
                                 amount: payment.amount)
                       ])),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
               ],
             )),
       ),

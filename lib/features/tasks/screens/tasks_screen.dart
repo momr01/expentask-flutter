@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:payments_management/common/layouts/title_search_layout.dart';
 import 'package:payments_management/common/utils/run_filter.dart';
-import 'package:payments_management/common/widgets/conditional_list_view/conditional_list_view.dart';
 import 'package:payments_management/common/widgets/custom_app_bar.dart';
 import 'package:payments_management/common/widgets/drawer/custom_drawer.dart';
 import 'package:payments_management/common/widgets/loader.dart';
@@ -42,16 +40,8 @@ class _TasksScreenState extends State<TasksScreen> {
   }
 
   void fetchAllTaskCodes() {
-    /* setState(() {
-      _isLoading = true;
-    });
-    taskCodes = await tasksServices.fetchOwnTaskCodes();
-    setState(() {
-      _foundTaskCodes = taskCodes!;
-      _isLoading = false;
-    });*/
     fetchData<TaskCode>(
-        context: context,
+        // context: context,
         fetchFunction: tasksServices.fetchOwnTaskCodes,
         onSuccess: (items) => setState(() {
               taskCodes = items;
@@ -73,81 +63,13 @@ class _TasksScreenState extends State<TasksScreen> {
                   .toString()
                   .toLowerCase()
                   .contains(keyword.toLowerCase()));
-
-      /* for (var element in filterOptions) {
-        if (element.type == "all") {
-          element.state = true;
-        } else {
-          element.state = false;
-        }
-      }*/
     });
-
-    /* List<TaskCode> results = [];
-    if (enteredKeyword.isEmpty) {
-      results = taskCodes!;
-    } else {
-      results = taskCodes!
-          .where((code) =>
-              code.name.toLowerCase().contains(enteredKeyword.toLowerCase()) ||
-              code.abbr.toLowerCase().contains(enteredKeyword.toLowerCase()) ||
-              code.number
-                  .toString()
-                  .toLowerCase()
-                  .contains(enteredKeyword.toLowerCase()))
-          .toList();
-    }
-
-    setState(() {
-      _foundTaskCodes = results;
-    });*/
   }
 
-  Future<void> _refreshData() async {
-    fetchAllTaskCodes();
-    _searchController.clear();
-  }
-/*
-  @override
-  Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: _refreshData,
-      child: TitleSearchLayout(
-        //isMain: true,
-        isLoading: _isLoading,
-        title: 'Tareas',
-        searchController: _searchController,
-        onSearch: _runFilter,
-        searchPlaceholder: "Buscar tarea...",
-        child: Expanded(
-          child: ListView(
-            children: [
-              SizedBox(
-                height: 250,
-                child: ConditionalListView(
-                  items: _foundTaskCodes,
-                  foundItems: _foundTaskCodes,
-                  loader: const Loader(),
-                  emptyMessage: "¡No existen tareas para mostrar!",
-                  itemBuilder: (context, code) => TaskCardIndividual(
-                    code: code,
-                  ),
-                  separatorBuilder: (context, index) => const SizedBox(
-                    width: 20,
-                  ),
-                  verticalPosition: false,
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const AddTaskForm()
-            ],
-          ),
-        ),
-      ),
-    );
-  }*/
+  // Future<void> _refreshData() async {
+  //   fetchAllTaskCodes();
+  //   _searchController.clear();
+  // }
 
   @override
   Widget build(BuildContext context) {

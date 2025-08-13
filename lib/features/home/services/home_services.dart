@@ -26,6 +26,8 @@ class HomeServices {
         'x-auth-token': userProvider.user.token
       });
 
+      debugPrint(res.body);
+
       httpErrorHandle(
           response: res,
           context: NavigatorKeys.navKey.currentContext!,

@@ -16,7 +16,7 @@ class MainTitle extends StatelessWidget {
         child: Text(
       title,
       style: TextStyle(
-          fontSize: 30.0,
+          fontSize: 25.0,
           fontWeight: bold! ? FontWeight.bold : FontWeight.normal),
       textAlign: TextAlign.center,
     ));

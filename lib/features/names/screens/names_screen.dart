@@ -3,7 +3,9 @@ import 'package:payments_management/common/layouts/title_search_layout.dart';
 import 'package:payments_management/common/utils/fetch_data.dart';
 import 'package:payments_management/common/utils/run_filter.dart';
 import 'package:payments_management/common/widgets/conditional_list_view/conditional_list_view.dart';
+import 'package:payments_management/common/widgets/float_btn.dart';
 import 'package:payments_management/common/widgets/loader.dart';
+import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/names/services/names_services.dart';
 import 'package:payments_management/features/names/utils/names_utils.dart';
 import 'package:payments_management/features/names/widgets/name_card.dart';
@@ -42,7 +44,7 @@ class _NamesScreenState extends State<NamesScreen> {
 
   void fetchPaymentNames() {
     fetchData<PaymentName>(
-        context: context,
+        // context: context,
         fetchFunction: namesServices.fetchPaymentNames,
         onSuccess: (items) => setState(() {
               names = items;
@@ -89,32 +91,64 @@ class _NamesScreenState extends State<NamesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: _refreshData,
-      child: TitleSearchLayout(
-        isMain: true,
-        isLoading: _isLoading,
-        title: 'Nombres creados',
-        searchController: _searchController,
-        onSearch: _runFilter,
-        searchPlaceholder: "Buscar nombre...",
-        withFloatBtn: true,
+    return
+        //RefreshIndicator(
+        // onRefresh: _refreshData,
+        // child:
+
+        TitleSearchLayout(
+      refreshData: _refreshData,
+      isMain: true,
+      isLoading: _isLoading,
+      title: 'Nombres creados',
+      searchController: _searchController,
+      onSearch: _runFilter,
+      searchPlaceholder: "Buscar nombre...",
+      withFloatBtn: true,
+      //loadFloatBtn: _newNameScreenLoading,
+      floatBtn: FloatBtn(
+        // loadFloatBtn: true,
         loadFloatBtn: _newNameScreenLoading,
         onTapFloatBtn: _prepareDataToSendToForm,
-        child: Flexible(
-          child: Column(
-            children: [
-              ConditionalListView(
-                items: _foundNames,
-                foundItems: _foundNames,
-                loader: const Loader(),
-                emptyMessage: "¡No existen nombres para mostrar!",
-                itemBuilder: (context, name) => NameCard(name: name),
-              ),
-            ],
+      ),
+
+/*
+        floatBtn: SizedBox(
+          height: 80,
+          width: 80,
+          child: FloatingActionButton(
+            shape: const CircleBorder(),
+            backgroundColor: GlobalVariables.historicalPending,
+            foregroundColor: Colors.white,
+            onPressed: _prepareDataToSendToForm,
+            child: _newNameScreenLoading
+                ? const CircularProgressIndicator(
+                    color: Colors.white,
+                  )
+                : const Icon(
+                    Icons.add,
+                    size: 40,
+                  ),
           ),
+        ),
+
+*/
+
+      //  onTapFloatBtn: _prepareDataToSendToForm,
+      child: Flexible(
+        child: Column(
+          children: [
+            ConditionalListView(
+              items: _foundNames,
+              foundItems: _foundNames,
+              loader: const Loader(),
+              emptyMessage: "¡No existen nombres para mostrar!",
+              itemBuilder: (context, name) => NameCard(name: name),
+            ),
+          ],
         ),
       ),
     );
+    // );
   }
 }

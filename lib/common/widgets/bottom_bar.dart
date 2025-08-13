@@ -36,7 +36,8 @@ class _BottomBarState extends State<BottomBar> {
   double bottomBarBorderWidth = 5;
 
   List<Widget> pages = [
-    const HomeScreen(),
+    // const HomeScreen(),
+    const HomeScreenProvider(),
     const NamesScreen(),
     const GenerateMainScreen(),
     const AlertsScreen()

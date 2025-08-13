@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:payments_management/common/layouts/title_search_layout.dart';
 import 'dart:async';
-import 'package:payments_management/common/widgets/custom_app_bar.dart';
-import 'package:payments_management/common/widgets/drawer/custom_drawer.dart';
-import 'package:payments_management/constants/navigator_keys.dart';
 import 'package:payments_management/features/historical/services/historical_services.dart';
 import 'package:payments_management/features/names/services/names_services.dart';
 import 'package:payments_management/features/notes/services/notes_services.dart';
@@ -17,16 +15,12 @@ class NotesScreen extends StatefulWidget {
   static const String routeName = '/notes';
   final bool isModal;
   final bool hasId;
-  // final String? paymentId;
-  // final String? nameId;
   final Payment? payment;
   final PaymentName? name;
   const NotesScreen(
       {super.key,
       required this.isModal,
-      // this.paymentId,
       this.hasId = false,
-      //this.nameId
       this.payment,
       this.name});
 
@@ -151,13 +145,26 @@ class _NotesScreenState extends State<NotesScreen> {
     });
   }
 
+  Future<void> _refreshData() async {
+    _loadNotes();
+    _searchController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return !widget.isModal
-        ? Scaffold(
-            appBar: customAppBar(context),
-            drawer: const CustomDrawer(),
-            floatingActionButton: Column(
+        ? TitleSearchLayout(
+            refreshData: _refreshData,
+            isLoading: _isLoading,
+            title: "Notas",
+            searchController: _searchController,
+            onSearch: (val) {
+              setState(() {
+                _searchQuery = val;
+              });
+            },
+            withFloatBtn: true,
+            floatBtn: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 FloatingActionButton.small(
@@ -177,159 +184,12 @@ class _NotesScreenState extends State<NotesScreen> {
                 ),
               ],
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(16),
-              child: NotesMainGrid(
-                // searchController: searchController,
-                // searchQuery: searchQuery,
-                // onSearchChanged: onSearchChanged,
-                // isLoading: isLoading,
-                // filteredNotes: filteredNotes,
-                // onEditNote: onEditNote,
-                // onDeleteNote: onDeleteNote
-                searchController: _searchController,
-                searchQuery: _searchQuery,
-                onSearchChanged: (val) {
-                  setState(() {
-                    _searchQuery = val;
-                  });
-                },
-                isLoading: _isLoading,
-                filteredNotes: _filteredNotes,
-                onEditNote: _addOrEditNote,
-                onDeleteNote: _deleteNote,
-              ),
-              /* child: Column(
-          children: [
-            Text('Notas', style: Theme.of(context).textTheme.headlineMedium),
-            //const SizedBox(height: 12),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(
-                labelText: 'Buscar nota',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (val) {
-                setState(() => _searchQuery = val);
-              },
-            ),
-            const SizedBox(height: 12),
-
-            Expanded(
-              child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : _filteredNotes.isEmpty
-                      ? const Center(child: Text('No existen notas'))
-                      : GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 3 / 2,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                          ),
-                          itemCount: _filteredNotes.length,
-                          itemBuilder: (ctx, i) {
-                            final note = _filteredNotes[i];
-                            return InkWell(
-                              onTap: () => showDialog(
-                                context: context,
-                                builder: (_) => AlertDialog(
-                                  title: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        note.title,
-                                        style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        '${note.associatedType == "PAGO" ? 'PAGO ASOCIADO' : note.associatedType == "NOMBRE" ? "NOMBRE ASOCIADO" : ""}= ${note.associatedType == "PAGO" ? '${note.payment!.name} / ${note.payment!.period}' : note.associatedType == "NOMBRE" ? note.name!.name : ""} ',
-                                        style: const TextStyle(
-                                            fontSize: 14, color: Colors.grey),
-                                      ),
-                                    ],
-                                  ),
-                                  content: Text(note.content),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: const Text('Cerrar'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        _addOrEditNote(note: note);
-                                      },
-                                      child: const Text('Editar'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        _deleteNote(note);
-                                      },
-                                      child: const Text('Eliminar'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              child: Card(
-                                elevation: 4,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12)),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(note.title,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium),
-                                      const SizedBox(height: 4),
-                                      Expanded(
-                                        child: Text(
-                                          note.content,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 4,
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          IconButton(
-                                            icon: const Icon(Icons.edit,
-                                                size: 20),
-                                            onPressed: () =>
-                                                _addOrEditNote(note: note),
-                                          ),
-                                          IconButton(
-                                            icon: const Icon(Icons.delete,
-                                                size: 20),
-                                            onPressed: () => _deleteNote(note),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-            ),
-          ],
-        ),*/
-            ),
+            child: Expanded(
+                child: Component(
+                    filteredNotes: _filteredNotes,
+                    isLoading: _isLoading,
+                    onDeleteNote: _deleteNote,
+                    onEditNote: _addOrEditNote)),
           )
         : AlertDialog(
             title: const Center(child: Text("Notas")),
@@ -338,13 +198,6 @@ class _NotesScreenState extends State<NotesScreen> {
               child: SingleChildScrollView(
                 child: NotesMainGrid(
                   isModal: true,
-                  // searchController: searchController,
-                  // searchQuery: searchQuery,
-                  // onSearchChanged: onSearchChanged,
-                  // isLoading: isLoading,
-                  // filteredNotes: filteredNotes,
-                  // onEditNote: onEditNote,
-                  // onDeleteNote: onDeleteNote
                   searchController: _searchController,
                   searchQuery: _searchQuery,
                   onSearchChanged: (val) {

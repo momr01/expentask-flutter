@@ -22,7 +22,9 @@ class SearchTextField extends StatelessWidget {
           Icons.search,
           size: 30,
         ),
-        hintText: placeholder,
+        //labelText: 'Buscar nota',
+        labelText: placeholder,
+        //hintText: placeholder,
         border: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.black38)),
         enabledBorder: const OutlineInputBorder(

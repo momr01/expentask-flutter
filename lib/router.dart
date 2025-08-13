@@ -36,9 +36,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RegisterScreen.routeName:
       return MaterialPageRoute(
           settings: routeSettings, builder: (_) => const RegisterScreen());
-    case HomeScreen.routeName:
+    // case HomeScreen.routeName:
+    //   return MaterialPageRoute(
+    //       settings: routeSettings, builder: (_) => const HomeScreen());
+    case HomeScreenViewModel.routeName:
       return MaterialPageRoute(
-          settings: routeSettings, builder: (_) => const HomeScreen());
+          settings: routeSettings, builder: (_) => const HomeScreenProvider());
     case BottomBar.routeName:
       int page = routeSettings.arguments as int;
       return MaterialPageRoute(

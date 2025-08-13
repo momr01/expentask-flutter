@@ -9,7 +9,6 @@ import 'package:payments_management/common/widgets/modals/modal_confirmation/mod
 import 'package:payments_management/constants/error_modal.dart';
 import 'package:payments_management/constants/navigator_keys.dart';
 import 'package:payments_management/features/form_edit_payment/screens/form_edit_payment_screen.dart';
-import 'package:payments_management/features/form_edit_payment/services/form_edit_payment_services.dart';
 import 'package:payments_management/features/names/services/names_services.dart';
 import 'package:payments_management/features/payment_details/services/payment_details_services.dart';
 import 'package:payments_management/features/payment_details/widgets/header_payment.dart';
@@ -153,32 +152,6 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    /* return PopScope(
-      canPop: true,
-      onPopInvoked: (didPop) async {
-        if (!didPop) {
-          await Navigator.pushNamedAndRemoveUntil(
-              context, BottomBar.routeName, arguments: 0, (route) => false);
-        }
-      },*/
-    // onPopInvoked: (didPop) async {
-    //   await Navigator.pushNamedAndRemoveUntil(
-    //       context, BottomBar.routeName, arguments: 0, (route) => false);
-    // },
-    // onWillPop: () async {
-    //   await Navigator.pushNamedAndRemoveUntil(
-    //       context, BottomBar.routeName, (route) => false);
-    //   return true;
-    // },
-
-    /*
-      canPop: true,
-      onPopInvoked: (bool didPop) {
-        _navigateBackToHomeScreen();
-      },*/
-    // return NavigatorPopHandler(
-    //  onPop: _navigateBackToHomeScreen,
-    //child: Scaffold(
     return Scaffold(
         appBar: customAppBar(context,
             isMainPage: false, onBack: _navigateBackToHomeScreen),

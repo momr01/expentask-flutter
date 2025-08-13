@@ -76,11 +76,11 @@ class DefaultScreen extends StatelessWidget {
                       ),
                     ),
                     const Spacer(flex: 2),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 24),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 24),
                       child: Text(
-                        "2024. MOMR. All rights reserved.",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        "${DateTime.now().year}.  MOMR. All rights reserved.",
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     )
                   ],
