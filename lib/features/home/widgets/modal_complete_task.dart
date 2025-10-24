@@ -70,7 +70,7 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
         ?
         //(formatMoney(widget.amount / widget.payment.installmentsQuantity))
         (widget.amount / widget.payment.installmentsQuantity).toStringAsFixed(2)
-        : widget.amount.toString();
+        : widget.amount.toStringAsFixed(2);
     _dateCompletedController.text =
         '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
 
@@ -214,12 +214,24 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
       switch (option.code) {
         case 'total':
           // _amountTotal = true;
-          _amountPaidController.text = widget.amount.toString();
+          // _amountPaidController.text = widget.amount.toString();
+          _amountPaidController.text = widget.payment.hasInstallments
+              ?
+              //(formatMoney(widget.amount / widget.payment.installmentsQuantity))
+              (widget.amount / widget.payment.installmentsQuantity)
+                  .toStringAsFixed(2)
+              : widget.amount.toStringAsFixed(2);
           enableAmountField = false;
           break;
         case 'half':
           // _amountHalf = true;
-          _amountPaidController.text = (widget.amount / 2).toStringAsFixed(2);
+          // _amountPaidController.text = (widget.amount / 2).toStringAsFixed(2);
+          _amountPaidController.text = widget.payment.hasInstallments
+              ?
+              //(formatMoney(widget.amount / widget.payment.installmentsQuantity))
+              ((widget.amount / widget.payment.installmentsQuantity) / 2)
+                  .toStringAsFixed(2)
+              : (widget.amount / 2).toStringAsFixed(2);
           enableAmountField = false;
           break;
         case 'zero':
@@ -229,7 +241,13 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
           break;
         case 'custom':
           // _amountZero = true;
-          _amountPaidController.text = widget.amount.toString();
+          // _amountPaidController.text = widget.amount.toString();
+          _amountPaidController.text = widget.payment.hasInstallments
+              ?
+              //(formatMoney(widget.amount / widget.payment.installmentsQuantity))
+              (widget.amount / widget.payment.installmentsQuantity)
+                  .toStringAsFixed(2)
+              : widget.amount.toStringAsFixed(2);
           enableAmountField = true;
           break;
       }
@@ -317,37 +335,37 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
                         //         scrollDirection: Axis.horizontal,
                         //       ),
                         //     )),
-                        !widget.payment.hasInstallments
-                            ? SizedBox(
-                                height: 40,
-                                //decoration: BoxDecoration(border: Border.all()),
-                                child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children:
-                                        //["total", "half", "zero"]
-                                        payOptions.map((element) {
-                                      // return ColorRoundedItem(
-                                      //   colorBackCard: _amountTotal
-                                      //       ? GlobalVariables.blueActionColor
-                                      //       : GlobalVariables
-                                      //           .greyBackgroundColor,
-                                      //   colorBorderCard:
-                                      //       GlobalVariables.blueActionColor,
-                                      //   text: capitalizeFirstLetter("Total"),
-                                      //   colorText: Colors.black,
-                                      //   sizeText: 13,
-                                      //   onTap: () => _updateAmount(element),
-                                      // );
-                                      return PayOptionBtn(
-                                        // amountTotal: element.state,
-                                        payOption: element,
-                                        updateAmount: (element) =>
-                                            _updateAmount(element),
-                                        //label: element.label
-                                      );
-                                    }).toList()
-                                    /*[
+                        // !widget.payment.hasInstallments
+                        // ?
+                        SizedBox(
+                          height: 40,
+                          //decoration: BoxDecoration(border: Border.all()),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children:
+                                  //["total", "half", "zero"]
+                                  payOptions.map((element) {
+                                // return ColorRoundedItem(
+                                //   colorBackCard: _amountTotal
+                                //       ? GlobalVariables.blueActionColor
+                                //       : GlobalVariables
+                                //           .greyBackgroundColor,
+                                //   colorBorderCard:
+                                //       GlobalVariables.blueActionColor,
+                                //   text: capitalizeFirstLetter("Total"),
+                                //   colorText: Colors.black,
+                                //   sizeText: 13,
+                                //   onTap: () => _updateAmount(element),
+                                // );
+                                return PayOptionBtn(
+                                  // amountTotal: element.state,
+                                  payOption: element,
+                                  updateAmount: (element) =>
+                                      _updateAmount(element),
+                                  //label: element.label
+                                );
+                              }).toList()
+                              /*[
                                     ColorRoundedItem(
                                       colorBackCard: _amountTotal
                                           ? GlobalVariables.blueActionColor
@@ -443,9 +461,9 @@ class _ModalCompleteTaskState extends State<ModalCompleteTask> {
                                       },
                                     )
                                   ],*/
-                                    ),
-                              )
-                            : const SizedBox()
+                              ),
+                        )
+                        //: const SizedBox()
                       ],
                     ),
                   const SizedBox(

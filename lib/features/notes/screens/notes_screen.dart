@@ -10,12 +10,13 @@ import 'package:payments_management/features/notes/widgets/notes_main_grid.dart'
 import 'package:payments_management/models/name/payment_name.dart';
 import 'package:payments_management/models/note/note.dart';
 import 'package:payments_management/models/payment/payment.dart';
+import 'package:payments_management/models/payment/payment_with_shared_duty.dart';
 
 class NotesScreen extends StatefulWidget {
   static const String routeName = '/notes';
   final bool isModal;
   final bool hasId;
-  final Payment? payment;
+  final PaymentWithSharedDuty? payment;
   final PaymentName? name;
   const NotesScreen(
       {super.key,
@@ -68,6 +69,7 @@ class _NotesScreenState extends State<NotesScreen> {
   void _addOrEditNote({Note? note}) async {
     debugPrint("opcion 2");
     final result = await showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (_) => ModalAddEditNote(
         note: note,
@@ -97,6 +99,7 @@ class _NotesScreenState extends State<NotesScreen> {
   void _deleteNote(Note note) async {
     final confirmar = await showDialog<bool>(
       context: context,
+      barrierDismissible: false,
       builder: (ctx) => AlertDialog(
         title: const Text("Confirmar eliminación"),
         content:

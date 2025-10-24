@@ -8,6 +8,7 @@ import 'package:payments_management/constants/navigator_keys.dart';
 import 'package:payments_management/constants/success_modal.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/models/payment/payment.dart';
+import 'package:payments_management/models/payment/payment_with_shared_duty.dart';
 import 'package:payments_management/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -36,6 +37,38 @@ class HomeServices {
               paymentList
                   // .add(Payment.fromJson(jsonEncode(jsonDecode(res.body)[i])));
                   .add(Payment.fromJson(jsonDecode(res.body)[i]));
+              //from json accepts string, jsondecode is an object
+            }
+          });
+    } catch (e) {
+      showSnackBar(NavigatorKeys.navKey.currentContext!, "yy5" + e.toString());
+    }
+    return paymentList;
+  }
+
+  Future<List<PaymentWithSharedDuty>> fetchUndonePaymentsWithSD() async {
+    final userProvider = Provider.of<UserProvider>(
+        NavigatorKeys.navKey.currentContext!,
+        listen: false);
+    List<PaymentWithSharedDuty> paymentList = [];
+
+    try {
+      http.Response res = await http
+          .get(Uri.parse('$uri/api/payments/getUndonePayments'), headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'x-auth-token': userProvider.user.token
+      });
+
+      debugPrint(res.body);
+
+      httpErrorHandle(
+          response: res,
+          context: NavigatorKeys.navKey.currentContext!,
+          onSuccess: () {
+            for (int i = 0; i < jsonDecode(res.body).length; i++) {
+              paymentList
+                  // .add(Payment.fromJson(jsonEncode(jsonDecode(res.body)[i])));
+                  .add(PaymentWithSharedDuty.fromJson(jsonDecode(res.body)[i]));
               //from json accepts string, jsondecode is an object
             }
           });

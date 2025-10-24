@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 DateTime stringToDateTime(date) {
@@ -63,4 +64,58 @@ String formatDateWithTime(String date) {
 
   //print(formattedDate); // Salida: 28-11-2024
   return formattedDate;
+}
+
+String parseJsDateString(String input) {
+  try {
+    // 🔹 1) Limpieza del texto: quitamos la parte "GMT..." si existe
+    final cleaned = input.replaceFirst(RegExp(r' GMT.*'), '');
+
+    // 🔹 2) Intentamos parsear directamente
+    DateTime? date;
+    try {
+      date = DateTime.parse(cleaned);
+    } catch (_) {
+      // 🔹 3) Si falla, intentamos con un DateFormat flexible (ej: "Mon Oct 06 2025 18:59:43")
+      final altFormat = DateFormat("EEE MMM dd yyyy HH:mm:ss", "en_US");
+      date = altFormat.parse(cleaned);
+    }
+
+    // 🔹 4) Formateamos la salida
+    return DateFormat('dd-MM-yyyy').format(date);
+  } catch (e) {
+    debugPrint("⚠️ Error al convertir fecha: $e");
+    return "";
+  }
+}
+
+/// Convierte una fecha tipo JavaScript como:
+/// "Mon Oct 06 2025 18:59:43 GMT-0300 (hora estándar de Argentina)"
+/// a formato "dd-MM-yyyy" o "dd-MM-yyyy, HH:mm"
+String parseJsDateStringWithHour(String input, {bool includeTime = false}) {
+  try {
+    // 🔹 1) Limpiamos la parte de zona horaria
+    final cleaned = input.replaceFirst(RegExp(r' GMT.*'), '');
+
+    // 🔹 2) Intentamos parsear directamente
+    DateTime? date;
+    try {
+      date = DateTime.parse(cleaned);
+    } catch (_) {
+      // 🔹 3) Si falla, probamos con formato alternativo
+      final altFormat = DateFormat("EEE MMM dd yyyy HH:mm:ss", "en_US");
+      date = altFormat.parse(cleaned);
+    }
+
+    // 🔹 4) Formateo de salida
+    final datePart = DateFormat('dd-MM-yyyy').format(date);
+    if (includeTime) {
+      final timePart = DateFormat('HH:mm').format(date);
+      return "$datePart, $timePart";
+    }
+    return datePart;
+  } catch (e) {
+    debugPrint("⚠️ Error al convertir fecha: $e");
+    return "";
+  }
 }

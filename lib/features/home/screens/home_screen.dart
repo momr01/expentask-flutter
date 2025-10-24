@@ -274,7 +274,7 @@ class HomeScreenViewModel extends ChangeNotifier {
     );
 
     for (var element in filterOptions) {
-      if (element.type == "all") {
+      if (element.type == "month") {
         element.state = true;
       } else {
         element.state = false;

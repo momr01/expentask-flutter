@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:payments_management/features/notes/screens/notes_screen.dart';
 import 'package:payments_management/models/name/payment_name.dart';
 import 'package:payments_management/models/payment/payment.dart';
+import 'package:payments_management/models/payment/payment_with_shared_duty.dart';
 
 class NotesRow extends StatefulWidget {
   final bool isPayment;
   //final String? id;
-  final Payment? payment;
+  final PaymentWithSharedDuty? payment;
   final PaymentName? name;
   const NotesRow(
       {super.key,
@@ -23,6 +24,7 @@ class _NotesRowState extends State<NotesRow> {
   void openNotesModal() async {
     showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (_) => NotesScreen(
               hasId: true,
               isModal: true,

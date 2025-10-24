@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:payments_management/common/widgets/drawer/custom_drawer_item.dart';
 import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/features/categories/screens/categories_screen.dart';
+import 'package:payments_management/features/creditor/screens/creditor_screen.dart';
 import 'package:payments_management/features/groups/screens/groups_screen.dart';
 import 'package:payments_management/features/historical/screens/historical_screen.dart';
 import 'package:payments_management/features/notes/screens/notes_screen.dart';
 import 'package:payments_management/features/profile/screens/profile_screen.dart';
+import 'package:payments_management/features/shared_duty/screens/shared_duty_screen.dart';
 import 'package:payments_management/features/tasks/screens/tasks_screen.dart';
 import 'package:payments_management/models/drawer_item.dart';
 import 'package:payments_management/providers/user_provider.dart';
@@ -75,6 +77,24 @@ final List<DrawerItem> items = [
   //     ProfileScreen.routeName,
   //     [],
   //     false),
+  DrawerItem(
+      'Acreedores',
+      const Icon(
+        Icons.payment,
+      ),
+      CreditorScreen.routeName,
+      [],
+      [false],
+      false),
+  DrawerItem(
+      'Obligaciones compartidas',
+      const Icon(
+        Icons.person_2,
+      ),
+      SharedDutyScreen.routeName,
+      [],
+      [false],
+      false),
   DrawerItem(
       'Cerrar Sesión',
       const Icon(

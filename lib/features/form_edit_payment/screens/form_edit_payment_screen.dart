@@ -15,25 +15,31 @@ import 'package:payments_management/features/form_edit_payment/widgets/deadline_
 import 'package:payments_management/features/form_edit_payment/widgets/name_payment_section.dart';
 import 'package:payments_management/features/form_edit_payment/widgets/task_checkbox_item.dart';
 import 'package:payments_management/features/form_edit_payment/widgets/tasks_payment_section.dart';
+import 'package:payments_management/features/shared_duty/widgets/shared_duty_checkbox.dart';
 import 'package:payments_management/models/name/payment_name.dart';
 import 'package:payments_management/models/payment/payment.dart';
 import 'package:payments_management/models/payment/payment_edit.dart';
+import 'package:payments_management/models/payment/payment_with_shared_duty.dart';
+import 'package:payments_management/models/shared_duty/payment_shared_duty.dart';
 import 'package:payments_management/models/task/edit_task_checkbox.dart';
 import 'package:payments_management/models/task/task_edit.dart';
 import 'package:payments_management/models/task_code/task_code.dart';
 
 class FormEditPayment extends StatefulWidget {
   static const String routeName = '/form-edit-payment';
-  final Payment payment;
+  final PaymentWithSharedDuty payment;
   final List<PaymentName> names;
   final List<TaskCode> taskCodes;
+//  final bool isSharedDuty;
+  final PaymentSharedDuty sharedDuty;
 
-  const FormEditPayment({
-    Key? key,
-    required this.payment,
-    required this.names,
-    required this.taskCodes,
-  }) : super(key: key);
+  const FormEditPayment(
+      {Key? key,
+      required this.payment,
+      required this.names,
+      required this.taskCodes,
+      required this.sharedDuty})
+      : super(key: key);
 
   @override
   State<FormEditPayment> createState() => _FormEditPaymentState();
@@ -45,6 +51,12 @@ class _FormEditPaymentState extends State<FormEditPayment> {
   bool tasksSectionIsExpanded = false;
   bool atLeastOneTaskIsChecked = true;
   late String _nameValue = "";
+
+  // late String creditorName = "";
+  // late String creditorId = "";
+
+  String creditorName = "";
+  String creditorId = "";
 
   //form
   final _editPaymentFormKey = GlobalKey<FormState>();
@@ -62,6 +74,9 @@ class _FormEditPaymentState extends State<FormEditPayment> {
     initControllersValues();
     setControllersAndCheckbox();
     checkAtLeastOneTrue();
+
+    creditorName = widget.sharedDuty.creditorName ?? "";
+    creditorId = widget.sharedDuty.creditorId ?? "";
   }
 
   @override
@@ -93,6 +108,13 @@ class _FormEditPaymentState extends State<FormEditPayment> {
     setState(() {
       defineControllersAndCheckbox(
           widget.taskCodes, widget.payment, controllers, taskItems);
+    });
+  }
+
+  void updateCreditorValues(String newCreditorName, String newCreditorId) {
+    setState(() {
+      creditorName = newCreditorName;
+      creditorId = newCreditorId;
     });
   }
 
@@ -131,6 +153,7 @@ class _FormEditPaymentState extends State<FormEditPayment> {
 
 //validate type of amount
   bool formCustomValidations() {
+    debugPrint("desde form para editar: " + creditorName + " - " + creditorId);
     if (validateAmount(_amountController.text)) {
       return true;
     } else {
@@ -174,7 +197,12 @@ class _FormEditPaymentState extends State<FormEditPayment> {
             : double.parse(_amountController.text.replaceAll(',', '.')),
         tasks: tasksModified);
 
-    await formEditPaymentServices.editPayment(payment: paymentModified);
+    await formEditPaymentServices.editPayment(
+        payment: paymentModified,
+        creditorId: creditorId,
+        sharedDutyId: widget.sharedDuty.sharedDutyId != null
+            ? widget.sharedDuty.sharedDutyId!
+            : "");
   }
 
   @override
@@ -254,7 +282,49 @@ class _FormEditPaymentState extends State<FormEditPayment> {
                                         ]),
                                   ),
                                   const SizedBox(height: 10),
+                                  // 🔹 Altura fija con scroll interno
                                   taskItems.isNotEmpty
+                                      ? SizedBox(
+                                          height:
+                                              200, // 👈 altura fija, ajustala a lo que necesites
+                                          child: ListView.separated(
+                                            itemCount: taskItems.length,
+                                            separatorBuilder:
+                                                (context, index) =>
+                                                    const SizedBox(height: 10),
+                                            itemBuilder: (context, index) {
+                                              return TaskCheckboxItem(
+                                                item: taskItems[index],
+                                                onChangeCheckbox:
+                                                    (bool? value) {
+                                                  setState(() {
+                                                    taskItems[index].state =
+                                                        value!;
+                                                    checkAtLeastOneTrue();
+                                                  });
+                                                },
+                                                onChangeDate: () => selectDate(
+                                                    taskItems[index]
+                                                        .controller!),
+                                              );
+                                            },
+                                          ),
+                                        )
+                                      : Container(
+                                          alignment: Alignment.center,
+                                          child: const Center(
+                                            child: Text(
+                                              'Sin Datos',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                ],
+                              ),
+                            /* taskItems.isNotEmpty
                                       ? ListView.separated(
                                           separatorBuilder: (context, index) =>
                                               const SizedBox(
@@ -289,7 +359,21 @@ class _FormEditPaymentState extends State<FormEditPayment> {
                                           ),
                                         ),
                                 ],
-                              ),
+                              ),*/
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            SharedDutyCheckbox(
+                              //  defaultValue: widget.isSharedDuty,
+                              sharedDuty: widget.sharedDuty,
+                              isEdit: true,
+                              // creditorId: "",
+                              // creditorName: "",
+                              // onValueChanged: (p0, p1) {},
+                              onValueChanged: updateCreditorValues,
+                              creditorId: creditorId,
+                              creditorName: creditorName,
+                            ),
                             const SizedBox(height: 30),
                           ],
                         )

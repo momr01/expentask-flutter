@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'payment.dart';
+part of 'payment_with_shared_duty.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -40,7 +40,9 @@ part of 'payment.dart';
 //       'installmentsQuantity': instance.installmentsQuantity,
 //     };
 
-Payment _$PaymentFromJson(Map<String, dynamic> json) => Payment(
+PaymentWithSharedDuty _$PaymentWithSharedDutyFromJson(
+        Map<String, dynamic> json) =>
+    PaymentWithSharedDuty(
       id: json['_id'] == null ? null : json['_id'] as String,
       name: PaymentName.fromJson(json['name'][0]),
       deadline: DateTime.parse(json['deadline']),
@@ -59,10 +61,12 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) => Payment(
       /* sharedDuty: json['sharedDuty'] != null
           ? Map<String, dynamic>.from(json['sharedDuty'])
           : <String, dynamic>{},*/
-      //  sharedDuty: PaymentSharedDuty.fromJson(json['sharedDuty']),
+      sharedDuty: PaymentSharedDuty.fromJson(json['sharedDuty']),
     );
 
-Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
+Map<String, dynamic> _$PaymentWithSharedDutyToJson(
+        PaymentWithSharedDuty instance) =>
+    <String, dynamic>{
       '_id': instance.id?.toString(),
       'name': instance.name,
       'deadline': instance.deadline,
@@ -75,5 +79,5 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'dataEntry': instance.dataEntry?.toString(),
       'hasInstallments': instance.hasInstallments,
       'installmentsQuantity': instance.installmentsQuantity,
-      // 'sharedDuty': instance.sharedDuty,
+      'sharedDuty': instance.sharedDuty,
     };

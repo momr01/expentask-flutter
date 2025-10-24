@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:payments_management/models/payment/payment.dart';
+import 'package:payments_management/models/payment/payment_with_shared_duty.dart';
 import 'package:payments_management/models/task/edit_task_checkbox.dart';
 import 'package:payments_management/models/task/task.dart';
 import 'package:payments_management/models/task_code/task_code.dart';
@@ -44,8 +45,11 @@ double correctAmount(String controllerValue) {
 }
 
 //create controllers and checkbox of every task
-defineControllersAndCheckbox(List<TaskCode> taskCodes, Payment payment,
-    List<TextEditingController> controllers, List<EditTaskCheckbox> taskItems) {
+defineControllersAndCheckbox(
+    List<TaskCode> taskCodes,
+    PaymentWithSharedDuty payment,
+    List<TextEditingController> controllers,
+    List<EditTaskCheckbox> taskItems) {
   // debugPrint(payment.tasks.length.toString());
   for (var i = 0; i < taskCodes.length; i++) {
     DateTime dateNow = DateTime.now();

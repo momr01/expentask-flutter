@@ -6,10 +6,10 @@ import 'package:payments_management/models/shared_duty/payment_shared_duty.dart'
 import 'package:payments_management/models/task/task.dart';
 import 'package:payments_management/models/user/user_historical.dart';
 
-part 'payment.g.dart';
+part 'payment_with_shared_duty.g.dart';
 
 @JsonSerializable()
-class Payment {
+class PaymentWithSharedDuty {
   final String? id;
   final PaymentName name;
   final DateTime deadline;
@@ -22,29 +22,27 @@ class Payment {
   final String? dataEntry;
   final bool hasInstallments;
   final int installmentsQuantity;
-// final Map<String, dynamic> sharedDuty;
-//  final PaymentSharedDuty sharedDuty;
+  final PaymentSharedDuty sharedDuty;
 
-  Payment({
-    this.id,
-    required this.name,
-    required this.deadline,
-    required this.amount,
-    required this.tasks,
-    required this.isActive,
-    required this.isCompleted,
-    required this.period,
-    this.user,
-    this.dataEntry,
-    required this.hasInstallments,
-    required this.installmentsQuantity,
-    //  required this.sharedDuty
-  });
+  PaymentWithSharedDuty(
+      {this.id,
+      required this.name,
+      required this.deadline,
+      required this.amount,
+      required this.tasks,
+      required this.isActive,
+      required this.isCompleted,
+      required this.period,
+      this.user,
+      this.dataEntry,
+      required this.hasInstallments,
+      required this.installmentsQuantity,
+      required this.sharedDuty});
 
-  factory Payment.fromJson(Map<String, dynamic> json) =>
-      _$PaymentFromJson(json);
+  factory PaymentWithSharedDuty.fromJson(Map<String, dynamic> json) =>
+      _$PaymentWithSharedDutyFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PaymentToJson(this);
+  Map<String, dynamic> toJson() => _$PaymentWithSharedDutyToJson(this);
 }
 /*import 'dart:convert';
 

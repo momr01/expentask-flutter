@@ -17,6 +17,7 @@ import 'package:payments_management/features/tasks/services/tasks_services.dart'
 import 'package:payments_management/models/form_edit_payment_arguments.dart';
 import 'package:payments_management/models/name/payment_name.dart';
 import 'package:payments_management/models/payment/payment.dart';
+import 'package:payments_management/models/payment/payment_with_shared_duty.dart';
 import 'package:payments_management/models/task_code/task_code.dart';
 
 class PaymentDetailsScreen extends StatefulWidget {
@@ -30,7 +31,7 @@ class PaymentDetailsScreen extends StatefulWidget {
 }
 
 class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
-  Payment? payment;
+  PaymentWithSharedDuty? payment;
   final PaymentDetailsServices paymentDetailsServices =
       PaymentDetailsServices();
 
@@ -40,6 +41,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
   final TasksServices tasksServices = TasksServices();
 
   bool isLoading = false;
+//  bool isSharedDuty = true;
 
   @override
   void initState() {
@@ -78,6 +80,8 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
               return 0; // Si todos los comparadores devuelven 0, los elementos son iguales
             })
           : null;
+
+      //debugPrint(payment!.sharedDuty.toString());
     });
   }
 
@@ -98,10 +102,14 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
             ));
   }
 
-  void navigateToFormEditPayment(BuildContext context, Payment payment,
-      List<PaymentName> names, List<TaskCode> taskCodes) {
+  void navigateToFormEditPayment(
+      BuildContext context,
+      PaymentWithSharedDuty payment,
+      List<PaymentName> names,
+      List<TaskCode> taskCodes) {
     Navigator.pushNamed(context, FormEditPayment.routeName,
-        arguments: FormEditPaymentArguments(payment, names, taskCodes));
+        arguments: FormEditPaymentArguments(
+            payment, names, taskCodes, payment.sharedDuty));
   }
 
   void _navigateBackToHomeScreen() {
@@ -163,7 +171,10 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 30),
                     child: Column(children: [
-                      HeaderPayment(payment: payment!),
+                      HeaderPayment(
+                        payment: payment!,
+                        sharedDuty: payment!.sharedDuty,
+                      ),
                       const SizedBox(height: 30),
                       Expanded(
                           child: ListView.builder(

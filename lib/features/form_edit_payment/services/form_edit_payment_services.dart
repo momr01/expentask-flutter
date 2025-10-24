@@ -12,7 +12,10 @@ import 'package:payments_management/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class FormEditPaymentServices {
-  Future<void> editPayment({required PaymentEdit payment}) async {
+  Future<void> editPayment(
+      {required PaymentEdit payment,
+      required String sharedDutyId,
+      required String creditorId}) async {
     final userProvider = Provider.of<UserProvider>(
         NavigatorKeys.navKey.currentContext!,
         listen: false);
@@ -26,7 +29,9 @@ class FormEditPaymentServices {
       'name': payment.name,
       'deadline': payment.deadline,
       'amount': '${payment.amount}',
-      'tasks': tasksMap
+      'tasks': tasksMap,
+      'sharedDutyId': sharedDutyId,
+      'creditorId': creditorId
     };
 
     try {

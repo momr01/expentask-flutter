@@ -10,6 +10,8 @@ import 'package:payments_management/constants/utils.dart';
 import 'package:payments_management/models/category/category.dart';
 import 'package:payments_management/models/payment/payment.dart';
 import 'package:payments_management/models/name/payment_name.dart';
+import 'package:payments_management/models/payment/payment_with_shared_duty.dart';
+import 'package:payments_management/models/shared_duty/payment_shared_duty.dart';
 import 'package:payments_management/models/task/task.dart';
 import 'package:payments_management/models/task_code/task_code.dart';
 import 'package:payments_management/providers/user_provider.dart';
@@ -19,7 +21,7 @@ import 'package:http/http.dart' as http;
 //final navContext = NavigatorKeys.navKey.currentContext!;
 
 class PaymentDetailsServices {
-  Future<Payment> fetchPayment(
+  Future<PaymentWithSharedDuty> fetchPayment(
       {
       //required BuildContext context,
       required String paymentId}) async {
@@ -27,7 +29,7 @@ class PaymentDetailsServices {
     final userProvider = Provider.of<UserProvider>(
         NavigatorKeys.navKey.currentContext!,
         listen: false);
-    Payment payment = Payment(
+    PaymentWithSharedDuty payment = PaymentWithSharedDuty(
         name: PaymentName(
             name: '',
             category: Category(name: '', isActive: false),
@@ -47,7 +49,8 @@ class PaymentDetailsServices {
         isCompleted: false,
         period: "",
         hasInstallments: false,
-        installmentsQuantity: 0);
+        installmentsQuantity: 0,
+        sharedDuty: PaymentSharedDuty(hasSharedDuty: false));
 
     try {
       http.Response res = await http
@@ -61,7 +64,7 @@ class PaymentDetailsServices {
           //context: context,
           context: NavigatorKeys.navKey.currentContext!,
           onSuccess: () {
-            payment = Payment.fromJson(jsonDecode(res.body)[0]);
+            payment = PaymentWithSharedDuty.fromJson(jsonDecode(res.body)[0]);
           });
     } catch (e) {
       // showSnackBar(context, e.toString());

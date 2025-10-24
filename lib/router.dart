@@ -5,6 +5,7 @@ import 'package:payments_management/features/alerts/screens/alerts_screen.dart';
 import 'package:payments_management/features/auth/screens/login_screen.dart';
 import 'package:payments_management/features/auth/screens/register_screen.dart';
 import 'package:payments_management/features/categories/screens/categories_screen.dart';
+import 'package:payments_management/features/creditor/screens/creditor_screen.dart';
 import 'package:payments_management/features/form_manage_name/screens/form_manage_name_screen.dart';
 import 'package:payments_management/features/generate/screens/generate_%C3%AFnstallments_form_screen.dart';
 import 'package:payments_management/features/generate/screens/generate_details_groups_screen.dart';
@@ -22,6 +23,7 @@ import 'package:payments_management/features/form_edit_payment/screens/form_edit
 import 'package:payments_management/features/notes/screens/notes_screen.dart';
 import 'package:payments_management/features/payment_details/screens/payment_details_screen.dart';
 import 'package:payments_management/features/profile/screens/profile_screen.dart';
+import 'package:payments_management/features/shared_duty/screens/shared_duty_screen.dart';
 import 'package:payments_management/features/tasks/screens/tasks_screen.dart';
 import 'package:payments_management/models/form_edit_payment_arguments.dart';
 import 'package:payments_management/models/form_manage_name_arguments.dart';
@@ -66,6 +68,8 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
                 payment: args.payment,
                 names: args.names,
                 taskCodes: args.taskCodes,
+                // isSharedDuty: args.isSharedDuty,
+                sharedDuty: args.sharedDuty,
               ));
     case NamesScreen.routeName:
       return MaterialPageRoute(
@@ -174,6 +178,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case ProfileScreen.routeName:
       return MaterialPageRoute(
           settings: routeSettings, builder: (_) => const ProfileScreen());
+    case SharedDutyScreen.routeName:
+      return MaterialPageRoute(
+          settings: routeSettings, builder: (_) => const SharedDutyScreen());
+    case CreditorScreen.routeName:
+      return MaterialPageRoute(
+          settings: routeSettings, builder: (_) => const CreditorScreen());
     default:
       return MaterialPageRoute(
         settings: routeSettings,
