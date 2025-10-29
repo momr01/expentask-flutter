@@ -3,9 +3,11 @@ import 'package:payments_management/common/utils/run_filter.dart';
 import 'package:payments_management/common/widgets/color_rounded_item.dart';
 import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/constants/utils.dart';
+import 'package:payments_management/features/home/screens/home_screen.dart';
 import 'package:payments_management/features/home/utils/filter_data.dart';
 import 'package:payments_management/features/home/utils/filter_option.dart';
 import 'package:payments_management/models/payment/payment.dart';
+import 'package:provider/provider.dart';
 
 class FilterRow extends StatefulWidget {
   final List<FilterOption> filterOptions;
@@ -30,11 +32,33 @@ class _FilterRowState extends State<FilterRow> {
   @override
   void initState() {
     super.initState();
-    _foundPayments =
-        widget.foundPayments; // Inicializa la variable con los datos originales
+    // _foundPayments =
+    //  widget.foundPayments; // Inicializa la variable con los datos originales
+    // _filterHasInstallments("month");
+
+    /*_foundPayments = widget.foundPayments
+        .where((payment) => payment.tasks.any((task) =>
+            !task.isCompleted &&
+            task.deadline.month == DateTime.now().month &&
+            task.deadline.year == DateTime.now().year))
+        .toList();*/
+    //  _foundPayments = widget.foundPayments;
+    //  _applyDefaultFilter();
   }
 
-  void _updateFilterState(String selectedType) {
+  /*void _applyDefaultFilter() {
+    _foundPayments = widget.foundPayments
+        .where((payment) => payment.tasks.any((task) =>
+            !task.isCompleted &&
+            task.deadline.month == DateTime.now().month &&
+            task.deadline.year == DateTime.now().year))
+        .toList();
+
+    // Notificar al padre
+    widget.onPaymentsFiltered(_foundPayments);
+  }*/
+
+/*  void _updateFilterState(String selectedType) {
     widget.filterOptions
         .where((element) => element.type == selectedType)
         .first
@@ -71,10 +95,12 @@ class _FilterRowState extends State<FilterRow> {
       // Notificar al widget padre
       widget.onPaymentsFiltered(_foundPayments);
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
+    final vm = Provider.of<HomeScreenViewModel>(context, listen: false);
+
     return SizedBox(
       height: 40,
       child: ListView.separated(
@@ -87,9 +113,11 @@ class _FilterRowState extends State<FilterRow> {
                 text: capitalizeFirstLetter(widget.filterOptions[index].name),
                 colorText: Colors.black,
                 sizeText: 13,
-                onTap: () {
+                /*onTap: () {
                   _filterHasInstallments(widget.filterOptions[index].type);
-                },
+                },*/
+                onTap: () =>
+                    vm.filterHasInstallments(widget.filterOptions[index].type),
               ),
           separatorBuilder: (context, index) => const SizedBox(
                 width: 15,

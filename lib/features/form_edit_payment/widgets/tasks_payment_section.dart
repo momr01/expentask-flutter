@@ -5,11 +5,13 @@ import 'package:payments_management/constants/global_variables.dart';
 class TasksPaymentSection extends StatelessWidget {
   final bool isExpanded;
   final VoidCallback onTap;
-  const TasksPaymentSection({
-    Key? key,
-    required this.isExpanded,
-    required this.onTap,
-  }) : super(key: key);
+  final String label;
+  const TasksPaymentSection(
+      {Key? key,
+      required this.isExpanded,
+      required this.onTap,
+      this.label = "Tareas"})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +29,9 @@ class TasksPaymentSection extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Tareas:',
-                  style: TextStyle(fontSize: 18),
+                Text(
+                  '$label:',
+                  style: const TextStyle(fontSize: 18),
                 ),
                 Icon(isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down)
               ],

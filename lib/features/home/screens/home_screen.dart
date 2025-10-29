@@ -168,9 +168,33 @@ class HomeScreenProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => HomeScreenViewModel()..init(),
-      child: const HomeScreenUI(),
+      // create: (_) => HomeScreenViewModel()..init(),
+      create: (_) => HomeScreenViewModel(),
+      // child: const HomeScreenUI(),
+      child: const _HomeScreenInitWrapper(),
     );
+  }
+}
+
+class _HomeScreenInitWrapper extends StatefulWidget {
+  const _HomeScreenInitWrapper({super.key});
+
+  @override
+  State<_HomeScreenInitWrapper> createState() => _HomeScreenInitWrapperState();
+}
+
+class _HomeScreenInitWrapperState extends State<_HomeScreenInitWrapper> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<HomeScreenViewModel>().init();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const HomeScreenUI();
   }
 }
 
@@ -205,6 +229,10 @@ class HomeScreenViewModel extends ChangeNotifier {
   TextEditingController get searchController => _searchController;
   List<Payment> get foundPayments => _foundPayments;
   bool get isLoading => _isLoading;
+
+  String _currentFilterType = 'month'; // valor por defecto
+
+  String get currentFilterType => _currentFilterType;
 
   // @override
   // void initState() {
@@ -258,12 +286,71 @@ class HomeScreenViewModel extends ChangeNotifier {
       //onComplete: () => setState(() => _isLoading = false),
       onComplete: () {
         _isLoading = false;
+        filterHasInstallments("month");
         notifyListeners();
       },
     );
   }
 
-  void filter(String keyword) {
+  void filterHasInstallments(String type, {String? keyword}) {
+    // _searchController.clear();
+    //setState(() {
+    // Buscar el filtro en la lista
+    var selectedFilter = filterData
+        .firstWhere((filter) => filter["type"] == type, orElse: () => {});
+
+    if (selectedFilter.isNotEmpty) {
+      // Aplicar el filtro correspondiente
+      _foundPayments = selectedFilter["filter"](payments);
+      _updateFilterState(type);
+      //  _searchController.clear();
+    }
+
+    // Caso especial para búsqueda
+    if (type == "search" && keyword != null) {
+      _foundPayments = runFilter<Payment>(
+        keyword,
+        payments!,
+        //widget.foundPayments,
+        (payment) =>
+            payment.name.name.toLowerCase().contains(keyword.toLowerCase()),
+      );
+    }
+
+    // Notificar al widget padre
+    //onPaymentsFiltered(_foundPayments);
+    notifyListeners();
+    //});
+  }
+
+  /* void _updateFilterState(String selectedType) {
+    filterOptions.where((element) => element.type == selectedType).first.state =
+        true;
+
+    filterOptions
+        .where((element) => element.type != selectedType)
+        .forEach((element) => element.state = false);
+  }*/
+
+  /*void _updateFilterState(String selectedType) {
+    for (var element in filterOptions) {
+      element.state = element.type == selectedType;
+    }
+  }*/
+  void _updateFilterState(String selectedType) {
+    _currentFilterType = selectedType;
+    for (var element in filterOptions) {
+      element.state = element.type == selectedType;
+    }
+  }
+/*  void _updateFilterState(String selectedType) {
+    _currentFilterType = selectedType;
+    for (var element in filterOptions) {
+      element.state = element.type == selectedType;
+    }
+  }*/
+
+/* void filter(String keyword) {
     //  setState(() {
     _foundPayments = runFilter<Payment>(
       keyword,
@@ -282,7 +369,77 @@ class HomeScreenViewModel extends ChangeNotifier {
     }
     // });
     notifyListeners();
+  }*/
+/* void filter(String keyword) {
+  final sourceList = _foundPayments; // 🔹 usa la lista filtrada actual
+  
+  _foundPayments = runFilter<Payment>(
+    keyword,
+    sourceList, // ✅ busca solo dentro de lo ya filtrado
+    (payment) =>
+        payment.name.name.toLowerCase().contains(keyword.toLowerCase()),
+  );
+
+  // No cambies el filtro activo al hacer búsqueda
+  notifyListeners();
+}*/
+  void filter(String keyword) {
+    if (keyword.isEmpty) {
+      // 🔹 volver a aplicar el filtro activo
+      filterHasInstallments(_currentFilterType);
+      return;
+    }
+
+    final sourceList = _foundPayments;
+    _foundPayments = runFilter<Payment>(
+      keyword,
+      sourceList,
+      (payment) =>
+          payment.name.name.toLowerCase().contains(keyword.toLowerCase()),
+    );
+
+    notifyListeners();
   }
+
+/* void filter(String keyword) {
+    // 🔹 Determina el conjunto base según el filtro activo
+    List<Payment> baseList = [];
+
+    switch (_currentFilterType) {
+      case "month":
+      case "hasInstallments":
+      case "noInstallments":
+        // 🔸 Aplica el filtro correspondiente
+        var selectedFilter = filterData.firstWhere(
+          (filter) => filter["type"] == _currentFilterType,
+          orElse: () => {},
+        );
+
+        if (selectedFilter.isNotEmpty) {
+          baseList = selectedFilter["filter"](payments);
+        }
+        break;
+
+      default:
+        baseList = payments ?? [];
+        break;
+    }
+
+    // 🔹 Si el campo está vacío, se muestran los resultados del filtro original
+    if (keyword.isEmpty) {
+      _foundPayments = baseList;
+    } else {
+      // 🔹 Si hay texto, busca dentro del filtro activo
+      _foundPayments = runFilter<Payment>(
+        keyword,
+        baseList,
+        (payment) =>
+            payment.name.name.toLowerCase().contains(keyword.toLowerCase()),
+      );
+    }
+
+    notifyListeners();
+  }*/
 
   Future<void> _refreshData() async {
     fetchUndonePayments();
@@ -350,6 +507,25 @@ class HomeScreenUI extends StatelessWidget {
           ],
         ),
       ),
+      /* child: Column(
+        children: [
+          FilterRow(
+            filterOptions: vm.filterOptions,
+            payments: vm.payments ?? [],
+            foundPayments: vm.foundPayments,
+            onPaymentsFiltered: vm.onPaymentsFiltered,
+          ),
+          const SizedBox(height: 15),
+          ConditionalListView(
+            items: vm.payments,
+            foundItems: vm.foundPayments,
+            loader: const Loader(),
+            emptyMessage: "¡No existen pagos para mostrar!",
+            itemBuilder: (context, payment) => PaymentCard(payment: payment),
+            separatorBuilder: (context, _) => const Divider(),
+          ),
+        ],
+      ),*/
     );
     //);
   }

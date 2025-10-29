@@ -12,10 +12,12 @@ import 'package:payments_management/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class FormEditPaymentServices {
-  Future<void> editPayment(
-      {required PaymentEdit payment,
-      required String sharedDutyId,
-      required String creditorId}) async {
+  Future<void> editPayment({
+    required PaymentEdit payment,
+    required String sharedDutyId,
+    required String creditorId,
+    required bool withInstallments,
+  }) async {
     final userProvider = Provider.of<UserProvider>(
         NavigatorKeys.navKey.currentContext!,
         listen: false);
@@ -37,7 +39,7 @@ class FormEditPaymentServices {
     try {
       http.Response res = await http.put(
           Uri.parse(
-              '$uri/api/payments/editPayment/${payment.id}?user=${userProvider.user.id}'),
+              '$uri/api/payments/${withInstallments ? 'editPaymentWithInstallments' : 'editPayment'}/${payment.id}?user=${userProvider.user.id}'),
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
             'x-auth-token': userProvider.user.token
