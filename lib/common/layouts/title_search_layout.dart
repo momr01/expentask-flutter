@@ -54,7 +54,12 @@ class TitleSearchLayout extends StatelessWidget {
               children: [
                 MainTitle(title: title),
                 const SizedBox(height: 10),
-                SearchTextField(
+                /* SearchTextField(
+                  placeholder: searchPlaceholder,
+                  searchController: searchController,
+                  onChange: onSearch,
+                ),*/
+                AnimatedSearchTextField(
                   placeholder: searchPlaceholder,
                   searchController: searchController,
                   onChange: onSearch,
@@ -66,6 +71,61 @@ class TitleSearchLayout extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class AnimatedSearchTextField extends StatelessWidget {
+  final TextEditingController searchController;
+  final Function(String value) onChange;
+  final String placeholder;
+
+  const AnimatedSearchTextField({
+    super.key,
+    required this.searchController,
+    required this.onChange,
+    required this.placeholder,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: searchController,
+      builder: (context, _) {
+        return TextFormField(
+          controller: searchController,
+          onChanged: onChange,
+          decoration: InputDecoration(
+            prefixIcon: const Icon(Icons.search, size: 28),
+            suffixIcon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              transitionBuilder: (child, anim) => FadeTransition(
+                opacity: anim,
+                child: ScaleTransition(scale: anim, child: child),
+              ),
+              child: searchController.text.isNotEmpty
+                  ? IconButton(
+                      key: const ValueKey('clear'),
+                      icon: const Icon(Icons.close, size: 24),
+                      onPressed: () {
+                        searchController.clear();
+                        onChange("");
+                      },
+                    )
+                  : const SizedBox.shrink(key: ValueKey('empty')),
+            ),
+            labelText: placeholder,
+            border: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.black38)),
+            enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.black38)),
+            filled: true,
+            fillColor: GlobalVariables.greyBackgroundColor,
+            isDense: true,
+          ),
+          maxLines: 1,
+        );
+      },
     );
   }
 }

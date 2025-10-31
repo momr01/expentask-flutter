@@ -230,6 +230,7 @@ class HomeScreenViewModel extends ChangeNotifier {
   List<Payment> get foundPayments => _foundPayments;
   bool get isLoading => _isLoading;
 
+  List<Payment> _baseFilteredList = []; // 🔹 lista base según el filtro activo
   String _currentFilterType = 'month'; // valor por defecto
 
   String get currentFilterType => _currentFilterType;
@@ -292,7 +293,10 @@ class HomeScreenViewModel extends ChangeNotifier {
     );
   }
 
+/*
   void filterHasInstallments(String type, {String? keyword}) {
+    _currentFilterType = type;
+
     // _searchController.clear();
     //setState(() {
     // Buscar el filtro en la lista
@@ -321,6 +325,47 @@ class HomeScreenViewModel extends ChangeNotifier {
     //onPaymentsFiltered(_foundPayments);
     notifyListeners();
     //});
+  }*/
+  /*void filterHasInstallments(String type, {String? keyword}) {
+    _currentFilterType = type;
+
+    // Buscar el filtro en los datos base
+    var selectedFilter = filterData
+        .firstWhere((filter) => filter["type"] == type, orElse: () => {});
+
+    if (selectedFilter.isNotEmpty) {
+      _baseFilteredList = selectedFilter["filter"](payments); // 🔹 guardar base
+      _foundPayments = List.from(_baseFilteredList);
+    } else {
+      _baseFilteredList = payments ?? [];
+      _foundPayments = List.from(_baseFilteredList);
+    }
+
+    _updateFilterState(type);
+    notifyListeners();
+  }*/
+  /// 🔹 Aplica un filtro (por tipo) y reinicia el buscador
+  void filterHasInstallments(String type, {String? keyword}) {
+    _currentFilterType = type;
+
+    // 🔹 Limpiar buscador automáticamente
+    if (_searchController.text.isNotEmpty) {
+      _searchController.clear();
+    }
+
+    var selectedFilter = filterData
+        .firstWhere((filter) => filter["type"] == type, orElse: () => {});
+
+    if (selectedFilter.isNotEmpty) {
+      _baseFilteredList = selectedFilter["filter"](payments);
+      _foundPayments = List.from(_baseFilteredList);
+    } else {
+      _baseFilteredList = payments ?? [];
+      _foundPayments = List.from(_baseFilteredList);
+    }
+
+    _updateFilterState(type);
+    notifyListeners();
   }
 
   /* void _updateFilterState(String selectedType) {
@@ -337,12 +382,18 @@ class HomeScreenViewModel extends ChangeNotifier {
       element.state = element.type == selectedType;
     }
   }*/
-  void _updateFilterState(String selectedType) {
+  /*void _updateFilterState(String selectedType) {
     _currentFilterType = selectedType;
     for (var element in filterOptions) {
       element.state = element.type == selectedType;
     }
+  }*/
+  void _updateFilterState(String selectedType) {
+    for (var element in filterOptions) {
+      element.state = element.type == selectedType;
+    }
   }
+
 /*  void _updateFilterState(String selectedType) {
     _currentFilterType = selectedType;
     for (var element in filterOptions) {
@@ -383,7 +434,7 @@ class HomeScreenViewModel extends ChangeNotifier {
   // No cambies el filtro activo al hacer búsqueda
   notifyListeners();
 }*/
-  void filter(String keyword) {
+/*  void filter(String keyword) {
     if (keyword.isEmpty) {
       // 🔹 volver a aplicar el filtro activo
       filterHasInstallments(_currentFilterType);
@@ -394,6 +445,62 @@ class HomeScreenViewModel extends ChangeNotifier {
     _foundPayments = runFilter<Payment>(
       keyword,
       sourceList,
+      (payment) =>
+          payment.name.name.toLowerCase().contains(keyword.toLowerCase()),
+    );
+
+    notifyListeners();
+  }*/
+
+/* void filter(String keyword) {
+    // Si no hay filtro actual, salimos
+    if (_currentFilterType.isEmpty) return;
+
+    // 🔹 Si el campo está vacío → aplicar el filtro original del tipo actual
+    if (keyword.isEmpty) {
+      filterHasInstallments(_currentFilterType);
+      return;
+    }
+
+    // 🔹 Determinar la lista base según el filtro activo
+    List<Payment> baseList = [];
+
+    var selectedFilter = filterData.firstWhere(
+      (filter) => filter["type"] == _currentFilterType,
+      orElse: () => {},
+    );
+
+    if (selectedFilter.isNotEmpty) {
+      baseList = selectedFilter["filter"](payments);
+    } else {
+      baseList = payments ?? [];
+    }
+
+    // 🔹 Aplicar la búsqueda dentro del filtro activo
+    _foundPayments = runFilter<Payment>(
+      keyword,
+      baseList,
+      (payment) =>
+          payment.name.name.toLowerCase().contains(keyword.toLowerCase()),
+    );
+
+    notifyListeners();
+  }*/
+  /// 🔹 Nueva versión optimizada del buscador
+  void filter(String keyword) {
+    if (_currentFilterType.isEmpty) return;
+
+    // Si se borra todo → restaurar lista base del filtro actual
+    if (keyword.isEmpty) {
+      _foundPayments = List.from(_baseFilteredList);
+      notifyListeners();
+      return;
+    }
+
+    // Filtrar sobre la lista base del filtro actual
+    _foundPayments = runFilter<Payment>(
+      keyword,
+      _baseFilteredList,
       (payment) =>
           payment.name.name.toLowerCase().contains(keyword.toLowerCase()),
     );
@@ -442,7 +549,7 @@ class HomeScreenViewModel extends ChangeNotifier {
   }*/
 
   Future<void> _refreshData() async {
-    fetchUndonePayments();
+    await fetchUndonePayments();
     filterOptions.clear();
     fillFilterOptionsList();
   }
