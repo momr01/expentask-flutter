@@ -16,7 +16,7 @@ TextSpan cardText(int days) {
       const TextSpan(
           text: "está a ", style: TextStyle(fontWeight: FontWeight.normal)),
       TextSpan(
-          text: "${days * -1} días",
+          text: "${days * -1} ${days == -1 ? 'día' : 'días'}",
           style: TextStyle(color: Colors.green.shade600)),
       const TextSpan(
           text: " de vencer.", style: TextStyle(fontWeight: FontWeight.normal))

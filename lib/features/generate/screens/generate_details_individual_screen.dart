@@ -34,6 +34,9 @@ class _GenerateDetailsScreenState
   // List<GeneratePayment> items = [];
   bool totalIsChecked = true;
 
+  final TextEditingController _searchController = TextEditingController();
+  List<GeneratePayment> filteredPayments = [];
+
   // @override
   // void initState() {
   //   super.initState();
@@ -58,7 +61,13 @@ class _GenerateDetailsScreenState
   //   }
   // }
 
-  void checkedSelectAll() {
+  @override
+  void initState() {
+    super.initState();
+    filteredPayments = List.from(widget.payments);
+  }
+
+/* void checkedSelectAll() {
     int checkedNames = 0;
     for (var payment in widget.payments) {
       if (payment.state) checkedNames++;
@@ -81,6 +90,28 @@ class _GenerateDetailsScreenState
         payment.state = false;
       }
     }
+  }*/
+
+  void checkedSelectAll() {
+    int checkedNames = 0;
+    for (var payment in filteredPayments) {
+      if (payment.state) checkedNames++;
+    }
+    totalIsChecked = checkedNames == filteredPayments.length;
+  }
+
+  void updateAllPayments(bool val) {
+    for (var payment in filteredPayments) {
+      payment.state = val;
+    }
+  }
+
+  void onChangeCheckboxEverything(value) {
+    setState(() {
+      totalIsChecked = value!;
+      updateAllPayments(value);
+      checkedSelectAll();
+    });
   }
 
   void defineRedirect() {
@@ -124,10 +155,23 @@ class _GenerateDetailsScreenState
         ]);
   }
 
-  void onChangeCheckboxEverything(value) {
+  /*void onChangeCheckboxEverything(value) {
     setState(() {
       totalIsChecked = value!;
       updateAllPayments(value);
+      checkedSelectAll();
+    });
+  }*/
+
+  void filterPayments(String keyword) {
+    setState(() {
+      if (keyword.isEmpty) {
+        filteredPayments = List.from(widget.payments);
+      } else {
+        filteredPayments = widget.payments
+            .where((p) => p.name.toLowerCase().contains(keyword.toLowerCase()))
+            .toList();
+      }
       checkedSelectAll();
     });
   }
@@ -144,11 +188,38 @@ class _GenerateDetailsScreenState
             const SizedBox(
               height: 30,
             ),
+
+            // 🔍 Buscador dinámico
+            TextField(
+              controller: _searchController,
+              onChanged: filterPayments,
+              decoration: InputDecoration(
+                hintText: 'Buscar...',
+                prefixIcon: const Icon(Icons.search),
+                suffixIcon: _searchController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          _searchController.clear();
+                          filterPayments('');
+                        },
+                      )
+                    : null,
+                filled: true,
+                fillColor: Colors.grey.shade100,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
             CardCheckboxItem(
                 state: totalIsChecked,
                 text: 'Seleccionar Todo',
                 onChanged: (value) => onChangeCheckboxEverything(value)),
-            widget.payments.isNotEmpty
+            /*  widget.payments.isNotEmpty
                 ? Expanded(
                     child: ListView.builder(
                         shrinkWrap: true,
@@ -166,7 +237,30 @@ class _GenerateDetailsScreenState
                           );
                         }),
                   )
-                : const MessageEmpty(),
+                : const MessageEmpty(),*/
+            // 📋 Lista filtrada
+            filteredPayments.isNotEmpty
+                ? Expanded(
+                    child: ListView.builder(
+                      itemCount: filteredPayments.length,
+                      itemBuilder: (context, index) {
+                        final payment = filteredPayments[index];
+                        return CardCheckboxItem(
+                          state: payment.state,
+                          text: payment.name,
+                          onChanged: (value) {
+                            setState(() {
+                              payment.state = value!;
+                              checkedSelectAll();
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  )
+                : const Expanded(
+                    child: Center(child: Text('¡No existen resultados!')),
+                  ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 30)
                   .copyWith(top: 40),

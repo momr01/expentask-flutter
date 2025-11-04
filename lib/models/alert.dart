@@ -12,6 +12,7 @@ class Alert {
   final bool taskIsCompleted;
   final int daysNumber;
   final bool hasInstallments;
+  final int installmentNumber;
 
   Alert(
       {required this.paymentId,
@@ -23,7 +24,8 @@ class Alert {
       required this.taskIsActive,
       required this.taskIsCompleted,
       required this.daysNumber,
-      required this.hasInstallments});
+      required this.hasInstallments,
+      required this.installmentNumber});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -36,7 +38,8 @@ class Alert {
       'taskIsActive': taskIsActive,
       'taskIsCompleted': taskIsCompleted,
       'daysNumber': daysNumber,
-      'hasInstallments': hasInstallments
+      'hasInstallments': hasInstallments,
+      'installmentNumber': installmentNumber
     };
   }
 
@@ -52,6 +55,7 @@ class Alert {
       taskIsCompleted: map['taskIsCompleted'] as bool,
       daysNumber: map['daysNumber'] as int,
       hasInstallments: map['hasInstallments'] as bool,
+      installmentNumber: map['installmentNumber'] as int,
     );
   }
 
