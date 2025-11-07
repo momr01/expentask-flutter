@@ -357,7 +357,10 @@ class HomeScreenViewModel extends ChangeNotifier {
         .firstWhere((filter) => filter["type"] == type, orElse: () => {});
 
     if (selectedFilter.isNotEmpty) {
-      _baseFilteredList = selectedFilter["filter"](payments);
+      // _baseFilteredList = selectedFilter["filter"](payments, "");
+      _baseFilteredList = type == "category"
+          ? selectedFilter["filter"](payments, keyword)
+          : selectedFilter["filter"](payments, "");
       _foundPayments = List.from(_baseFilteredList);
     } else {
       _baseFilteredList = payments ?? [];
@@ -367,6 +370,34 @@ class HomeScreenViewModel extends ChangeNotifier {
     _updateFilterState(type);
     notifyListeners();
   }
+
+  /// 🔹 Aplica un filtro (por tipo) y reinicia el buscador
+  /*void filterCategory(String type, String categoryName) {
+    _currentFilterType = type;
+
+    // 🔹 Limpiar buscador automáticamente
+    if (_searchController.text.isNotEmpty) {
+      _searchController.clear();
+    }
+
+    var selectedFilter = filterData
+        .firstWhere((filter) => filter["type"] == type, orElse: () => {});
+
+    if (selectedFilter.isNotEmpty) {
+      // _baseFilteredList = selectedFilter["filter"](payments!
+      //     .where(
+      //         (element) => element.name.category.name.toLowerCase() == "viajes")
+      //     .toList());
+      _baseFilteredList = selectedFilter["filter"](payments, categoryName);
+      _foundPayments = List.from(_baseFilteredList);
+    } else {
+      _baseFilteredList = payments ?? [];
+      _foundPayments = List.from(_baseFilteredList);
+    }
+
+    _updateFilterState(type);
+    notifyListeners();
+  }*/
 
   /* void _updateFilterState(String selectedType) {
     filterOptions.where((element) => element.type == selectedType).first.state =

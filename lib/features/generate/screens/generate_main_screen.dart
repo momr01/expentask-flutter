@@ -7,6 +7,7 @@ import 'package:payments_management/constants/global_variables.dart';
 import 'package:payments_management/features/form_edit_payment/services/form_edit_payment_services.dart';
 import 'package:payments_management/features/generate/screens/generate_details_groups_screen.dart';
 import 'package:payments_management/features/generate/screens/generate_details_individual_screen.dart';
+import 'package:payments_management/features/generate/screens/generate_details_screen.dart';
 import 'package:payments_management/features/generate/widgets/main_card_type.dart';
 import 'package:payments_management/features/groups/services/groups_services.dart';
 import 'package:payments_management/features/names/services/names_services.dart';
@@ -108,22 +109,31 @@ class _GenerateMainScreenState extends State<GenerateMainScreen> {
   }
 
   void navigateToGroups(BuildContext context) {
-    Navigator.pushNamed(context, GenerateDetailsGroupsScreen.routeName,
-        arguments: [_payments, 'Generar Pagos por Grupo']);
+    // Navigator.pushNamed(context, GenerateDetailsGroupsScreen.routeName,
+    //     arguments: [_payments, 'Generar Pagos por Grupo']);
+    Navigator.pushNamed(context, GenerateDetailsScreen.routeName,
+        arguments: [_payments, 'Generar Pagos por Grupo', 'group']);
   }
 
   void navigateToIndividualList(BuildContext context) {
-    Navigator.pushNamed(context, GenerateDetailsIndividualScreen.routeName,
-        arguments: [_payments, 'Generación Individual de Pagos']);
+    // Navigator.pushNamed(context, GenerateDetailsIndividualScreen.routeName,
+    //     arguments: [_payments, 'Generación Individual de Pagos']);
+    Navigator.pushNamed(context, GenerateDetailsScreen.routeName,
+        arguments: [_payments, 'Generación Individual de Pagos', 'individual']);
   }
 
   void navigateToInstallmentsList(BuildContext context) {
-    Navigator.pushNamed(context, GenerateDetailsIndividualScreen.routeName,
-        arguments: [
-          _payments,
-          'Generación Individual de Cuotas',
-          "installments"
-        ]);
+    // Navigator.pushNamed(context, GenerateDetailsIndividualScreen.routeName,
+    //     arguments: [
+    //       _payments,
+    //       'Generación Individual de Cuotas',
+    //       "installments"
+    //     ]);
+    Navigator.pushNamed(context, GenerateDetailsScreen.routeName, arguments: [
+      _payments,
+      'Generación Individual de Cuotas',
+      "installments"
+    ]);
   }
 
   @override

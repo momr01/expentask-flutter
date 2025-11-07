@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:payments_management/common/utils/run_filter.dart';
 import 'package:payments_management/common/widgets/color_rounded_item.dart';
 import 'package:payments_management/constants/global_variables.dart';
+import 'package:payments_management/constants/navigator_keys.dart';
 import 'package:payments_management/constants/utils.dart';
+import 'package:payments_management/features/categories/services/categories_services.dart';
 import 'package:payments_management/features/home/screens/home_screen.dart';
 import 'package:payments_management/features/home/utils/filter_data.dart';
 import 'package:payments_management/features/home/utils/filter_option.dart';
+import 'package:payments_management/features/home/utils/show_category_dialog.dart';
+import 'package:payments_management/features/home/widgets/categories_dialog.dart';
+import 'package:payments_management/models/category/category.dart';
 import 'package:payments_management/models/payment/payment.dart';
 import 'package:provider/provider.dart';
 
@@ -116,8 +121,37 @@ class _FilterRowState extends State<FilterRow> {
                 /*onTap: () {
                   _filterHasInstallments(widget.filterOptions[index].type);
                 },*/
-                onTap: () =>
-                    vm.filterHasInstallments(widget.filterOptions[index].type),
+                // onTap: () =>
+                //     vm.filterHasInstallments(widget.filterOptions[index].type),
+                // onTap: () async {
+                //   if (widget.filterOptions[index].type == "category") {
+                //     final categorySelected = await _showCategoryDialog(context);
+                //     debugPrint("categoria elegida: " + categorySelected != null ? "ss" : "ss");
+                //   } else {
+                //     vm.filterHasInstallments(widget.filterOptions[index].type);
+                //   }
+                // },
+                onTap: () async {
+                  if (widget.filterOptions[index].type == "category") {
+                    final String? categorySelected =
+                        await showCategoryDialog(context);
+
+                    // debugPrint(
+                    //   "Categoría elegida: ${categorySelected != null ? categorySelected : 'ninguna'}",
+                    // );
+
+                    if (categorySelected != null) {
+                      // Aquí podés aplicar tu filtro o acción
+                      // vm.applyCategoryFilter(categorySelected);
+                      // vm.filterCategory(
+                      //     widget.filterOptions[index].type, categorySelected);
+                      vm.filterHasInstallments(widget.filterOptions[index].type,
+                          keyword: categorySelected);
+                    }
+                  } else {
+                    vm.filterHasInstallments(widget.filterOptions[index].type);
+                  }
+                },
               ),
           separatorBuilder: (context, index) => const SizedBox(
                 width: 15,
@@ -126,3 +160,88 @@ class _FilterRowState extends State<FilterRow> {
     );
   }
 }
+
+/*
+Future<String?> _showCategoryDialog(BuildContext context) async {
+  //final context = NavigatorKeys.navKey.currentContext!;
+
+  return showDialog<String>(
+    context: context,
+    barrierDismissible: true,
+    barrierColor: Colors.black.withOpacity(0.5),
+    builder: (context) {
+      return Center(
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.8,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Selecciona una categoría',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              ...['Hogar', 'Trabajo', 'Otros'].map((opt) {
+                return ListTile(
+                  title: Text(opt),
+                  onTap: () => Navigator.pop(context, opt),
+                );
+              }),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}*/
+
+/*
+
+Future<String?> _showCategoryDialog(BuildContext context) async {
+  return showDialog<String>(
+    context: context,
+    barrierDismissible: true,
+    barrierColor: Colors.black.withOpacity(0.5),
+    builder: (context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Selecciona una categoría',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              ...[
+                'Hogar',
+                'Trabajo',
+                'Otros',
+                'Hogar',
+                'Trabajo',
+                'Otros',
+                'Hogar',
+                'Trabajo',
+                'Otros'
+              ].map((opt) {
+                return ListTile(
+                  title: Text(opt),
+                  onTap: () => Navigator.pop(context, opt),
+                );
+              }),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}*/

@@ -5,7 +5,10 @@ class FilterOption {
   final String name;
   final String type;
   bool state;
-  final List<Payment> Function(List<Payment>) filter; // Función de filtrado
+  final List<Payment> Function(List<Payment>, String)
+      filter; // Función de filtrado
+  // final Future<List<Payment>> Function(List<Payment>)
+  //  filter; // Función de filtrado
 
   FilterOption({
     required this.id,

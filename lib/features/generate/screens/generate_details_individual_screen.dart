@@ -64,7 +64,8 @@ class _GenerateDetailsScreenState
   @override
   void initState() {
     super.initState();
-    filteredPayments = List.from(widget.payments);
+    // filteredPayments = List.from(widget.payments);
+    filteredPayments = widget.payments;
   }
 
 /* void checkedSelectAll() {
@@ -92,17 +93,30 @@ class _GenerateDetailsScreenState
     }
   }*/
 
-  void checkedSelectAll() {
+  /* void checkedSelectAll() {
     int checkedNames = 0;
     for (var payment in filteredPayments) {
       if (payment.state) checkedNames++;
     }
     totalIsChecked = checkedNames == filteredPayments.length;
+  }*/
+  void checkedSelectAll() {
+    int checkedNames = filteredPayments.where((p) => p.state).length;
+    totalIsChecked =
+        checkedNames == filteredPayments.length && filteredPayments.isNotEmpty;
   }
 
+  /*void updateAllPayments(bool val) {
+    for (var payment in filteredPayments) {
+      payment.state = val;
+    }
+  }*/
   void updateAllPayments(bool val) {
     for (var payment in filteredPayments) {
       payment.state = val;
+      // Actualizamos también en la lista original
+      final original = widget.payments.firstWhere((p) => p.id == payment.id);
+      original.state = val;
     }
   }
 
@@ -141,17 +155,23 @@ class _GenerateDetailsScreenState
         barrierDismissible: false,
         context: context,
         builder: (context) => ModalGenerate(
-            totalSelected: widget.payments
-                .where((payment) => payment.state == true)
-                .length,
-            payments: widget.payments));
+            totalSelected:
+                // widget.payments
+                filteredPayments
+                    .where((payment) => payment.state == true)
+                    .length,
+            payments:
+                //widget.payments
+                filteredPayments));
   }
 
   void openInstallmentsScreen() async {
     await Navigator.pushNamed(context, GenerateInstallmentsFormScreen.routeName,
         arguments: [
-          widget.payments.where((payment) => payment.state == true).length,
-          widget.payments
+          // widget.payments.where((payment) => payment.state == true).length,
+          // widget.payments
+          filteredPayments.where((payment) => payment.state == true).length,
+          filteredPayments
         ]);
   }
 
@@ -159,6 +179,19 @@ class _GenerateDetailsScreenState
     setState(() {
       totalIsChecked = value!;
       updateAllPayments(value);
+      checkedSelectAll();
+    });
+  }*/
+
+/* void filterPayments(String keyword) {
+    setState(() {
+      if (keyword.isEmpty) {
+        filteredPayments = List.from(widget.payments);
+      } else {
+        filteredPayments = widget.payments
+            .where((p) => p.name.toLowerCase().contains(keyword.toLowerCase()))
+            .toList();
+      }
       checkedSelectAll();
     });
   }*/
@@ -172,6 +205,8 @@ class _GenerateDetailsScreenState
             .where((p) => p.name.toLowerCase().contains(keyword.toLowerCase()))
             .toList();
       }
+
+      // Solo marca “Seleccionar todo” si TODOS los visibles están marcados
       checkedSelectAll();
     });
   }
@@ -202,6 +237,7 @@ class _GenerateDetailsScreenState
                         onPressed: () {
                           _searchController.clear();
                           filterPayments('');
+                          onChangeCheckboxEverything(true);
                         },
                       )
                     : null,
@@ -246,15 +282,24 @@ class _GenerateDetailsScreenState
                       itemBuilder: (context, index) {
                         final payment = filteredPayments[index];
                         return CardCheckboxItem(
-                          state: payment.state,
-                          text: payment.name,
-                          onChanged: (value) {
+                            state: payment.state,
+                            text: payment.name,
+                            /*onChanged: (value) {
                             setState(() {
                               payment.state = value!;
                               checkedSelectAll();
                             });
-                          },
-                        );
+                          },*/
+                            onChanged: (value) {
+                              setState(() {
+                                payment.state = value!;
+                                // Actualizamos también en la lista original
+                                final original = widget.payments
+                                    .firstWhere((p) => p.id == payment.id);
+                                original.state = value;
+                                checkedSelectAll();
+                              });
+                            });
                       },
                     ),
                   )
@@ -264,17 +309,19 @@ class _GenerateDetailsScreenState
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 30)
                   .copyWith(top: 40),
-              child: widget.payments
-                      .where((payment) => payment.state == true)
-                      .isNotEmpty
-                  ? CustomButton(
-                      text: 'GENERAR',
-                      color: GlobalVariables.completeButtonColor,
-                      textColor: Colors.white,
-                      //  onTap: openGenerateModal,
-                      onTap: defineRedirect,
-                    )
-                  : null,
+              child:
+                  //widget.payments
+                  filteredPayments
+                          .where((payment) => payment.state == true)
+                          .isNotEmpty
+                      ? CustomButton(
+                          text: 'GENERAR',
+                          color: GlobalVariables.completeButtonColor,
+                          textColor: Colors.white,
+                          //  onTap: openGenerateModal,
+                          onTap: defineRedirect,
+                        )
+                      : null,
             )
           ],
         ),
