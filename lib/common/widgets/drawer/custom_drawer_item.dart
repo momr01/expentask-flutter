@@ -72,7 +72,7 @@ class CustomDrawerItem extends StatelessWidget {
         child: ListTile(
             leading: icon,
             title: Text(title),
-            onTap: () {
+            /*onTap: () {
               if (ModalRoute.of(context)?.settings.name != route) {
                 if (closeSession) {
                   _confirmLogOut(context, authServices);
@@ -80,6 +80,20 @@ class CustomDrawerItem extends StatelessWidget {
               } else {
                 navigateToScreen(context, route);
               }
+            }*/
+            onTap: () {
+              if (closeSession) {
+                _confirmLogOut(context, authServices);
+                return;
+              }
+
+              // Si estoy ya en esa pantalla, no vuelvo a navegar
+              if (ModalRoute.of(context)?.settings.name == route) {
+                return;
+              }
+
+              // Navegar normalmente
+              navigateToScreen(context, route);
             }));
   }
 }
