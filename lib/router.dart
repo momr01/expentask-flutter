@@ -59,6 +59,13 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           builder: (_) => PaymentDetailsScreen(
                 paymentId: paymentId,
               ));
+    /*  List<dynamic> args = routeSettings.arguments as List<dynamic>;
+      return MaterialPageRoute(
+          settings: routeSettings,
+          builder: (_) => PaymentDetailsScreen(
+                paymentId: args[0],
+                refresh: args.length > 1 ? args[1] : false,
+              ));*/
     case FormEditPayment.routeName:
       FormEditPaymentArguments args =
           routeSettings.arguments as FormEditPaymentArguments;

@@ -9,7 +9,14 @@ void fromSuccessUpdateToPaymentDetails(context, String idPayment) {
       ));
 
   Navigator.popAndPushNamed(context, PaymentDetailsScreen.routeName,
-      arguments: idPayment);
+      arguments: idPayment
+      // arguments: {
+      //   'idPayment': idPayment,
+      //   'refresh': true,
+      // },
+      //arguments: [idPayment, true]
+      //},
+      );
 }
 
 void cancelUpdateForm(context) {

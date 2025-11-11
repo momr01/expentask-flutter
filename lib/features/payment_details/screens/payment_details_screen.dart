@@ -23,8 +23,13 @@ import 'package:payments_management/models/task_code/task_code.dart';
 class PaymentDetailsScreen extends StatefulWidget {
   static const String routeName = '/payment-details';
   final String paymentId;
+//  final bool? refresh;
 
-  const PaymentDetailsScreen({super.key, required this.paymentId});
+  const PaymentDetailsScreen({
+    super.key,
+    required this.paymentId,
+    //this.refresh = false
+  });
 
   @override
   State<PaymentDetailsScreen> createState() => _PaymentDetailsScreenState();
@@ -41,6 +46,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
   final TasksServices tasksServices = TasksServices();
 
   bool isLoading = false;
+//  bool refresh = false;
 //  bool isSharedDuty = true;
 
   @override
@@ -107,10 +113,25 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
       PaymentWithSharedDuty payment,
       List<PaymentName> names,
       List<TaskCode> taskCodes) {
+    //final editSuccess =
     Navigator.pushNamed(context, FormEditPayment.routeName,
         arguments: FormEditPaymentArguments(
             payment, names, taskCodes, payment.sharedDuty));
+
+    /*   if (editSuccess == true) {
+      //  _refreshData(); // 🔹 Solo recarga si hubo cambios
+      debugPrint("RECARGAR PAGINA");
+    } else {
+      debugPrint("NO RENDERIZAR PAGINA OTRA VEZ");
+    }*/
   }
+
+  // void _navigateBackToHomeScreen({bool refresh = false}) {
+  //   Navigator.pop(context, refresh);
+  // }
+/*  void _navigateBackToHomeScreen() {
+    Navigator.pop(context, refresh);
+  }*/
 
   void _navigateBackToHomeScreen() {
     Navigator.pushNamedAndRemoveUntil(

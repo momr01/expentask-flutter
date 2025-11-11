@@ -76,6 +76,22 @@ class PaymentCard extends StatelessWidget {
     return data;
   }
 
+  // Future<void> _openPaymentDetails(
+  //     BuildContext context, String paymentId) async {
+  //   final shouldRefresh = await Navigator.pushNamed(
+  //     context,
+  //     PaymentDetailsScreen.routeName,
+  //     arguments: [paymentId],
+  //   );
+
+  //   if (shouldRefresh == true) {
+  //     //  _refreshData(); // 🔹 Solo recarga si hubo cambios
+  //     debugPrint("RECARGAR PAGINA");
+  //   } else {
+  //     debugPrint("NO RENDERIZAR PAGINA OTRA VEZ");
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -118,6 +134,7 @@ class PaymentCard extends StatelessWidget {
                     GestureDetector(
                         onTap: () =>
                             navigateToPaymentInfoScreen(context, payment.id!),
+                        // _openPaymentDetails(context, payment.id!),
                         child: const Icon(Icons.visibility_rounded,
                             size: 30, color: Colors.black)),
                   ],
