@@ -23,13 +23,15 @@ class FormManageNameScreen extends StatefulWidget {
   final PaymentName name;
   final List<Category> categories;
   final List<TaskCode> taskCodes;
+  final TextEditingController searchController;
 
-  const FormManageNameScreen({
-    Key? key,
-    required this.name,
-    required this.categories,
-    required this.taskCodes,
-  }) : super(key: key);
+  const FormManageNameScreen(
+      {Key? key,
+      required this.name,
+      required this.categories,
+      required this.taskCodes,
+      required this.searchController})
+      : super(key: key);
 
   @override
   State<FormManageNameScreen> createState() => _FormManageNameScreenState();
@@ -212,7 +214,8 @@ class _FormManageNameScreenState extends State<FormManageNameScreen> {
         id: widget.name.id!,
         name: _nameController.text,
         category: _categoryValue,
-        defaultTasks: ids);
+        defaultTasks: ids,
+        searchController: widget.searchController);
   }
 
   Future<void> addName() async {

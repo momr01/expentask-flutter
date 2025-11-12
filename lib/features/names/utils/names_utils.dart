@@ -12,7 +12,8 @@ import 'package:payments_management/models/task_code/task_code.dart';
 final CategoriesServices categoriesServices = CategoriesServices();
 final TasksServices tasksServices = TasksServices();
 
-Future<void> getDataToForm(context, PaymentName name) async {
+Future<void> getDataToForm(
+    context, PaymentName name, TextEditingController searchController) async {
   List<Category> categories = [];
   List<TaskCode> taskCodes = [];
 
@@ -41,13 +42,19 @@ Future<void> getDataToForm(context, PaymentName name) async {
         },
       );
     } else {
-      navigateToFormNameScreen(context, name, categories, taskCodes);
+      navigateToFormNameScreen(
+          context, name, categories, taskCodes, searchController);
     }
   }
 }
 
-void navigateToFormNameScreen(BuildContext context, PaymentName name,
-    List<Category> categories, List<TaskCode> taskCodes) {
+void navigateToFormNameScreen(
+    BuildContext context,
+    PaymentName name,
+    List<Category> categories,
+    List<TaskCode> taskCodes,
+    TextEditingController searchController) {
   Navigator.pushNamed(context, FormManageNameScreen.routeName,
-      arguments: FormManageNameArguments(name, categories, taskCodes));
+      arguments: FormManageNameArguments(
+          name, categories, taskCodes, searchController));
 }

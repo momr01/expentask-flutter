@@ -7,16 +7,18 @@ import 'package:payments_management/models/name/payment_name.dart';
 
 class NameCard extends StatelessWidget {
   final PaymentName name;
-  const NameCard({
-    Key? key,
-    required this.name,
-  }) : super(key: key);
+  final TextEditingController searchController;
+  const NameCard({Key? key, required this.name, required this.searchController})
+      : super(key: key);
 
   void openModalNameDetails(BuildContext context) async {
     showDialog<String>(
         barrierDismissible: false,
         context: context,
-        builder: (context) => ModalNameDetails(name: name));
+        builder: (context) => ModalNameDetails(
+              name: name,
+              searchController: searchController,
+            ));
   }
 
   @override

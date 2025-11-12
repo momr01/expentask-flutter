@@ -18,7 +18,8 @@ class FormManageNameServices {
       required String id,
       required String name,
       required String category,
-      required List<String> defaultTasks}) async {
+      required List<String> defaultTasks,
+      required TextEditingController searchController}) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     List<String> tasks = [];
@@ -47,7 +48,7 @@ class FormManageNameServices {
                 // onPressed: () => Navigator.pushNamedAndRemoveUntil(
                 //     context, BottomBar.routeName, arguments: 1, (route) => true),
                 onPressed: () => fromSuccessEditToNames(
-                    NavigatorKeys.navKey.currentContext!));
+                    NavigatorKeys.navKey.currentContext!, searchController));
           });
     } catch (e) {
       showSnackBar(context, e.toString());

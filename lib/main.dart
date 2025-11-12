@@ -8,6 +8,8 @@ import 'package:payments_management/features/alerts/services/work_manager_servic
 import 'package:payments_management/features/auth/screens/login_screen.dart';
 import 'package:payments_management/features/auth/services/auth_services.dart';
 import 'package:payments_management/features/default/screens/default_screen.dart';
+import 'package:payments_management/features/names/providers/names_provider.dart';
+import 'package:payments_management/providers/global_state_provider.dart';
 import 'package:payments_management/providers/user_provider.dart';
 import 'package:payments_management/router.dart';
 import 'package:provider/provider.dart';
@@ -18,9 +20,11 @@ void main() async {
   await Future.wait(
       [LocalNotificationsServices.init(), WorkManagerServices().init()]);
 
-  runApp(MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => UserProvider())],
-      child: const MyApp()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => UserProvider()),
+    ChangeNotifierProvider(create: (context) => GlobalStateProvider()),
+    ChangeNotifierProvider(create: (_) => NamesProvider()), // 👈 agregado
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatefulWidget {

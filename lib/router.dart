@@ -91,6 +91,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
                 name: args.name,
                 categories: args.categories,
                 taskCodes: args.taskCodes,
+                searchController: args.searchController,
               ));
     case GenerateMainScreen.routeName:
       return MaterialPageRoute(

@@ -12,10 +12,10 @@ import 'package:payments_management/models/name/payment_name.dart';
 
 class ModalNameDetails extends StatefulWidget {
   final PaymentName name;
-  const ModalNameDetails({
-    Key? key,
-    required this.name,
-  }) : super(key: key);
+  final TextEditingController searchController;
+  const ModalNameDetails(
+      {Key? key, required this.name, required this.searchController})
+      : super(key: key);
 
   @override
   State<ModalNameDetails> createState() => _ModalNameDetailsState();
@@ -46,7 +46,7 @@ class _ModalNameDetailsState extends State<ModalNameDetails> {
     setState(() {
       isLoading = true;
     });
-    await getDataToForm(context, widget.name);
+    await getDataToForm(context, widget.name, widget.searchController);
 
     setState(() {
       isLoading = false;

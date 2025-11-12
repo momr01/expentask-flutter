@@ -19,6 +19,8 @@ import 'package:payments_management/models/name/payment_name.dart';
 import 'package:payments_management/models/payment/payment.dart';
 import 'package:payments_management/models/payment/payment_with_shared_duty.dart';
 import 'package:payments_management/models/task_code/task_code.dart';
+import 'package:payments_management/providers/global_state_provider.dart';
+import 'package:provider/provider.dart';
 
 class PaymentDetailsScreen extends StatefulWidget {
   static const String routeName = '/payment-details';
@@ -133,9 +135,14 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
     Navigator.pop(context, refresh);
   }*/
 
-  void _navigateBackToHomeScreen() {
-    Navigator.pushNamedAndRemoveUntil(
-        context, BottomBar.routeName, arguments: 0, (route) => false);
+  void navigateBackToHomeScreen({bool refresh = false}) {
+    // Navigator.pushNamedAndRemoveUntil(
+    //     context, BottomBar.routeName, arguments: 0, (route) => false);
+    // Navigator.pop(context, refresh);
+    /*  Provider.of<GlobalStateProvider>(context, listen: false)
+        .setRefreshHomeScreen(true);*/
+
+    Navigator.pop(context);
   }
 
   void _editPaymentForm() async {
@@ -183,7 +190,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: customAppBar(context,
-            isMainPage: false, onBack: _navigateBackToHomeScreen),
+            isMainPage: false, onBack: navigateBackToHomeScreen),
         body: payment == null
             ? const Loader()
             : payment!.amount < 0

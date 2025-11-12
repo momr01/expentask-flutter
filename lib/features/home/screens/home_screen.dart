@@ -10,6 +10,7 @@ import 'package:payments_management/features/home/utils/filter_option.dart';
 import 'package:payments_management/features/home/widgets/filter_row.dart';
 import 'package:payments_management/features/home/widgets/payment_card.dart';
 import 'package:payments_management/models/payment/payment.dart';
+import 'package:payments_management/providers/global_state_provider.dart';
 import 'package:provider/provider.dart';
 
 /*
@@ -603,6 +604,20 @@ class HomeScreenUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<HomeScreenViewModel>(context);
+
+    final globalState = Provider.of<GlobalStateProvider>(context);
+
+    /*  if (globalState.refreshHomeScreen) {
+      // 🔹 Volvés a cargar datos
+      vm._refreshData();
+      globalState.setRefreshHomeScreen(false); // 🔄 Reseteás el flag
+    }*/
+    if (globalState.refreshHomeScreen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await vm._refreshData();
+        globalState.setRefreshHomeScreen(false);
+      });
+    }
 
     return
         // RefreshIndicator(
